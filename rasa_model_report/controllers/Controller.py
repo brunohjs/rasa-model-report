@@ -4,6 +4,6 @@ class Controller:
         self.version = version
         self.RASA_PATH = rasa_path
         self.OUTPUT_DIR = output_dir
-        self.NLU_PATH = f"{self.RASA_PATH}/data/**/**.yml"
-        self.RESULTS_PATH = f"{self.RASA_PATH}/results"
-        self.CONFIG_REPORT = f"{self.RASA_PATH}/config.yml"
+        self.NLU_PATH = f"{self.RASA_PATH}/data/**/**.yml".replace("//", "/")
+        self.RESULTS_PATH = f"{self.RASA_PATH}/results".replace("//", "/")
+        self.CONFIG_REPORT = f"{self.RASA_PATH}/config.yml".replace("//", "/")

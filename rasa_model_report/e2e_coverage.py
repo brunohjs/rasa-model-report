@@ -22,9 +22,9 @@ env = {
 def change_base_dir(new_dir: Optional[str] = None) -> None:
     env["BOT_PATH"] = new_dir if new_dir else env["BOT_PATH"]
     env.update({
-        "RASA_DOMAIN_PATH": f"{env['BOT_PATH']}/rasa/domain.yml",
-        "STORY_REPORT_PATH": f"{env['BOT_PATH']}/rasa/results/story_report.json",
-        "ACTIONS_PATH": f"{env['BOT_PATH']}/actions"
+        "RASA_DOMAIN_PATH": f"{env['BOT_PATH']}/rasa/domain.yml".replace("//", "/"),
+        "STORY_REPORT_PATH": f"{env['BOT_PATH']}/rasa/results/story_report.json".replace("//", "/"),
+        "ACTIONS_PATH": f"{env['BOT_PATH']}/actions".replace("//", "/")
     })
 
 
