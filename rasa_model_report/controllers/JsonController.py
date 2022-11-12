@@ -5,8 +5,8 @@ import re
 from typing import Any
 from typing import Dict
 
-from controllers.Controller import Controller
-from helpers.utils import format_date
+from rasa_model_report.controllers.Controller import Controller
+from rasa_model_report.helpers.utils import format_date
 
 
 class JsonController(Controller):

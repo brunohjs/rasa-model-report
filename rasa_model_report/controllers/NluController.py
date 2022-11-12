@@ -7,13 +7,14 @@ from typing import List
 from typing import Optional
 
 import requests
-from controllers.Controller import Controller
 from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
 from requests.exceptions import ConnectionError
 from requests.exceptions import RequestException
 from requests.exceptions import Timeout
 from yaml import safe_load
+
+from rasa_model_report.controllers.Controller import Controller
 
 
 class NluController(Controller):

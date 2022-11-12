@@ -1,6 +1,6 @@
 import logging
 
-from controllers.Controller import Controller
+from rasa_model_report.controllers.Controller import Controller
 
 
 class CsvController(Controller):

@@ -2,14 +2,14 @@ import glob
 import logging
 import os.path
 
-from controllers.Controller import Controller
-from controllers.CsvController import CsvController
-from controllers.JsonController import JsonController
-from controllers.NluController import NluController
-from helpers.utils import check
-from helpers.utils import convert_to_date
-from helpers.utils import get_color
-from helpers.utils import scale
+from rasa_model_report.controllers.Controller import Controller
+from rasa_model_report.controllers.CsvController import CsvController
+from rasa_model_report.controllers.JsonController import JsonController
+from rasa_model_report.controllers.NluController import NluController
+from rasa_model_report.helpers.utils import check
+from rasa_model_report.helpers.utils import convert_to_date
+from rasa_model_report.helpers.utils import get_color
+from rasa_model_report.helpers.utils import scale
 
 
 class MarkdownController(Controller):
@@ -24,6 +24,7 @@ class MarkdownController(Controller):
             output_dir,
             self.project,
             self.version,
+            url=kwargs.get("rasa_api_url"),
             disable_nlu=kwargs.get("disable_nlu")
         )
         self.json.update_overview({"nlu": self.nlu.get_general_grade()})

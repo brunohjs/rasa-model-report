@@ -1,7 +1,8 @@
 import logging
 
 import click
-from controllers.ModelReport import ModelReport
+
+from rasa_model_report.controllers.ModelReport import ModelReport
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
 
@@ -36,17 +37,24 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Rasa project version. (default: not identified)"
 )
 @click.option(
+    "--rasa-api",
+    type=str,
+    required=False,
+    default="http://localhost:5005",
+    help="Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)"
+)
+@click.option(
     "--disable-nlu",
     is_flag=True,
     required=False,
     default=False,
     help="Disable NLU section of report. (default: false)"
 )
-def main(path, output_dir, project, version, disable_nlu):
+def main(path, output_dir, project, version, rasa_api, disable_nlu):
     """
     Description
     """
-    report = ModelReport(path, output_dir, project, version, disable_nlu=disable_nlu)
+    report = ModelReport(path, output_dir, project, version, disable_nlu=disable_nlu, rasa_api_url=rasa_api)
     return report
 
 

@@ -1,8 +1,8 @@
 import logging
 import os.path
 
-from controllers.MarkdownController import MarkdownController
-from helpers.utils import get_project_name
+from rasa_model_report.controllers.MarkdownController import MarkdownController
+from rasa_model_report.helpers.utils import get_project_name
 
 
 class ModelReport:
@@ -81,4 +81,7 @@ class ModelReport:
             logging.info("Script finalizado com sucesso")
         else:
             logging.error(f"Diretório {self.dirs['RESULTS_PATH']} não existe")
+            logging.error(
+                "Para informar p diretório onde contém os arquivo do projeto Rasa, utilize o parâmetro --path"
+            )
             logging.error("Script finalizado com erros")
