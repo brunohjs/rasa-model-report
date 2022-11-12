@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="Rasa Model Report",
+    name="rasa-model-report",
     version="1.0.0",
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",

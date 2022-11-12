@@ -82,6 +82,6 @@ class ModelReport:
         else:
             logging.error(f"Diretório {self.dirs['RESULTS_PATH']} não existe")
             logging.error(
-                "Para informar p diretório onde contém os arquivo do projeto Rasa, utilize o parâmetro --path"
+                "Para informar o diretório onde contém os arquivo do projeto Rasa, utilize o parâmetro --path"
             )
             logging.error("Script finalizado com erros")
