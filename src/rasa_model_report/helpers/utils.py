@@ -1,5 +1,6 @@
 import datetime
 import os
+from typing import Optional
 from typing import Union
 
 
@@ -57,16 +58,22 @@ def get_color(value: Union[float, int], scale: int = 1) -> str:
 
 def scale(value: float, scale: int = 1) -> str:
     """
-    Function to change the value scale to be displayed in a string.
+    Change the value scale and rounds it to display in string format.
 
-    :param value: Value that will be changed to scale.
+    :param value: Value that will be changed to scale and rounds it.
     :param int scale: Scale that will be applied.
     :return str: Value on the new scale.
     """
     return f"{int(value * scale)}"
 
 
-def get_project_name(path):
+def get_project_name(path: Optional[str] = None) -> str:
+    """
+    Function that returns the project folder's name.
+
+    :param str: Project path. If not informed, the current path will be used.
+    :return str: Project folder's name.
+    """
     if path:
         return os.path.basename(path)
     directory_path = os.getcwd()

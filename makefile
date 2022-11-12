@@ -1,5 +1,5 @@
 build:
-	pip install .
+	pip install . --force-reinstall
 
 install-dev:
 	$(MAKE) install
