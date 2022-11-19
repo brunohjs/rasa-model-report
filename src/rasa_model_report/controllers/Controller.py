@@ -1,5 +1,5 @@
 class Controller:
-    def __init__(self, rasa_path, output_dir, project, version, ) -> None:
+    def __init__(self, rasa_path, output_dir, project, version) -> None:
         self.project = project
         self.version = version
         self.RASA_PATH = rasa_path
