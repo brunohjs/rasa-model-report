@@ -1,3 +1,5 @@
+import glob
+
 import pytest
 
 import tests.utils as utils
@@ -6,8 +8,9 @@ from src.rasa_model_report.controllers.JsonController import JsonController
 
 
 def pytest_generate_tests(metafunc):
+    rasa_dirs = glob.glob("tests/rasa_mock/*")
     metafunc.fixturenames.append('rasa_path')
-    metafunc.parametrize('rasa_path', ["tests/rasa_mock/rasa_2", "tests/rasa_mock/rasa_3"])
+    metafunc.parametrize('rasa_path', rasa_dirs)
 
 
 @pytest.fixture(autouse=True)
