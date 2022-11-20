@@ -7,19 +7,19 @@ nlu:
     - hello
     - hi
     - hello there
-    - good morning
-    - good evening
+    - good [morning](day)
+    - good [evening](day)
     - moin
     - hey there
     - let's go
     - hey dude
     - goodmorning
     - goodevening
-    - good afternoon
+    - good [afternoon](day)
 
 - intent: goodbye
   examples: |
-    - good afternoon
+    - good [afternoon](day)
     - cu
     - good by
     - cee you later

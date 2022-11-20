@@ -1,7 +1,6 @@
 import json
 import logging
 import os.path
-import re
 from typing import Any
 from typing import Dict
 
@@ -12,13 +11,13 @@ from rasa_model_report.helpers.utils import format_date
 class JsonController(Controller):
     def __init__(self, rasa_path, output_dir, project, version, **kwargs) -> None:
         super().__init__(rasa_path, output_dir, project, version)
-        self.intents = {}
+        self.intents = []
         self.intent_overview = {}
-        self.intent_errors = {}
-        self.entities = {}
+        self.intent_errors = []
+        self.entities = []
         self.entity_overview = {}
-        self.entity_errors = {}
-        self.responses = {}
+        self.entity_errors = []
+        self.responses = []
         self.response_overview = {}
         self.overview = {
             "project": self.project,
@@ -47,11 +46,12 @@ class JsonController(Controller):
             logging.info(f"Arquivo {filename} carregado com sucesso")
             return data
         else:
+            message = f"Arquivo {filename} não encontrado"
             if error_msg_type == "error":
-                logging.error(f"Arquivo {filename} não encontrado")
-                raise Exception(f"Arquivo {filename} não encontrado")
+                logging.error(message)
+                raise Exception(message)
             else:
-                logging.warning(f"Arquivo {filename} não encontrado")
+                logging.warning(message)
                 return {}
 
     def _load_data(self) -> None:
@@ -73,7 +73,7 @@ class JsonController(Controller):
             del self.intents["accuracy"]
             del self.intents["macro avg"]
             del self.intents["weighted avg"]
-            self.intents = self._to_list(self.intents, "f1-score")
+        self.intents = self._to_list(self.intents, "f1-score")
 
     def _load_intent_errors(self) -> None:
         self.intent_errors = self._load_json_file(self.INTENT_ERRORS, "warning")
@@ -94,7 +94,7 @@ class JsonController(Controller):
             del self.entities["macro avg"]
             del self.entities["micro avg"]
             del self.entities["weighted avg"]
-            self.entities = self._to_list(self.entities, "f1-score")
+        self.entities = self._to_list(self.entities, "f1-score")
 
     def _load_entity_errors(self) -> None:
         self.entity_errors = self._load_json_file(self.ENTITY_ERRORS, "warning")
@@ -176,20 +176,6 @@ class JsonController(Controller):
             self.overview.update(obj)
             self._calculate_overall()
 
-    def _get_rasa_version(self) -> str:
-        """
-        Função que retorna a versão do Rasa que está dentro do .env dentro da pasta do Rasa.
-        """
-        rasa_env_file = self.RASA_ENV_PATH if os.path.isfile(self.RASA_ENV_PATH) else f"../{self.project}/.env"
-        data = open(rasa_env_file).read()
-        rasa_version = re.search(r"rasa/rasa:\d+\.\d+\.\d+(?:rc\d+|a\d+)?", data)
-        if rasa_version:
-            rasa_version = rasa_version.group()
-            rasa_version = re.search(r"\d+\.\d+\.\d+(?:rc\d+|a\d+)?", rasa_version)
-            rasa_version = rasa_version.group()
-            return rasa_version
-        return "-"
-
     def get_intents(self):
         return self.intents.copy()
 
@@ -217,21 +203,7 @@ class JsonController(Controller):
     def get_overview(self):
         return self.overview.copy()
 
-    def get_specific_overview(self, project, version: str) -> dict:
-        if version == "local":
-            path = f"../{project}/rasa/results/overview.json"
-        else:
-            path = f"reports/{project}/{version}/overview.json"
-        if os.path.isfile(path):
-            file = open(path)
-            data = json.load(file)
-            file.close()
-            data["intent"] = data["intent"] if data["intent"] and data["intent"] >= 0 else 0
-            data["entity"] = data["entity"] if data["entity"] and data["entity"] >= 0 else 0
-            data["response"] = data["response"] if data["response"] and data["response"] >= 0 else 0
-            return data
-
-    def _to_list(self, data, sort) -> list:
+    def _to_list(self, data, sort_field=None) -> list:
         """
         Transforma o JSON dos reports em lista.
         """
@@ -242,6 +214,6 @@ class JsonController(Controller):
                 element["name"] = item
                 element.update(data[item])
                 new_list.append(element)
-        if sort:
-            new_list = sorted(new_list, key=lambda x: x[sort], reverse=True)
+        if sort_field:
+            new_list = sorted(new_list, key=lambda x: x[sort_field], reverse=True)
         return new_list

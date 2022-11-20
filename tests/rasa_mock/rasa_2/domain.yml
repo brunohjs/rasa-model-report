@@ -9,6 +9,9 @@ intents:
   - mood_unhappy
   - bot_challenge
 
+entities:
+  - day
+
 responses:
   utter_greet:
   - text: "Hey! How are you?"
