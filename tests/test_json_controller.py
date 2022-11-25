@@ -132,7 +132,6 @@ def test_get_intent_errors():
 def test_get_entities():
     json_controller = pytest.json_controller
     entities = json_controller.get_entities()
-    print(entities)
     entities.append({"test": "ok"})
     assert json_controller.get_entities() != entities
     assert isinstance(json_controller.get_entities(), list)

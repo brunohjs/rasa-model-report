@@ -1,0 +1,156 @@
+{
+    "default": [
+        {
+            "url": "http://localhost:5005",
+            "method": "GET",
+            "json": {}
+        },
+        {
+            "url": "http://localhost:5005/model/parse",
+            "method": "POST",
+            "json": {
+                "text": "oi",
+                "intent": {
+                    "id": 6130133147372115834,
+                    "name": "greet",
+                    "confidence": 0.77470862865448
+                },
+                "entities": [],
+                "intent_ranking": [
+                    {
+                        "id": 6130133147372115834,
+                        "name": "greet",
+                        "confidence": 0.77470862865448
+                    },
+                    {
+                        "id": 684865172093367490,
+                        "name": "affirm",
+                        "confidence": 0.15055057406425476
+                    },
+                    {
+                        "id": 6879127699444739808,
+                        "name": "deny",
+                        "confidence": 0.06612755358219147
+                    },
+                    {
+                        "id": -5849962811346625900,
+                        "name": "bot_challenge",
+                        "confidence": 0.00358779588714242
+                    },
+                    {
+                        "id": -5137298958616803501,
+                        "name": "mood_unhappy",
+                        "confidence": 0.0028009868692606688
+                    },
+                    {
+                        "id": -2944358675960372440,
+                        "name": "mood_great",
+                        "confidence": 0.0012494842521846294
+                    },
+                    {
+                        "id": 1702046192633413724,
+                        "name": "goodbye",
+                        "confidence": 0.0009749263990670443
+                    }
+                ],
+                "response_selector": {
+                    "all_retrieval_intents": [],
+                    "default": {
+                        "response": {
+                            "id": null,
+                            "responses": null,
+                            "response_templates": null,
+                            "confidence": 0.0,
+                            "intent_response_key": null,
+                            "utter_action": "utter_None",
+                            "template_name": "utter_None"
+                        },
+                        "ranking": []
+                    }
+                }
+            }
+        }
+    ],
+    "test_init_nlu_controller": [
+        {
+            "url": "http://localhost:5005/model/parse",
+            "method": "POST",
+            "json": {
+                "text": "oi",
+                "intent": {
+                    "id": 6130133147372115834,
+                    "name": "greet",
+                    "confidence": 0.77470862865448
+                },
+                "entities": [],
+                "intent_ranking": [
+                    {
+                        "id": 6130133147372115834,
+                        "name": "greet",
+                        "confidence": 0.77470862865448
+                    },
+                    {
+                        "id": 684865172093367490,
+                        "name": "affirm",
+                        "confidence": 0.15055057406425476
+                    },
+                    {
+                        "id": 6879127699444739808,
+                        "name": "deny",
+                        "confidence": 0.06612755358219147
+                    },
+                    {
+                        "id": -5849962811346625900,
+                        "name": "bot_challenge",
+                        "confidence": 0.00358779588714242
+                    },
+                    {
+                        "id": -5137298958616803501,
+                        "name": "mood_unhappy",
+                        "confidence": 0.0028009868692606688
+                    },
+                    {
+                        "id": -2944358675960372440,
+                        "name": "mood_great",
+                        "confidence": 0.0012494842521846294
+                    },
+                    {
+                        "id": 1702046192633413724,
+                        "name": "goodbye",
+                        "confidence": 0.0009749263990670443
+                    }
+                ],
+                "response_selector": {
+                    "all_retrieval_intents": [],
+                    "default": {
+                        "response": {
+                            "id": null,
+                            "responses": null,
+                            "response_templates": null,
+                            "confidence": 0.0,
+                            "intent_response_key": null,
+                            "utter_action": "utter_None",
+                            "template_name": "utter_None"
+                        },
+                        "ranking": []
+                    }
+                }
+            }
+        }
+    ],
+    "test_init_nlu_controller_when_no_rasa": [
+        {
+            "url": "http://localhost:5005",
+            "method": "GET",
+            "status": 503
+        }
+    ],
+    "test_request_nlu_error": [
+        {
+            "url": "http://localhost:5005/model/parse",
+            "method": "POST",
+            "status": 503,
+            "json": {}
+        }
+    ]
+}

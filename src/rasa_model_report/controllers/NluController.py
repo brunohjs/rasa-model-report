@@ -28,7 +28,7 @@ class NluController(Controller):
         if not self._disable_nlu and self.health_check_rasa_api():
             self._load_nlu()
             self._generate_data()
-            self._get_problem_sentences()
+            self._load_problem_sentences()
             self._calculate_general_grade()
 
     def is_connected(self) -> bool:
@@ -46,10 +46,10 @@ class NluController(Controller):
         :return: True if is available or False.
         """
         self._connected = False
-        response = self.request(self.url)
-        if response:
+        response = self.request_rasa_api(self.url)
+        if isinstance(response, requests.Response):
             self._connected = response.status_code == 200
-            if response.status_code == 200:
+            if self._connected:
                 logging.info("A API do Rasa está habilitada.")
             else:
                 logging.warn("A API do Rasa está com algum problema. A seção de NLU não será gerada.")
@@ -100,13 +100,13 @@ class NluController(Controller):
         self._data = data
         return data
 
-    def _get_problem_sentences(self) -> List[Dict[str, Any]]:
+    def _load_problem_sentences(self) -> List[Dict[str, Any]]:
         self._problem_sentences = [
             sentence for sentence in self._data if sentence.get("understood", False)
         ]
         return self._problem_sentences
 
-    def get_data(self) -> Dict[str, Any]:
+    def get_data(self) -> List[Dict[str, Any]]:
         """
         Return a copy of the generated data.
 
@@ -114,7 +114,7 @@ class NluController(Controller):
         """
         return self._data.copy()
 
-    def get_problem_sentences(self) -> Dict[str, Any]:
+    def get_problem_sentences(self) -> List[Dict[str, Any]]:
         """
         Return a copy of the generated problem sentences.
 
@@ -122,10 +122,10 @@ class NluController(Controller):
         """
         return self._problem_sentences.copy()
 
-    def get_general_grade(self) -> int:
+    def get_general_grade(self) -> Optional[float]:
         return self._general_grade
 
-    def _calculate_general_grade(self):
+    def _calculate_general_grade(self) -> Optional[float]:
         total_sentences = len(self._data)
         if total_sentences:
             total_problem_sentences = len(self._problem_sentences)
@@ -170,7 +170,7 @@ class NluController(Controller):
             return payload.get("intent", {})
 
     @staticmethod
-    def request(url: str, method: str = "GET", json: Dict[str, Any] = {}) -> Optional[requests.Response]:
+    def request_rasa_api(url: str, method: str = "GET", json: Dict[str, Any] = {}) -> Optional[requests.Response]:
         message = "A seção de NLU não será gerada."
         response = None
         try:
