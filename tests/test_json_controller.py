@@ -10,7 +10,7 @@ def test_init_json_controller(rasa_path):
     assert json_controller.version == "0.0.0"
     assert json_controller.RASA_PATH == rasa_path
     assert json_controller.OUTPUT_DIR == "./tests"
-    assert json_controller.NLU_PATH == f"{rasa_path}/data/**/**.yml"
+    assert json_controller.NLU_PATH == f"{rasa_path}/data"
     assert json_controller.RESULTS_PATH == f"{rasa_path}/results"
     assert json_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
     assert json_controller.INTENT_REPORT == f"{json_controller.RESULTS_PATH}/intent_report.json"
@@ -148,9 +148,9 @@ def test_get_entity_overview():
 def test_get_entity_errors():
     json_controller = pytest.json_controller
     entities = json_controller.get_entity_errors()
-    entities.update({"test": "ok"})
+    entities.append({"test": "ok"})
     assert json_controller.get_entity_errors() != entities
-    assert isinstance(json_controller.get_entity_errors(), dict)
+    assert isinstance(json_controller.get_entity_errors(), list)
 
 
 def test_get_responses():

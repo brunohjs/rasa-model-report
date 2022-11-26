@@ -20,7 +20,11 @@ def remove_dir(dir_name):
 
 
 def remove_generated_files(rasa_path):
-    files_to_find = (f"{rasa_path}/**/overview.json", f"{rasa_path}/**/report.md", "**/test.csv")
+    files_to_find = (
+        f"{rasa_path}/**/overview.json",
+        "tests/model_report.md",
+        f"{rasa_path}/results/*.csv"
+    )
     files = []
     for file in files_to_find:
         files.extend(glob.glob(file, recursive=True))

@@ -147,6 +147,11 @@
     ],
     "test_request_nlu_error": [
         {
+            "url": "http://localhost:5005",
+            "method": "GET",
+            "status": 503
+        },
+        {
             "url": "http://localhost:5005/model/parse",
             "method": "POST",
             "status": 503,

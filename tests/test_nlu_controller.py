@@ -10,7 +10,7 @@ def test_init_nlu_controller(rasa_path):
     assert nlu_controller.version == "0.0.0"
     assert nlu_controller.RASA_PATH == rasa_path
     assert nlu_controller.OUTPUT_DIR == "./tests"
-    assert nlu_controller.NLU_PATH == f"{rasa_path}/data/**/**.yml"
+    assert nlu_controller.NLU_PATH == f"{rasa_path}/data"
     assert nlu_controller.RESULTS_PATH == f"{rasa_path}/results"
     assert nlu_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
     assert nlu_controller.is_connected() is True

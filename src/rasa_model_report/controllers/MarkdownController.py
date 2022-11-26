@@ -1,15 +1,13 @@
-import glob
 import logging
 import os.path
 
-from rasa_model_report.controllers.Controller import Controller
-from rasa_model_report.controllers.CsvController import CsvController
-from rasa_model_report.controllers.JsonController import JsonController
-from rasa_model_report.controllers.NluController import NluController
-from rasa_model_report.helpers.utils import check
-from rasa_model_report.helpers.utils import convert_to_date
-from rasa_model_report.helpers.utils import get_color
-from rasa_model_report.helpers.utils import scale
+from src.rasa_model_report.controllers.Controller import Controller
+from src.rasa_model_report.controllers.CsvController import CsvController
+from src.rasa_model_report.controllers.JsonController import JsonController
+from src.rasa_model_report.controllers.NluController import NluController
+from src.rasa_model_report.helpers.utils import check
+from src.rasa_model_report.helpers.utils import get_color
+from src.rasa_model_report.helpers.utils import scale
 
 
 class MarkdownController(Controller):
@@ -33,20 +31,20 @@ class MarkdownController(Controller):
     def _set_dirs(self):
         self.OUTPUT_REPORT_FILE = f"{self.OUTPUT_DIR}/model_report.md"
         self.README_PATH = "README.md"
-        self.INDEX_PATH = "reports/index.md"
 
-    def add_text(self, text: str) -> str:
+    def add_text(self, text: str) -> None:
         """
         Função que concatena um texto ao texto final
         """
-        self.result += "\n" + text
+        if isinstance(text, str):
+            self.result += "\n" + text
 
-    def add_image(self, image: str, title: str) -> str:
+    def add_image(self, image: str, title: str) -> None:
         """
         Função que concatena um bloco de texto com um bloco de imagem.
         """
         if os.path.isfile(f"{self.RESULTS_PATH}/{image}"):
-            self.result += f"### {title}\n![{title}]({image} 'Teste')" + "\n"
+            self.result += f"### {title}\n![{title}]({image} '{title}')" + "\n"
             logging.info(f"A imagem {image} foi adicionada com sucesso")
         else:
             logging.warning(f"A imagem {image} não foi encontrada")
@@ -71,13 +69,14 @@ class MarkdownController(Controller):
     def build_summary(self) -> None:
         text = "## Índice\n"
         text += " - [Overview](#overview)\n"
-        text += " - [Configurações](#config)\n"
-        text += " - [Intenções](#intention)\n"
-        text += " - [Entidades](#entity)\n"
-        text += " - [NLU](#nlu)\n"
-        text += " - [Respostas](#response)\n"
+        if os.path.isfile(self.CONFIG_REPORT):
+            text += " - [Configurações](#configs)\n"
+        text += " - [Intenções](#intents)\n"
+        text += " - [Entidades](#entities)\n"
+        if self.nlu.is_connected():
+            text += " - [NLU](#nlu)\n"
+        text += " - [Respostas](#responses)\n"
         text += "\n"
-        text += "[Voltar para o início](../../index.md)\n"
         return text
 
     def build_table(self, data: list) -> str:
@@ -99,18 +98,15 @@ class MarkdownController(Controller):
         overview = self.json.get_overview()
         for item in ["intent", "entity", "response", "nlu"]:
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else 0
-        model_link = f"https://ps-nightcity-bucket.s3.amazonaws.com/models/" \
-            f"{overview['project']}/{overview['project']}-v{overview['version']}.tar.gz"
         text = "## Overview <a name='overview'></a>\n"
         style = "style='font-size:16px'"
-        text += "|Bot|Versão|Rasa|Data de criação|Data de atualização|Modelo|\n"
-        text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
+        text += "|Bot|Versão|Rasa|Data de criação|Data de atualização|\n"
+        text += "|:-:|:-:|:-:|:-:|:-:|\n"
         text += f"|<span {style}>**{self.project}**</span>|\
             <span {style}>{self.version if self.version else 'not identified'}</span>|\
             <span {style}>{overview['rasa_version']}</span>|\
             <span {style}>{overview['created_at']}</span>|\
-            <span {style}>{overview['updated_at']}</span>|\
-            [Link]({model_link})|\n\n"
+            <span {style}>{overview['updated_at']}</span>|\n\n"
         style = "style='font-size:20px'"
         text += f"|Intenção|Entidade|NLU|Resposta|<span {style}>Geral</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|\n"
@@ -127,7 +123,7 @@ class MarkdownController(Controller):
         return text
 
     def build_intent_title(self) -> str:
-        title = "## Intenções <a name='intention'></a>\n"
+        title = "## Intenções <a name='intents'></a>\n"
         description = "Seção que aborda métricas sobre as intenções do modelo.\n"
         return title + description
 
@@ -208,7 +204,7 @@ class MarkdownController(Controller):
             return title + text
 
     def build_entity_title(self) -> str:
-        title = "## Entidades <a name='entity'></a>\n"
+        title = "## Entidades <a name='entities'></a>\n"
         description = "Seção que aborda métricas sobre as entidades do modelo.\n"
         return title + description
 
@@ -296,7 +292,7 @@ class MarkdownController(Controller):
             return title + text
 
     def build_response_title(self) -> str:
-        title = "## Respostas <a name='response'></a>\n"
+        title = "## Respostas <a name='responses'></a>\n"
         description = "Seção que aborda métricas sobre as respostas e histórias do bot.\n"
         return title + description
 
@@ -419,7 +415,7 @@ class MarkdownController(Controller):
         Função que monta o bloco de texto responsável pela configuração do modelo do relatório.
         """
         if os.path.isfile(self.CONFIG_REPORT):
-            title = "## Configurações <a name='config'></a>\n"
+            title = "## Configurações <a name='configs'></a>\n"
             description = "Configurações que foram utilizadas na *pipeline* de treinamento e nas *policies*.\n"
             title += description
             data = open(self.CONFIG_REPORT).read()
@@ -428,90 +424,6 @@ class MarkdownController(Controller):
         else:
             logging.warning("O bloco de configuração não será gerado, pois o arquivo não foi encontrado")
             return ""
-
-    def build_bots_overview(self) -> str:
-        """
-        Retorna o resumo das acurácias dos modelos, que são mostrados no REAMDE.md.
-        """
-        text_list = []
-        versions = self._get_latest_bots(5)
-        for bot in versions:
-            text = f"## {bot}\n"
-            text += "|Versão|Intenção|Entidade|História|Geral|Rasa|Data de criação|\n"
-            text += "|-:|-:|-:|-:|-:|-:|-:|\n"
-            for version in versions[bot]:
-                path = f"reports/{bot}/{version}"
-                overview = self.json.get_specific_overview(bot, version)
-                if overview:
-                    text += f"|**[{version}]({path}/model_report.md)**\
-                        |{scale(overview['intent'], 10)} {get_color(overview['intent'], 10)}\
-                        |{scale(overview['entity'], 10)} {get_color(overview['entity'], 10)}\
-                        |{scale(overview['response'], 10)} {get_color(overview['response'], 10)}\
-                        |**{scale(overview['overall'], 10)}** {get_color(overview['overall'], 10)}\
-                        |{overview['rasa_version']}\
-                        |{overview['created_at']}\n"
-            if len(versions[bot]) < 5:
-                for i in range(5 - len(versions[bot])):
-                    text += "|**-**\
-                        |-\
-                        |-\
-                        |-\
-                        |-\
-                        |-\n"
-            text += "\n"
-            text_list.append(text)
-        text = self._replace_markdown_file(text_list)
-        return text
-
-    def _replace_markdown_file(self, text: str) -> str:
-        """
-        Função que atualiza o conteúdo do README.md.
-        """
-        new_markdown = []
-        data = open(self.README_PATH).read()
-        temp = data.split('\n#')
-        report_starts = False
-        for item in temp:
-            if report_starts and item.startswith("# "):
-                report_starts = False
-            if not report_starts:
-                new_markdown.append(item)
-            if item.startswith("# Últimos relatórios"):
-                report_starts = True
-            if report_starts and not item.startswith("## "):
-                new_markdown += text
-        new_markdown = "\n#".join(new_markdown)
-        return new_markdown
-
-    def _get_latest_bots(self, size: int = 0) -> dict:
-        """
-        Função que retorna as últimas versões do bot.
-        """
-        versions = {}
-        files = glob.glob("reports/ps-chatbot-*/*")
-        files = sorted(files)
-        for file in files:
-            file = file.split("/")
-            bot = file[1]
-            version = file[2]
-            overview = self.json.get_specific_overview(bot, version)
-            if overview:
-                if versions.get(bot):
-                    versions[bot].append(overview)
-                else:
-                    versions[bot] = [overview]
-        if size:
-            versions = {key: self._order_versions(versions[key])[:-(size + 1):-1] for key in versions}
-        else:
-            versions = {key: self._order_versions(versions[key])[::-1] for key in versions}
-        return versions
-
-    def _order_versions(self, versions: list) -> list:
-        """
-        Função para ordenar as versões
-        """
-        versions = sorted(versions, key=lambda x: convert_to_date(x["created_at"]))
-        return [version["version"] for version in versions]
 
     def save_report(self) -> None:
         """
@@ -528,39 +440,3 @@ class MarkdownController(Controller):
 
     def save_overview(self) -> None:
         self.json.save_overview()
-
-    def update_readme(self) -> None:
-        """
-        Função que salva dados em um arquivo.
-        """
-        readme_file = self.README_PATH
-        if os.path.isfile(self.README_PATH):
-            text = f"Arquivo {readme_file} alterado com sucesso"
-        else:
-            text = f"Arquivo {readme_file} criado com sucesso"
-        data = self.build_bots_overview()
-        file = open(readme_file, "w")
-        file.write(data)
-        file.close()
-        logging.info(text)
-
-    def update_index(self) -> None:
-        index_file = self.INDEX_PATH
-        file = open(index_file, "w")
-        if os.path.isfile(self.INDEX_PATH):
-            message = f"Arquivo {index_file} alterado com sucesso"
-        else:
-            message = f"Arquivo {index_file} criado com sucesso"
-        versions = self._get_latest_bots()
-        if versions:
-            file.writelines("# Versões\n")
-            for bot in versions:
-                if versions.get(bot):
-                    file.writelines(f"\n## {bot}\n")
-                    for version in versions[bot]:
-                        overview = self.json.get_specific_overview(bot, version)
-                        if overview:
-                            text = f"[[{version}]({bot}/{version}/model_report.md)] {overview['created_at']}\n\n"
-                            file.writelines(text)
-        file.close()
-        logging.info(message)

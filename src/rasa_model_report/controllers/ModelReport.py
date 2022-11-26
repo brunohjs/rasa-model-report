@@ -16,7 +16,7 @@ class ModelReport:
         logging.info("---")
         logging.info(
             f"Iniciando criação do relatório do modelo do bot {self.project},"
-            "da versão {self.version if self.version else 'not identified'}"
+            f"da versão {self.version if self.version else 'not identified'}"
         )
         self.markdown = MarkdownController(rasa_path, output_dir, self.project, self.version, **kwargs)
         self._load_attr(rasa_path, output_dir)
@@ -75,9 +75,6 @@ class ModelReport:
             self.markdown.save_report()
             self.markdown.save_overview()
 
-            # Atualizar o README.md e index.md
-            # self.markdown.update_readme()
-            # self.markdown.update_index()
             logging.info("Script finalizado com sucesso")
         else:
             logging.error(f"Diretório {self.dirs['RESULTS_PATH']} não existe")

@@ -7,13 +7,14 @@ from typing import List
 from typing import Optional
 
 import requests
-from rasa_model_report.controllers.Controller import Controller
 from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
 from requests.exceptions import ConnectionError
 from requests.exceptions import RequestException
 from requests.exceptions import Timeout
 from yaml import safe_load
+
+from src.rasa_model_report.controllers.Controller import Controller
 
 
 class NluController(Controller):
@@ -62,7 +63,7 @@ class NluController(Controller):
         :return: A dictionary that contains the sentences separeted by intent.
         """
         logging.info("Procurando arquivos de NLU do Rasa.")
-        files = glob.glob(self.NLU_PATH)
+        files = glob.glob(f"{self.NLU_PATH}/**/*.yml") + glob.glob(f"{self.NLU_PATH}/*.yml")
         nlu = {}
         for filename in files:
             file = safe_load(open(filename))

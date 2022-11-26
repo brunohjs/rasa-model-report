@@ -9,7 +9,7 @@ def test_init_csv_controller(rasa_path):
     assert csv_controller.version == "0.0.0"
     assert csv_controller.RASA_PATH == rasa_path
     assert csv_controller.OUTPUT_DIR == "./tests"
-    assert csv_controller.NLU_PATH == f"{rasa_path}/data/**/**.yml"
+    assert csv_controller.NLU_PATH == f"{rasa_path}/data"
     assert csv_controller.RESULTS_PATH == f"{rasa_path}/results"
     assert csv_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
 

@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from rasa_model_report.controllers.Controller import Controller
+from src.rasa_model_report.controllers.Controller import Controller
 
 
 class CsvController(Controller):
