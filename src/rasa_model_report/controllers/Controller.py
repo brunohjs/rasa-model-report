@@ -8,10 +8,10 @@ class Controller:
         :param project: Project name.
         :param version: Project version.
         """
-        self.project = project
-        self.version = version
-        self.RASA_PATH = rasa_path
-        self.OUTPUT_DIR = output_dir
-        self.NLU_PATH = f"{self.RASA_PATH}/data".replace("//", "/")
-        self.RESULTS_PATH = f"{self.RASA_PATH}/results".replace("//", "/")
-        self.CONFIG_REPORT = f"{self.RASA_PATH}/config.yml".replace("//", "/")
+        self.project: str = project
+        self.version: str = version
+        self.RASA_PATH: str = rasa_path
+        self.OUTPUT_DIR: str = output_dir
+        self.NLU_PATH: str = f"{self.RASA_PATH}/data".replace("//", "/")
+        self.RESULTS_PATH: str = f"{self.RASA_PATH}/results".replace("//", "/")
+        self.CONFIG_REPORT: str = f"{self.RASA_PATH}/config.yml".replace("//", "/")

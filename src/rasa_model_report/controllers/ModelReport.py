@@ -1,29 +1,24 @@
 import logging
 import os.path
+from typing import Any
+from typing import Dict
 
 from src.rasa_model_report.controllers.MarkdownController import MarkdownController
 from src.rasa_model_report.helpers.utils import get_project_name
 
 
 class ModelReport:
-    def __init__(self, rasa_path, output_dir, project, version, **kwargs):
-        self.dirs = {}
-        self.disable_nlu = False
-        self.project = get_project_name(rasa_path)
-        if project:
-            self.project = project
-        self.version = version
-        logging.info("---")
-        logging.info(
-            f"Iniciando criação do relatório do modelo do bot {self.project},"
-            f"da versão {self.version if self.version else 'not identified'}"
+    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str, **kwargs: Dict[str, Any]):
+        self.project: str = project if project else get_project_name(rasa_path)
+        self.version: str = version
+        self.markdown: MarkdownController = MarkdownController(
+            rasa_path,
+            output_dir,
+            self.project,
+            self.version,
+            **kwargs
         )
-        self.markdown = MarkdownController(rasa_path, output_dir, self.project, self.version, **kwargs)
-        self._load_attr(rasa_path, output_dir)
-        self.generate_report()
-
-    def _load_attr(self, rasa_path, output_dir):
-        self.dirs.update({
+        self.dirs: Dict[str, str] = {
             "RASA_PATH": rasa_path,
             "RESULTS_PATH": f"{rasa_path}/results",
             "OUTPUT_DIR": output_dir,
@@ -32,7 +27,14 @@ class ModelReport:
             "ENTITY_HISTOGRAM": "DIETClassifier_histogram.png",
             "ENTITY_MATRIX": "DIETClassifier_confusion_matrix.png",
             "STORY_MATRIX": "story_confusion_matrix.png"
-        })
+        }
+
+        logging.info("---")
+        logging.info(
+            f"Iniciando criação do relatório do modelo do bot {self.project},"
+            f"da versão {self.version if self.version else 'not identified'}"
+        )
+        self.generate_report()
 
     def generate_report(self):
         if os.path.isdir(self.dirs["RESULTS_PATH"]):

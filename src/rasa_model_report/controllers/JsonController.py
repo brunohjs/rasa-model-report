@@ -21,29 +21,27 @@ class JsonController(Controller):
         :param version: Project version.
         """
         super().__init__(rasa_path, output_dir, project, version)
-        self.intents = []
-        self.intent_overview = {}
-        self.intent_errors = []
-        self.entities = []
-        self.entity_overview = {}
-        self.entity_errors = []
-        self.responses = []
-        self.response_overview = {}
-        self.overview = {
+
+        self.intents: List[Dict[str, Any]] = []
+        self.intent_overview: Dict[str, float] = {}
+        self.intent_errors: List[Dict[str, Any]] = []
+        self.entities: List[Dict[str, Any]] = []
+        self.entity_overview: Dict[str, float] = {}
+        self.entity_errors: List[Dict[str, Any]] = []
+        self.responses: List[Dict[str, Any]] = []
+        self.response_overview: Dict[str, float] = {}
+        self.overview: Dict[str, Union[str, float, int]] = {
             "project": self.project,
             "version": self.version
         }
-        self._set_dirs()
-        self._load_data()
+        self.INTENT_REPORT: str = f"{self.RESULTS_PATH}/intent_report.json"
+        self.INTENT_ERRORS: str = f"{self.RESULTS_PATH}/intent_errors.json"
+        self.ENTITY_REPORT: str = f"{self.RESULTS_PATH}/DIETClassifier_report.json"
+        self.ENTITY_ERRORS: str = f"{self.RESULTS_PATH}/DIETClassifier_errors.json"
+        self.STORY_REPORT: str = f"{self.RESULTS_PATH}/story_report.json"
+        self.OVERVIEW_REPORT: str = f"{self.RESULTS_PATH}/overview.json"
 
-    def _set_dirs(self):
-        self.INTENT_REPORT = f"{self.RESULTS_PATH}/intent_report.json"
-        self.INTENT_ERRORS = f"{self.RESULTS_PATH}/intent_errors.json"
-        self.ENTITY_REPORT = f"{self.RESULTS_PATH}/DIETClassifier_report.json"
-        self.ENTITY_ERRORS = f"{self.RESULTS_PATH}/DIETClassifier_errors.json"
-        self.STORY_REPORT = f"{self.RESULTS_PATH}/story_report.json"
-        self.OVERVIEW_REPORT = f"{self.RESULTS_PATH}/overview.json"
-        self.RASA_ENV_PATH = "../.env"
+        self._load_data()
 
     def _load_json_file(self, filename: str, error_flag: bool = True) -> Union[Dict[Any, Any], List[Any]]:
         """
@@ -69,6 +67,9 @@ class JsonController(Controller):
                 return {}
 
     def _load_data(self) -> None:
+        """
+        Load Rasa report data.
+        """
         self._load_intents()
         self._load_intent_errors()
         self._load_entities()
@@ -77,6 +78,9 @@ class JsonController(Controller):
         self._load_overview()
 
     def _load_intents(self) -> None:
+        """
+        Load Rasa intent report data.
+        """
         self.intents = self._load_json_file(self.INTENT_REPORT, error_flag=False)
         if self.intents:
             self.intent_overview = {
@@ -90,6 +94,9 @@ class JsonController(Controller):
         self.intents = self._to_list(self.intents, "f1-score")
 
     def _load_intent_errors(self) -> None:
+        """
+        Load Rasa intent errors report data.
+        """
         self.intent_errors = self._load_json_file(self.INTENT_ERRORS, error_flag=False)
         self.intent_errors = sorted(
             self.intent_errors,
@@ -98,6 +105,9 @@ class JsonController(Controller):
         )
 
     def _load_entities(self) -> None:
+        """
+        Load Rasa entity report data.
+        """
         self.entities = self._load_json_file(self.ENTITY_REPORT, error_flag=False)
         if self.entities:
             self.entity_overview = {
@@ -111,9 +121,15 @@ class JsonController(Controller):
         self.entities = self._to_list(self.entities, "f1-score")
 
     def _load_entity_errors(self) -> None:
+        """
+        Load Rasa entity errors report data.
+        """
         self.entity_errors = self._load_json_file(self.ENTITY_ERRORS, error_flag=False)
 
     def _load_responses(self) -> None:
+        """
+        Load Rasa response report data.
+        """
         self.responses = self._load_json_file(self.STORY_REPORT, error_flag=False)
         if self.responses:
             self.response_overview = {
@@ -130,6 +146,9 @@ class JsonController(Controller):
             self.responses = self._to_list(self.responses, "f1-score")
 
     def _load_overview(self) -> None:
+        """
+        Load overview report data.
+        """
         intent_overview = self.intent_overview.get("macro avg", {}).get("f1-score")
         entity_overview = self.entity_overview.get("macro avg", {}).get("f1-score")
         response_overview = self.response_overview.get("macro avg", {}).get("f1-score")
@@ -157,6 +176,9 @@ class JsonController(Controller):
             logging.error(f"Arquivo {self.OVERVIEW_REPORT} não foi localizado")
 
     def save_overview(self) -> None:
+        """
+        Save overview report data.
+        """
         logging.info(f"Arquivo {self.OVERVIEW_REPORT} salvo com sucesso")
         file = open(self.OVERVIEW_REPORT, "w")
         json.dump(self.overview, file, indent=4)
@@ -184,11 +206,21 @@ class JsonController(Controller):
         })
 
     def update_overview(self, obj: Dict[Any, Any]) -> None:
+        """
+        Update overview report data.
+
+        :param obj: Object that will be used to update the overview object.
+        """
         if isinstance(obj, dict):
             self.overview.update(obj)
             self._calculate_overall()
 
-    def get_intents(self):
+    def get_intents(self) -> Dict[str, Any]:
+        """
+        Get intents data.
+
+        :return: Copy of intents data object.
+        """
         return self.intents.copy()
 
     def get_intent_overview(self):

@@ -1,5 +1,6 @@
 import logging
 import os.path
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
@@ -14,13 +15,16 @@ from src.rasa_model_report.helpers.utils import scale
 
 
 class MarkdownController(Controller):
-    def __init__(self, rasa_path, output_dir, project, version, **kwargs) -> None:
+    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str, **kwargs: Dict[str, Any]) -> None:
         super().__init__(rasa_path, output_dir, project, version)
-        self.result = ""
-        self.title = "# Relatório da saúde do modelo"
-        self.json = JsonController(rasa_path, output_dir, self.project, self.version)
-        self.csv = CsvController(rasa_path, output_dir, self.project, self.version)
-        self.nlu = NluController(
+
+        self.result: str = ""
+        self.title: str = "# Relatório da saúde do modelo"
+        self.OUTPUT_REPORT_FILE: str = f"{self.OUTPUT_DIR}/model_report.md"
+        self.README_PATH: str = "README.md"
+        self.json: JsonController = JsonController(rasa_path, output_dir, self.project, self.version)
+        self.csv: CsvController = CsvController(rasa_path, output_dir, self.project, self.version)
+        self.nlu: NluController = NluController(
             rasa_path,
             output_dir,
             self.project,
@@ -28,12 +32,8 @@ class MarkdownController(Controller):
             url=kwargs.get("rasa_api_url"),
             disable_nlu=kwargs.get("disable_nlu")
         )
-        self.json.update_overview({"nlu": self.nlu.get_general_grade()})
-        self._set_dirs()
 
-    def _set_dirs(self):
-        self.OUTPUT_REPORT_FILE = f"{self.OUTPUT_DIR}/model_report.md"
-        self.README_PATH = "README.md"
+        self.json.update_overview({"nlu": self.nlu.get_general_grade()})
 
     def add_text(self, text: str) -> None:
         """

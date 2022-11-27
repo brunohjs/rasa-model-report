@@ -33,7 +33,6 @@ def test_init_json_controller(rasa_path):
     assert json_controller.ENTITY_ERRORS == f"{json_controller.RESULTS_PATH}/DIETClassifier_errors.json"
     assert json_controller.STORY_REPORT == f"{json_controller.RESULTS_PATH}/story_report.json"
     assert json_controller.OVERVIEW_REPORT == f"{json_controller.RESULTS_PATH}/overview.json"
-    assert json_controller.RASA_ENV_PATH == "../.env"
 
 
 def test_load_json_file():

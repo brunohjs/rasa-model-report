@@ -18,14 +18,24 @@ from src.rasa_model_report.controllers.Controller import Controller
 
 
 class NluController(Controller):
-    def __init__(self, rasa_path, output_dir, project, version, url="http://localhost:5005", **kwargs) -> None:
+    def __init__(
+        self,
+        rasa_path: str,
+        output_dir: str,
+        project: str,
+        version: str,
+        url: str = "http://localhost:5005",
+        **kwargs: Dict[str, Any]
+    ) -> None:
         super().__init__(rasa_path, output_dir, project, version)
-        self._data = []
-        self._problem_sentences = []
-        self._general_grade = None
-        self._connected = False
-        self._disable_nlu = kwargs.get("disable_nlu")
-        self.url = url
+
+        self._data: List[Dict[str, Any]] = []
+        self._problem_sentences: List[Dict[str, Any]] = []
+        self._general_grade: Optional[float] = None
+        self._connected: bool = False
+        self._disable_nlu: bool = kwargs.get("disable_nlu")
+        self.url: str = url
+
         if not self._disable_nlu and self.health_check_rasa_api():
             self._load_nlu()
             self._generate_data()

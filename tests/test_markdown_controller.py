@@ -259,7 +259,7 @@ def test_build_nlu_errors_table():
 
 def test_build_nlu_errors_table_if_len_less_than_2():
     markdown_controller = pytest.markdown_controller
-    json_controller = JsonController("invelid/path", "./", "test-project", "0.0.0")
+    json_controller = JsonController("invalid/path", "./", "test-project", "0.0.0")
     markdown_controller.json = json_controller
     text = markdown_controller.build_nlu_errors_table()
     assert isinstance(text, str)
