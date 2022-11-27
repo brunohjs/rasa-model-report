@@ -1,0 +1,23 @@
+[
+    {
+        "text": "good afternoon",
+        "entities": [
+            {
+                "start": 5,
+                "end": 13,
+                "value": "afternoon",
+                "entity": "day"
+            }
+        ],
+        "predicted_entities": [
+            {
+                "entity": "day",
+                "start": 5,
+                "end": 13,
+                "confidence_entity": 0.8055213689804077,
+                "value": "morning",
+                "extractor": "DIETClassifier"
+            }
+        ]
+    }
+]
