@@ -304,9 +304,10 @@ def test_build_line_entity_when_there_is_no_entities():
 def test_build_line_table():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller._build_line_table({
+        "name": "test-name",
         "f1-score": 1,
         "precision": 0.8,
         "support": 0.9,
         "recall": 0.9
     })
-    assert text == ["🟢", "80.0%", "90.0%", "100.0%", "0.9"]
+    assert text == ["🟢", "test-name", "80.0%", "90.0%", "100.0%", "0.9"]

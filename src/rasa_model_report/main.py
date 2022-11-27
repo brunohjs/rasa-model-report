@@ -1,7 +1,8 @@
 import logging
 
 import click
-from rasa_model_report.controllers.ModelReport import ModelReport
+
+from src.rasa_model_report.controllers.ModelReport import ModelReport
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
 

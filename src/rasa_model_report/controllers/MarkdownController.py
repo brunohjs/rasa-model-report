@@ -47,7 +47,7 @@ class MarkdownController(Controller):
         Função que concatena um bloco de texto com um bloco de imagem.
         """
         if os.path.isfile(f"{self.RESULTS_PATH}/{image}"):
-            self.result += f"### {title}\n![{title}]({image} '{title}')" + "\n"
+            self.result += f"### {title}\n![{title}]({self.RESULTS_PATH}/{image} '{title}')" + "\n"
             logging.info(f"A imagem {image} foi adicionada com sucesso")
         else:
             logging.warning(f"A imagem {image} não foi encontrada")
@@ -408,14 +408,14 @@ class MarkdownController(Controller):
             return ""
 
     def _build_line_table(self, data: Dict[str, Union[float, Dict]]) -> List[str]:
-        color = get_color(data["f1-score"])
-        item_list = [
+        return [
+            get_color(data["f1-score"]),
+            data["name"],
             f"{data['precision'] * 100:.1f}%",
             f"{data['recall'] * 100:.1f}%",
             f"{data['f1-score'] * 100:.1f}%",
             str(data['support'])
         ]
-        return [color] + item_list
 
     def save_report(self) -> None:
         """

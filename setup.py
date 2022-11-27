@@ -12,6 +12,6 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        rasa-model-report=rasa_model_report.main:main
+        rasa-model-report=src.rasa_model_report.main:main
     """,
 )
