@@ -3,13 +3,23 @@ import logging
 import os.path
 from typing import Any
 from typing import Dict
+from typing import List
+from typing import Union
 
 from src.rasa_model_report.controllers.Controller import Controller
 from src.rasa_model_report.helpers.utils import format_date
 
 
 class JsonController(Controller):
-    def __init__(self, rasa_path, output_dir, project, version, **kwargs) -> None:
+    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str) -> None:
+        """
+        Controller responsible for JSON files.
+
+        :param rasa_path: Rasa project path.
+        :param output_dir: Output directory of CSV files.
+        :param project: Project name.
+        :param version: Project version.
+        """
         super().__init__(rasa_path, output_dir, project, version)
         self.intents = []
         self.intent_overview = {}
@@ -35,9 +45,13 @@ class JsonController(Controller):
         self.OVERVIEW_REPORT = f"{self.RESULTS_PATH}/overview.json"
         self.RASA_ENV_PATH = "../.env"
 
-    def _load_json_file(self, filename: str, error_msg_type: str = "error") -> Dict[str, Any]:
+    def _load_json_file(self, filename: str, error_flag: bool = True) -> Union[Dict[Any, Any], List[Any]]:
         """
-        Função que carrega os dados de um arquivo no formato JSON.
+        Loads data from a JSON file.
+
+        :param filename: Filename.
+        :param error_flag: If True, an exception will be raised when the file isn't found (default: True).
+        :return: Data in list or dict format.
         """
         if os.path.isfile(filename):
             file = open(filename)
@@ -47,7 +61,7 @@ class JsonController(Controller):
             return data
         else:
             message = f"Arquivo {filename} não encontrado"
-            if error_msg_type == "error":
+            if error_flag:
                 logging.error(message)
                 raise Exception(message)
             else:
@@ -63,7 +77,7 @@ class JsonController(Controller):
         self._load_overview()
 
     def _load_intents(self) -> None:
-        self.intents = self._load_json_file(self.INTENT_REPORT, "warning")
+        self.intents = self._load_json_file(self.INTENT_REPORT, error_flag=False)
         if self.intents:
             self.intent_overview = {
                 "accuracy": self.intents.get("accuracy"),
@@ -76,7 +90,7 @@ class JsonController(Controller):
         self.intents = self._to_list(self.intents, "f1-score")
 
     def _load_intent_errors(self) -> None:
-        self.intent_errors = self._load_json_file(self.INTENT_ERRORS, "warning")
+        self.intent_errors = self._load_json_file(self.INTENT_ERRORS, error_flag=False)
         self.intent_errors = sorted(
             self.intent_errors,
             key=lambda d: d["intent_prediction"]["confidence"],
@@ -84,7 +98,7 @@ class JsonController(Controller):
         )
 
     def _load_entities(self) -> None:
-        self.entities = self._load_json_file(self.ENTITY_REPORT, "warning")
+        self.entities = self._load_json_file(self.ENTITY_REPORT, error_flag=False)
         if self.entities:
             self.entity_overview = {
                 "macro avg": self.entities.get("macro avg"),
@@ -97,10 +111,10 @@ class JsonController(Controller):
         self.entities = self._to_list(self.entities, "f1-score")
 
     def _load_entity_errors(self) -> None:
-        self.entity_errors = self._load_json_file(self.ENTITY_ERRORS, "warning")
+        self.entity_errors = self._load_json_file(self.ENTITY_ERRORS, error_flag=False)
 
     def _load_responses(self) -> None:
-        self.responses = self._load_json_file(self.STORY_REPORT, "warning")
+        self.responses = self._load_json_file(self.STORY_REPORT, error_flag=False)
         if self.responses:
             self.response_overview = {
                 "macro avg": self.responses.get("macro avg"),

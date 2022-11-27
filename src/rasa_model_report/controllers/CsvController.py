@@ -12,7 +12,7 @@ class CsvController(Controller):
         :param rasa_path: Rasa project path.
         :param output_dir: Output directory of CSV files.
         :param project: Project name.
-        :param version: Version of project.
+        :param version: Project version.
         """
         super().__init__(rasa_path, output_dir, project, version)
 
@@ -21,7 +21,7 @@ class CsvController(Controller):
         Save data to a CSV file.
 
         :param data: Data in matrix format. First item is the header.
-        :param str filename: Name of the new file.
+        :param filename: Name of the new file.
         """
         try:
             file = open(f"{self.RESULTS_PATH}/{filename}", "w")
