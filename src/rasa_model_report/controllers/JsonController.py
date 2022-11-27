@@ -133,14 +133,12 @@ class JsonController(Controller):
             data = json.load(file)
             file.close()
             self.overview.update({
-                "rasa_version": data.get("rasa_version"),
-                "created_at": data.get("created_at"),
+                "created_at": data.get("created_at")
             })
             logging.info(f"Arquivo {self.OVERVIEW_REPORT} carregado com sucesso")
         else:
             self.overview.update({
-                "created_at": format_date(),
-                "rasa_version": "0.0.0"  # TODO self._get_rasa_version()
+                "created_at": format_date()
             })
             logging.error(f"Arquivo {self.OVERVIEW_REPORT} não foi localizado")
 

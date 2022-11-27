@@ -103,11 +103,10 @@ class MarkdownController(Controller):
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else 0
         text = "## Overview <a name='overview'></a>\n"
         style = "style='font-size:16px'"
-        text += "|Bot|Versão|Rasa|Data de criação|Data de atualização|\n"
-        text += "|:-:|:-:|:-:|:-:|:-:|\n"
+        text += "|Bot|Versão|Data de criação|Data de atualização|\n"
+        text += "|:-:|:-:|:-:|:-:|\n"
         text += f"|<span {style}>**{self.project}**</span>|\
             <span {style}>{self.version if self.version else 'not identified'}</span>|\
-            <span {style}>{overview['rasa_version']}</span>|\
             <span {style}>{overview['created_at']}</span>|\
             <span {style}>{overview['updated_at']}</span>|\n\n"
         style = "style='font-size:20px'"
