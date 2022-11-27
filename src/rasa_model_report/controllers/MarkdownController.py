@@ -1,5 +1,8 @@
 import logging
 import os.path
+from typing import Dict
+from typing import List
+from typing import Union
 
 from src.rasa_model_report.controllers.Controller import Controller
 from src.rasa_model_report.controllers.CsvController import CsvController
@@ -158,14 +161,7 @@ class MarkdownController(Controller):
             "Número de exemplos"
         ]]
         for item in data:
-            color = get_color(item["f1-score"])
-            item["precision"] = f"{item['precision'] * 100:.1f}%"
-            item["recall"] = f"{item['recall'] * 100:.1f}%"
-            item["f1-score"] = f"{item['f1-score'] * 100:.1f}%"
-            item["support"] = str(item['support'])
-            if item.get("confused_with") or item.get("confused_with") == {}:
-                del item["confused_with"]
-            table_data.append([color] + list(item.values()))
+            table_data.append(self._build_line_table(item))
         if len(table_data) > 1:
             self.csv.save(table_data, "intent_report.csv")
             return title + self.build_table(table_data)
@@ -189,12 +185,12 @@ class MarkdownController(Controller):
         ]]
         for row in data:
             if row["intent_prediction"]["confidence"] >= 0.001:
-                row["intent_prediction"]["confidence"] = f"{row['intent_prediction']['confidence'] * 100:.1f}%"
+                confidence = f"{row['intent_prediction']['confidence'] * 100:.1f}%"
                 table_data.append([
                     row["text"],
                     row["intent"],
                     row["intent_prediction"]["name"],
-                    row["intent_prediction"]["confidence"]
+                    confidence
                 ])
         if len(table_data) > 1:
             self.csv.save(table_data, "intent_errors.csv")
@@ -239,14 +235,7 @@ class MarkdownController(Controller):
             "Número de exemplos"
         ]]
         for item in data:
-            color = get_color(item["f1-score"])
-            item["precision"] = f"{item['precision'] * 100:.1f}%"
-            item["recall"] = f"{item['recall'] * 100:.1f}%"
-            item["f1-score"] = f"{item['f1-score'] * 100:.1f}%"
-            item["support"] = str(item['support'])
-            if item.get("confused_with") or item.get("confused_with") == {}:
-                del item["confused_with"]
-            table_data.append([color] + list(item.values()))
+            table_data.append(self._build_line_table(item))
         if len(table_data) > 1:
             self.csv.save(table_data, "DIETClassifier_report.csv")
             return title + self.build_table(table_data)
@@ -330,14 +319,7 @@ class MarkdownController(Controller):
             if item["name"].startswith("[") or not \
                     (item["name"].startswith("utter_") or item["name"].startswith("action_")):
                 continue
-            color = get_color(item["f1-score"])
-            item["precision"] = f"{item['precision'] * 100:.1f}%"
-            item["recall"] = f"{item['recall'] * 100:.1f}%"
-            item["f1-score"] = f"{item['f1-score'] * 100:.1f}%"
-            item["support"] = str(item['support'])
-            if item.get("confused_with") or item.get("confused_with") == {}:
-                del item["confused_with"]
-            table_data.append([color] + list(item.values()))
+            table_data.append(self._build_line_table(item))
         if len(table_data) > 1:
             self.csv.save(table_data, "story_report.csv")
             return title + self.build_table(table_data)
@@ -424,6 +406,16 @@ class MarkdownController(Controller):
         else:
             logging.warning("O bloco de configuração não será gerado, pois o arquivo não foi encontrado")
             return ""
+
+    def _build_line_table(self, data: Dict[str, Union[float, Dict]]) -> List[str]:
+        color = get_color(data["f1-score"])
+        item_list = [
+            f"{data['precision'] * 100:.1f}%",
+            f"{data['recall'] * 100:.1f}%",
+            f"{data['f1-score'] * 100:.1f}%",
+            str(data['support'])
+        ]
+        return [color] + item_list
 
     def save_report(self) -> None:
         """

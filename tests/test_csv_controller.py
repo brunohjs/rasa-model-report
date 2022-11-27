@@ -2,6 +2,20 @@ import os
 
 import pytest
 
+import tests.utils as utils
+from src.rasa_model_report.controllers.CsvController import CsvController
+
+
+@pytest.fixture(autouse=True)
+def execute_before_each_test(rasa_path):
+    output_path = "./tests"
+    project_name = "test-project"
+    version = "0.0.0"
+    csv_controller = CsvController(rasa_path, output_path, project_name, version)
+    pytest.csv_controller = csv_controller
+    yield
+    utils.remove_generated_files(rasa_path)
+
 
 def test_init_csv_controller(rasa_path):
     csv_controller = pytest.csv_controller

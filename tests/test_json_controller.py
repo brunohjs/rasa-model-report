@@ -3,6 +3,20 @@ import random
 
 import pytest
 
+import tests.utils as utils
+from src.rasa_model_report.controllers.JsonController import JsonController
+
+
+@pytest.fixture(autouse=True)
+def execute_before_each_test(rasa_path):
+    output_path = "./tests"
+    project_name = "test-project"
+    version = "0.0.0"
+    json_controller = JsonController(rasa_path, output_path, project_name, version)
+    pytest.json_controller = json_controller
+    yield
+    utils.remove_generated_files(rasa_path)
+
 
 def test_init_json_controller(rasa_path):
     json_controller = pytest.json_controller

@@ -11,6 +11,11 @@ from src.rasa_model_report.helpers.utils import get_project_name
 from src.rasa_model_report.helpers.utils import scale
 
 
+@pytest.fixture(autouse=True)
+def execute_before_each_test(rasa_path):
+    pass
+
+
 def test_get_project_name():
     assert get_project_name("/path/to/folder") == "folder"
     assert get_project_name("/path/to/folder/") == ""

@@ -203,14 +203,6 @@ def test_build_response_overview():
 
 def test_build_response_table():
     markdown_controller = pytest.markdown_controller
-    markdown_controller.json.responses.append({
-        "name": "utter_test",
-        "precision": 1,
-        "recall": 1,
-        "f1-score": 1,
-        "support": 1,
-        "confused_with": {}
-    })
     text = markdown_controller.build_response_table()
     assert isinstance(text, str)
     assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/story_report.csv")
@@ -292,7 +284,7 @@ def test_dont_build_config_report_when_there_is_no_config_file():
 def test_save_report():
     markdown_controller = pytest.markdown_controller
     markdown_controller.save_report()
-    # Save again to cover the line message "file changed"
+    # Save again to cover the "file changed" message line
     markdown_controller.save_report()
     assert os.path.isfile(markdown_controller.OUTPUT_REPORT_FILE)
 
@@ -307,3 +299,14 @@ def test_build_line_entity_when_there_is_no_entities():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_line_entity([])
     assert text == "-"
+
+
+def test_build_line_table():
+    markdown_controller = pytest.markdown_controller
+    text = markdown_controller._build_line_table({
+        "f1-score": 1,
+        "precision": 0.8,
+        "support": 0.9,
+        "recall": 0.9
+    })
+    assert text == ["🟢", "80.0%", "90.0%", "100.0%", "0.9"]

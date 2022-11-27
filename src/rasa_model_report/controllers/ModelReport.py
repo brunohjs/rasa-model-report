@@ -1,8 +1,8 @@
 import logging
 import os.path
 
-from rasa_model_report.controllers.MarkdownController import MarkdownController
-from rasa_model_report.helpers.utils import get_project_name
+from src.rasa_model_report.controllers.MarkdownController import MarkdownController
+from src.rasa_model_report.helpers.utils import get_project_name
 
 
 class ModelReport:

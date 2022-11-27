@@ -1,7 +1,29 @@
+import unittest.mock as mock
+
 import pytest
+import requests
 import responses
 
 import tests.utils as utils
+from src.rasa_model_report.controllers.NluController import NluController
+
+
+@pytest.fixture(autouse=True)
+def execute_before_each_test(rasa_path):
+    load_controllers(rasa_path)
+    pytest.file_name = "test.csv"
+    yield
+    utils.remove_generated_files(rasa_path)
+
+
+@responses.activate
+def load_controllers(rasa_path):
+    output_path = "./tests"
+    project_name = "test-project"
+    version = "0.0.0"
+    utils.load_mock_payloads()
+    nlu_controller = NluController(rasa_path, output_path, project_name, version)
+    pytest.nlu_controller = nlu_controller
 
 
 def test_init_nlu_controller(rasa_path):
@@ -132,7 +154,7 @@ def test_select_nlu_fallback_intent():
 
 
 @responses.activate
-def test_request_200():
+def test_request_rasa_api_200():
     utils.load_mock_payloads()
     nlu_controller = pytest.nlu_controller
     response = nlu_controller.request_rasa_api("http://localhost:5005")
@@ -140,8 +162,16 @@ def test_request_200():
 
 
 @responses.activate
-def test_request_error():
+def test_request_rasa_api_general_error():
     utils.load_mock_payloads()
     nlu_controller = pytest.nlu_controller
     response = nlu_controller.request_rasa_api("invalid url")
     assert response is None
+
+
+@responses.activate
+def test_request_rasa_api_connection_error():
+    nlu_controller = pytest.nlu_controller
+    with mock.patch("requests.get", side_effect=requests.exceptions.ConnectionError()):
+        response = nlu_controller.request_rasa_api("http://localhost:5005")
+        assert response is None
