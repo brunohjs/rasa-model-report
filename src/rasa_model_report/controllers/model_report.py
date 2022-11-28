@@ -3,25 +3,25 @@ import os.path
 from typing import Any
 from typing import Dict
 
-from src.rasa_model_report.controllers.MarkdownController import MarkdownController
+from src.rasa_model_report.controllers.markdown_controller import MarkdownController
 from src.rasa_model_report.helpers.utils import get_project_name
 
 
 class ModelReport:
-    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str, **kwargs: Dict[str, Any]):
+    def __init__(self, rasa_path: str, output_path: str, project: str, version: str, **kwargs: Dict[str, Any]):
         self.project: str = project if project else get_project_name(rasa_path)
         self.version: str = version
         self.markdown: MarkdownController = MarkdownController(
             rasa_path,
-            output_dir,
+            output_path,
             self.project,
             self.version,
             **kwargs
         )
         self.dirs: Dict[str, str] = {
-            "RASA_PATH": rasa_path,
-            "RESULTS_PATH": f"{rasa_path}/results",
-            "OUTPUT_DIR": output_dir,
+            "rasa_path": rasa_path,
+            "results_path": f"{rasa_path}/results",
+            "output_path": output_path,
             "INTENT_HISTOGRAM": "intent_histogram.png",
             "INTENT_MATRIX": "intent_confusion_matrix.png",
             "ENTITY_HISTOGRAM": "DIETClassifier_histogram.png",
@@ -37,7 +37,7 @@ class ModelReport:
         self.generate_report()
 
     def generate_report(self):
-        if os.path.isdir(self.dirs["RESULTS_PATH"]):
+        if os.path.isdir(self.dirs["results_path"]):
             # Overview
             self.markdown.add_text(self.markdown.title)
             self.markdown.add_text(self.markdown.build_summary())
@@ -79,7 +79,7 @@ class ModelReport:
 
             logging.info("Script finalizado com sucesso")
         else:
-            logging.error(f"Diretório {self.dirs['RESULTS_PATH']} não existe")
+            logging.error(f"Diretório {self.dirs['results_path']} não existe")
             logging.error(
                 "Para informar o diretório onde contém os arquivo do projeto Rasa, utilize o parâmetro --path"
             )

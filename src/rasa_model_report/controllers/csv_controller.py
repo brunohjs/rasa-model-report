@@ -1,20 +1,23 @@
 import logging
 from typing import List
 
-from src.rasa_model_report.controllers.Controller import Controller
+from src.rasa_model_report.controllers.controller import Controller
 
 
 class CsvController(Controller):
-    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str) -> None:
+    """
+    Controller responsible for CSV files.
+    """
+    def __init__(self, rasa_path: str, output_path: str, project: str, version: str) -> None:
         """
-        Controller responsible for CSV files.
+        __init__ method.
 
         :param rasa_path: Rasa project path.
-        :param output_dir: Output directory of CSV files.
+        :param output_path: Output directory of CSV files.
         :param project: Project name.
         :param version: Project version.
         """
-        super().__init__(rasa_path, output_dir, project, version)
+        super().__init__(rasa_path, output_path, project, version)
 
     def save(self, data: List[List[str]], filename: str) -> None:
         """
@@ -24,7 +27,7 @@ class CsvController(Controller):
         :param filename: Name of the new file.
         """
         try:
-            file = open(f"{self.RESULTS_PATH}/{filename}", "w")
+            file = open(f"{self.results_path}/{filename}", "w", encoding="utf-8")
             for line in data:
                 line = [f"\"{item}\"" for item in line]
                 new_line = ",".join(line)
@@ -32,4 +35,4 @@ class CsvController(Controller):
             file.close()
             logging.info(f"Arquivo {filename} salvo com sucesso.")
         except FileNotFoundError as error:
-            logging.error(f"Não foi possível encontrar o arquivo: {self.RESULTS_PATH}/{filename}. Erro: {error}.")
+            logging.error(f"Não foi possível encontrar o arquivo: {self.results_path}/{filename}. Erro: {error}.")

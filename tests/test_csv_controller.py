@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-import tests.utils as utils
-from src.rasa_model_report.controllers.CsvController import CsvController
+from src.rasa_model_report.controllers.csv_controller import CsvController
+from tests import utils
 
 
 @pytest.fixture(autouse=True)
@@ -21,22 +21,22 @@ def test_init_csv_controller(rasa_path):
     csv_controller = pytest.csv_controller
     assert csv_controller.project == "test-project"
     assert csv_controller.version == "0.0.0"
-    assert csv_controller.RASA_PATH == rasa_path
-    assert csv_controller.OUTPUT_DIR == "./tests"
-    assert csv_controller.NLU_PATH == f"{rasa_path}/data"
-    assert csv_controller.RESULTS_PATH == f"{rasa_path}/results"
-    assert csv_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
+    assert csv_controller.rasa_path == rasa_path
+    assert csv_controller.output_path == "./tests"
+    assert csv_controller.nlu_path == f"{rasa_path}/data"
+    assert csv_controller.results_path == f"{rasa_path}/results"
+    assert csv_controller.config_report_path == f"{rasa_path}/config.yml"
 
 
 def test_save_csv():
     csv_controller = pytest.csv_controller
     csv_controller.save([["header_1", "header_2"], ["data_1", "data_1"]], pytest.file_name)
-    assert os.path.isfile(f"{csv_controller.RESULTS_PATH}/{pytest.file_name}")
+    assert os.path.isfile(f"{csv_controller.results_path}/{pytest.file_name}")
 
 
 def test_save_csv_with_error():
     csv_controller = pytest.csv_controller
-    os.rename(csv_controller.RESULTS_PATH, f"{csv_controller.RESULTS_PATH}2")
+    os.rename(csv_controller.results_path, f"{csv_controller.results_path}2")
     csv_controller.save([["header_1", "header_2"], ["data_1", "data_1"]], pytest.file_name)
-    assert not os.path.isfile(f"{csv_controller.RESULTS_PATH}/{pytest.file_name}")
-    os.rename(f"{csv_controller.RESULTS_PATH}2", csv_controller.RESULTS_PATH)
+    assert not os.path.isfile(f"{csv_controller.results_path}/{pytest.file_name}")
+    os.rename(f"{csv_controller.results_path}2", csv_controller.results_path)

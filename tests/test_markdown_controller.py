@@ -3,20 +3,20 @@ import os.path
 import pytest
 import responses
 
-from src.rasa_model_report.controllers.JsonController import JsonController
+from src.rasa_model_report.controllers.json_controller import JsonController
 
 
 def test_init_markdown_controller(rasa_path):
     markdown_controller = pytest.markdown_controller
     assert markdown_controller.project == "test-project"
     assert markdown_controller.version == "0.0.0"
-    assert markdown_controller.RASA_PATH == rasa_path
-    assert markdown_controller.OUTPUT_DIR == "./tests"
-    assert markdown_controller.NLU_PATH == f"{rasa_path}/data"
-    assert markdown_controller.RESULTS_PATH == f"{rasa_path}/results"
-    assert markdown_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
-    assert markdown_controller.OUTPUT_REPORT_FILE == f"{markdown_controller.OUTPUT_DIR}/model_report.md"
-    assert markdown_controller.README_PATH == "README.md"
+    assert markdown_controller.rasa_path == rasa_path
+    assert markdown_controller.output_path == "./tests"
+    assert markdown_controller.nlu_path == f"{rasa_path}/data"
+    assert markdown_controller.results_path == f"{rasa_path}/results"
+    assert markdown_controller.config_report_path == f"{rasa_path}/config.yml"
+    assert markdown_controller.output_report_path == f"{markdown_controller.output_path}/model_report.md"
+    assert markdown_controller.readme_path == "README.md"
     assert isinstance(markdown_controller.json, object)
     assert isinstance(markdown_controller.csv, object)
     assert isinstance(markdown_controller.nlu, object)
@@ -37,14 +37,14 @@ def test_add_image():
     path_to_image = "intent_confusion_matrix.png"
     markdown_controller = pytest.markdown_controller
     markdown_controller.add_image(path_to_image, "Title")
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/{path_to_image}")
+    assert os.path.isfile(f"{markdown_controller.results_path}/{path_to_image}")
 
 
 def test_add_image_that_doesnt_exist():
     path_to_image = "image_that_doesnt_exist.png"
     markdown_controller = pytest.markdown_controller
     markdown_controller.add_image(path_to_image, "Title")
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/{path_to_image}")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/{path_to_image}")
 
 
 def test_break_line():
@@ -82,10 +82,10 @@ def test_build_summary_without_nlu_section():
 
 def test_build_summary_without_config_section():
     markdown_controller = pytest.markdown_controller
-    markdown_controller.CONFIG_REPORT = "path/of/invalid/file"
+    markdown_controller.config_report_path = "path/of/invalid/file"
     text = markdown_controller.build_summary()
     assert isinstance(text, str)
-    assert os.path.isfile(markdown_controller.CONFIG_REPORT) is False
+    assert os.path.isfile(markdown_controller.config_report_path) is False
     assert "#config" not in text
 
 
@@ -113,7 +113,7 @@ def test_build_intent_table():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_intent_table()
     assert isinstance(text, str)
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/intent_report.csv")
+    assert os.path.isfile(f"{markdown_controller.results_path}/intent_report.csv")
 
 
 def test_build_intent_table_if_len_less_than_2():
@@ -123,14 +123,14 @@ def test_build_intent_table_if_len_less_than_2():
     text = markdown_controller.build_intent_table()
     assert isinstance(text, str)
     assert "Não foram encontradas" in text
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/intent_report.csv")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/intent_report.csv")
 
 
 def test_build_intent_errors_table():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_intent_errors_table()
     assert isinstance(text, str)
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/intent_errors.csv")
+    assert os.path.isfile(f"{markdown_controller.results_path}/intent_errors.csv")
 
 
 def test_build_intent_errors_table_if_len_less_than_2():
@@ -140,7 +140,7 @@ def test_build_intent_errors_table_if_len_less_than_2():
     text = markdown_controller.build_intent_errors_table()
     assert isinstance(text, str)
     assert "Não foram encontradas" in text
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/intent_errors.csv")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/intent_errors.csv")
 
 
 def test_build_entity_title():
@@ -160,7 +160,7 @@ def test_build_entity_table():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_entity_table()
     assert isinstance(text, str)
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/DIETClassifier_report.csv")
+    assert os.path.isfile(f"{markdown_controller.results_path}/DIETClassifier_report.csv")
 
 
 def test_build_entity_table_if_len_less_than_2():
@@ -170,7 +170,7 @@ def test_build_entity_table_if_len_less_than_2():
     text = markdown_controller.build_entity_table()
     assert isinstance(text, str)
     assert "Não foram encontradas" in text
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/DIETClassifier_report.csv")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/DIETClassifier_report.csv")
 
 
 def test_build_entity_errors_table():
@@ -205,7 +205,7 @@ def test_build_response_table():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_response_table()
     assert isinstance(text, str)
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/story_report.csv")
+    assert os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
 
 
 def test_build_response_table_if_len_less_than_2():
@@ -215,7 +215,7 @@ def test_build_response_table_if_len_less_than_2():
     text = markdown_controller.build_response_table()
     assert isinstance(text, str)
     assert "Não foram encontradas" in text
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/story_report.csv")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
 
 
 def test_build_nlu_title():
@@ -231,7 +231,7 @@ def test_build_nlu_table():
     markdown_controller.nlu = pytest.nlu_controller
     text = markdown_controller.build_nlu_table()
     assert isinstance(text, str)
-    assert os.path.isfile(f"{markdown_controller.RESULTS_PATH}/nlu_report.csv")
+    assert os.path.isfile(f"{markdown_controller.results_path}/nlu_report.csv")
 
 
 def test_build_nlu_table_if_len_less_than_2():
@@ -241,7 +241,7 @@ def test_build_nlu_table_if_len_less_than_2():
     text = markdown_controller.build_nlu_table()
     assert isinstance(text, str)
     assert "Não foram encontradas" in text
-    assert not os.path.isfile(f"{markdown_controller.RESULTS_PATH}/nlu_report.csv")
+    assert not os.path.isfile(f"{markdown_controller.results_path}/nlu_report.csv")
 
 
 def test_build_nlu_errors_table():
@@ -275,7 +275,7 @@ def test_build_config_report():
 
 def test_dont_build_config_report_when_there_is_no_config_file():
     markdown_controller = pytest.markdown_controller
-    markdown_controller.CONFIG_REPORT = "path/of/invalid/file"
+    markdown_controller.config_report_path = "path/of/invalid/file"
     text = markdown_controller.build_config_report()
     assert isinstance(text, str)
     assert not text
@@ -286,13 +286,13 @@ def test_save_report():
     markdown_controller.save_report()
     # Save again to cover the "file changed" message line
     markdown_controller.save_report()
-    assert os.path.isfile(markdown_controller.OUTPUT_REPORT_FILE)
+    assert os.path.isfile(markdown_controller.output_report_path)
 
 
 def test_save_overview():
     markdown_controller = pytest.markdown_controller
     markdown_controller.save_overview()
-    assert os.path.isfile(markdown_controller.json.OVERVIEW_REPORT)
+    assert os.path.isfile(markdown_controller.json.overview_report_path)
 
 
 def test_build_line_entity_when_there_is_no_entities():

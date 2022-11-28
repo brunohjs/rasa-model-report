@@ -56,7 +56,7 @@ def get_color(value: Union[float, int], scale: int = 1) -> str:
         return "❌"
 
 
-def scale(value: float, scale: int = 1) -> str:
+def change_scale(value: float, scale: int = 1) -> str:
     """
     Change the value scale and rounds it to display in string format.
 

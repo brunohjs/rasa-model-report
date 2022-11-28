@@ -6,21 +6,24 @@ from typing import Dict
 from typing import List
 from typing import Union
 
-from src.rasa_model_report.controllers.Controller import Controller
+from src.rasa_model_report.controllers.controller import Controller
 from src.rasa_model_report.helpers.utils import format_date
 
 
 class JsonController(Controller):
-    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str) -> None:
+    """
+    Controller responsible for JSON files.
+    """
+    def __init__(self, rasa_path: str, output_path: str, project: str, version: str) -> None:
         """
-        Controller responsible for JSON files.
+        __init__ method.
 
         :param rasa_path: Rasa project path.
-        :param output_dir: Output directory of CSV files.
+        :param output_path: Output directory of CSV files.
         :param project: Project name.
         :param version: Project version.
         """
-        super().__init__(rasa_path, output_dir, project, version)
+        super().__init__(rasa_path, output_path, project, version)
 
         self.intents: List[Dict[str, Any]] = []
         self.intent_overview: Dict[str, float] = {}
@@ -34,16 +37,16 @@ class JsonController(Controller):
             "project": self.project,
             "version": self.version
         }
-        self.INTENT_REPORT: str = f"{self.RESULTS_PATH}/intent_report.json"
-        self.INTENT_ERRORS: str = f"{self.RESULTS_PATH}/intent_errors.json"
-        self.ENTITY_REPORT: str = f"{self.RESULTS_PATH}/DIETClassifier_report.json"
-        self.ENTITY_ERRORS: str = f"{self.RESULTS_PATH}/DIETClassifier_errors.json"
-        self.STORY_REPORT: str = f"{self.RESULTS_PATH}/story_report.json"
-        self.OVERVIEW_REPORT: str = f"{self.RESULTS_PATH}/overview.json"
+        self.intent_report_path: str = f"{self.results_path}/intent_report.json"
+        self.intent_errors_path: str = f"{self.results_path}/intent_errors.json"
+        self.entity_report_path: str = f"{self.results_path}/DIETClassifier_report.json"
+        self.entity_errors_path: str = f"{self.results_path}/DIETClassifier_errors.json"
+        self.story_report_path: str = f"{self.results_path}/story_report.json"
+        self.overview_report_path: str = f"{self.results_path}/overview.json"
 
         self._load_data()
 
-    def _load_json_file(self, filename: str, error_flag: bool = True) -> Union[Dict[Any, Any], List[Any]]:
+    def load_json_file(self, filename: str, error_flag: bool = True) -> Union[Dict[Any, Any], List[Any]]:
         """
         Loads data from a JSON file.
 
@@ -52,7 +55,7 @@ class JsonController(Controller):
         :return: Data in list or dict format.
         """
         if os.path.isfile(filename):
-            file = open(filename)
+            file = open(filename, encoding="utf-8")
             data = json.load(file)
             file.close()
             logging.info(f"Arquivo {filename} carregado com sucesso")
@@ -81,7 +84,7 @@ class JsonController(Controller):
         """
         Load Rasa intent report data.
         """
-        self.intents = self._load_json_file(self.INTENT_REPORT, error_flag=False)
+        self.intents = self.load_json_file(self.intent_report_path, error_flag=False)
         if self.intents:
             self.intent_overview = {
                 "accuracy": self.intents.get("accuracy"),
@@ -97,7 +100,7 @@ class JsonController(Controller):
         """
         Load Rasa intent errors report data.
         """
-        self.intent_errors = self._load_json_file(self.INTENT_ERRORS, error_flag=False)
+        self.intent_errors = self.load_json_file(self.intent_errors_path, error_flag=False)
         self.intent_errors = sorted(
             self.intent_errors,
             key=lambda d: d["intent_prediction"]["confidence"],
@@ -108,7 +111,7 @@ class JsonController(Controller):
         """
         Load Rasa entity report data.
         """
-        self.entities = self._load_json_file(self.ENTITY_REPORT, error_flag=False)
+        self.entities = self.load_json_file(self.entity_report_path, error_flag=False)
         if self.entities:
             self.entity_overview = {
                 "macro avg": self.entities.get("macro avg"),
@@ -124,13 +127,13 @@ class JsonController(Controller):
         """
         Load Rasa entity errors report data.
         """
-        self.entity_errors = self._load_json_file(self.ENTITY_ERRORS, error_flag=False)
+        self.entity_errors = self.load_json_file(self.entity_errors_path, error_flag=False)
 
     def _load_responses(self) -> None:
         """
         Load Rasa response report data.
         """
-        self.responses = self._load_json_file(self.STORY_REPORT, error_flag=False)
+        self.responses = self.load_json_file(self.story_report_path, error_flag=False)
         if self.responses:
             self.response_overview = {
                 "macro avg": self.responses.get("macro avg"),
@@ -161,26 +164,26 @@ class JsonController(Controller):
             "nlu": nlu_overview
         })
         self._calculate_overall()
-        if os.path.isfile(self.OVERVIEW_REPORT):
-            file = open(self.OVERVIEW_REPORT)
+        if os.path.isfile(self.overview_report_path):
+            file = open(self.overview_report_path, encoding="utf-8")
             data = json.load(file)
             file.close()
             self.overview.update({
                 "created_at": data.get("created_at")
             })
-            logging.info(f"Arquivo {self.OVERVIEW_REPORT} carregado com sucesso")
+            logging.info(f"Arquivo {self.overview_report_path} carregado com sucesso")
         else:
             self.overview.update({
                 "created_at": format_date()
             })
-            logging.error(f"Arquivo {self.OVERVIEW_REPORT} não foi localizado")
+            logging.error(f"Arquivo {self.overview_report_path} não foi localizado")
 
     def save_overview(self) -> None:
         """
         Save overview report data.
         """
-        logging.info(f"Arquivo {self.OVERVIEW_REPORT} salvo com sucesso")
-        file = open(self.OVERVIEW_REPORT, "w")
+        logging.info(f"Arquivo {self.overview_report_path} salvo com sucesso")
+        file = open(self.overview_report_path, "w", encoding="utf-8")
         json.dump(self.overview, file, indent=4)
         file.write("\n")
         file.close()
@@ -223,28 +226,68 @@ class JsonController(Controller):
         """
         return self.intents.copy()
 
-    def get_intent_overview(self):
+    def get_intent_overview(self) -> Dict[str, float]:
+        """
+        Get intent overview data.
+
+        :return: Copy of intent overview data object.
+        """
         return self.intent_overview.copy()
 
-    def get_intent_errors(self):
+    def get_intent_errors(self) -> List[Dict[str, Any]]:
+        """
+        Get intent errors data.
+
+        :return: Copy of intent errors data object.
+        """
         return self.intent_errors.copy()
 
-    def get_entities(self):
+    def get_entities(self) -> List[Dict[str, Any]]:
+        """
+        Get entities data.
+
+        :return: Copy of entities data object.
+        """
         return self.entities.copy()
 
-    def get_entity_overview(self):
+    def get_entity_overview(self) -> Dict[str, float]:
+        """
+        Get entity overview data.
+
+        :return: Copy of entity overview data object.
+        """
         return self.entity_overview.copy()
 
-    def get_entity_errors(self):
+    def get_entity_errors(self) -> List[Dict[str, Any]]:
+        """
+        Get entity errors data.
+
+        :return: Copy of entity errors data object.
+        """
         return self.entity_errors.copy()
 
-    def get_responses(self):
+    def get_responses(self) -> List[Dict[str, Any]]:
+        """
+        Get responses data.
+
+        :return: Copy of responses data object.
+        """
         return self.responses.copy()
 
-    def get_response_overview(self):
+    def get_response_overview(self) -> Dict[str, float]:
+        """
+        Get response overview data.
+
+        :return: Copy of response overview data object.
+        """
         return self.response_overview.copy()
 
-    def get_overview(self):
+    def get_overview(self) -> Dict[str, Union[str, float, int]]:
+        """
+        Get overview data.
+
+        :return: Copy of overview data object.
+        """
         return self.overview.copy()
 
     def _to_list(self, data, sort_field=None) -> list:

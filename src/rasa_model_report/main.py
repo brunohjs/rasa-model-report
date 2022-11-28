@@ -2,7 +2,7 @@ import logging
 
 import click
 
-from src.rasa_model_report.controllers.ModelReport import ModelReport
+from src.rasa_model_report.controllers.model_report import ModelReport
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
 
@@ -50,13 +50,9 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     default=False,
     help="Disable NLU section of report. (default: false)"
 )
-def main(path, output_dir, project, version, rasa_api, disable_nlu):
+def main(path, output_path, project, version, rasa_api, disable_nlu):
     """
     Description
     """
-    report = ModelReport(path, output_dir, project, version, disable_nlu=disable_nlu, rasa_api_url=rasa_api)
+    report = ModelReport(path, output_path, project, version, disable_nlu=disable_nlu, rasa_api_url=rasa_api)
     return report
-
-
-if __name__ == '__main__':
-    main()

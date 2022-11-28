@@ -6,28 +6,28 @@ from typing import Dict
 from typing import List
 from typing import Optional
 
-import requests
+import requests.exceptions
 from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
-from requests.exceptions import ConnectionError
-from requests.exceptions import RequestException
-from requests.exceptions import Timeout
 from yaml import safe_load
 
-from src.rasa_model_report.controllers.Controller import Controller
+from src.rasa_model_report.controllers.controller import Controller
 
 
 class NluController(Controller):
+    """
+    Controller responsible for Rasa NLU.
+    """
     def __init__(
         self,
         rasa_path: str,
-        output_dir: str,
+        output_path: str,
         project: str,
         version: str,
         url: str = "http://localhost:5005",
         **kwargs: Dict[str, Any]
     ) -> None:
-        super().__init__(rasa_path, output_dir, project, version)
+        super().__init__(rasa_path, output_path, project, version)
 
         self._data: List[Dict[str, Any]] = []
         self._problem_sentences: List[Dict[str, Any]] = []
@@ -63,7 +63,7 @@ class NluController(Controller):
             if self._connected:
                 logging.info("A API do Rasa está habilitada.")
             else:
-                logging.warn("A API do Rasa está com algum problema. A seção de NLU não será gerada.")
+                logging.warning("A API do Rasa está com algum problema. A seção de NLU não será gerada.")
         return self._connected
 
     def _load_nlu(self) -> Dict[str, Any]:
@@ -73,10 +73,10 @@ class NluController(Controller):
         :return: A dictionary that contains the sentences separeted by intent.
         """
         logging.info("Procurando arquivos de NLU do Rasa.")
-        files = glob.glob(f"{self.NLU_PATH}/**/*.yml") + glob.glob(f"{self.NLU_PATH}/*.yml")
+        files = glob.glob(f"{self.nlu_path}/**/*.yml") + glob.glob(f"{self.nlu_path}/*.yml")
         nlu = {}
         for filename in files:
-            file = safe_load(open(filename))
+            file = safe_load(open(filename, encoding="utf-8"))
             if file.get("nlu"):
                 data = {i["intent"]: i["examples"] for i in file["nlu"] if i.get("intent")}
                 if data:
@@ -189,9 +189,8 @@ class NluController(Controller):
             retries = Retry(total=2, backoff_factor=3)
             session.mount("http://", HTTPAdapter(max_retries=retries))
             response = session.request(method=method, url=url, json=json)
-        except (ConnectionError, Timeout):
-            logging.warn(f"A API do Rasa está desabilitada. {message}")
-        except RequestException:
-            logging.warn(f"A API do Rasa está com algum problema. {message}")
-        finally:
-            return response
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            logging.warning(f"A API do Rasa está desabilitada. {message}")
+        except requests.exceptions.RequestException:
+            logging.warning(f"A API do Rasa está com algum problema. {message}")
+        return response

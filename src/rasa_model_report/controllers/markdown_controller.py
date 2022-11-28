@@ -5,28 +5,28 @@ from typing import Dict
 from typing import List
 from typing import Union
 
-from src.rasa_model_report.controllers.Controller import Controller
-from src.rasa_model_report.controllers.CsvController import CsvController
-from src.rasa_model_report.controllers.JsonController import JsonController
-from src.rasa_model_report.controllers.NluController import NluController
+from src.rasa_model_report.controllers.controller import Controller
+from src.rasa_model_report.controllers.csv_controller import CsvController
+from src.rasa_model_report.controllers.json_controller import JsonController
+from src.rasa_model_report.controllers.nlu_controller import NluController
+from src.rasa_model_report.helpers.utils import change_scale
 from src.rasa_model_report.helpers.utils import check
 from src.rasa_model_report.helpers.utils import get_color
-from src.rasa_model_report.helpers.utils import scale
 
 
 class MarkdownController(Controller):
-    def __init__(self, rasa_path: str, output_dir: str, project: str, version: str, **kwargs: Dict[str, Any]) -> None:
-        super().__init__(rasa_path, output_dir, project, version)
+    def __init__(self, rasa_path: str, output_path: str, project: str, version: str, **kwargs: Dict[str, Any]) -> None:
+        super().__init__(rasa_path, output_path, project, version)
 
         self.result: str = ""
         self.title: str = "# Relatório da saúde do modelo"
-        self.OUTPUT_REPORT_FILE: str = f"{self.OUTPUT_DIR}/model_report.md"
-        self.README_PATH: str = "README.md"
-        self.json: JsonController = JsonController(rasa_path, output_dir, self.project, self.version)
-        self.csv: CsvController = CsvController(rasa_path, output_dir, self.project, self.version)
+        self.output_report_path: str = f"{self.output_path}/model_report.md"
+        self.readme_path: str = "README.md"
+        self.json: JsonController = JsonController(rasa_path, output_path, self.project, self.version)
+        self.csv: CsvController = CsvController(rasa_path, output_path, self.project, self.version)
         self.nlu: NluController = NluController(
             rasa_path,
-            output_dir,
+            output_path,
             self.project,
             self.version,
             url=kwargs.get("rasa_api_url"),
@@ -46,8 +46,8 @@ class MarkdownController(Controller):
         """
         Função que concatena um bloco de texto com um bloco de imagem.
         """
-        if os.path.isfile(f"{self.RESULTS_PATH}/{image}"):
-            self.result += f"### {title}\n![{title}]({self.RESULTS_PATH}/{image} '{title}')" + "\n"
+        if os.path.isfile(f"{self.results_path}/{image}"):
+            self.result += f"### {title}\n![{title}]({self.results_path}/{image} '{title}')" + "\n"
             logging.info(f"A imagem {image} foi adicionada com sucesso")
         else:
             logging.warning(f"A imagem {image} não foi encontrada")
@@ -72,7 +72,7 @@ class MarkdownController(Controller):
     def build_summary(self) -> None:
         text = "## Índice\n"
         text += " - [Overview](#overview)\n"
-        if os.path.isfile(self.CONFIG_REPORT):
+        if os.path.isfile(self.config_report_path):
             text += " - [Configurações](#configs)\n"
         text += " - [Intenções](#intents)\n"
         text += " - [Entidades](#entities)\n"
@@ -112,11 +112,11 @@ class MarkdownController(Controller):
         style = "style='font-size:20px'"
         text += f"|Intenção|Entidade|NLU|Resposta|<span {style}>Geral</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|\n"
-        text += f"|{scale(overview['intent'], 10)}\
-            |{scale(overview['entity'], 10)}\
-            |{scale(overview['nlu'], 10)}\
-            |{scale(overview['response'], 10)}\
-            |<span {style}>**{scale(overview['overall'], 10)}**</span>|\n"
+        text += f"|{change_scale(overview['intent'], 10)}\
+            |{change_scale(overview['entity'], 10)}\
+            |{change_scale(overview['nlu'], 10)}\
+            |{change_scale(overview['response'], 10)}\
+            |<span {style}>**{change_scale(overview['overall'], 10)}**</span>|\n"
         text += f"{get_color(overview['intent'])}\
             |{get_color(overview['entity'])}\
             |{get_color(overview['nlu'])}\
@@ -395,12 +395,12 @@ class MarkdownController(Controller):
         """
         Função que monta o bloco de texto responsável pela configuração do modelo do relatório.
         """
-        if os.path.isfile(self.CONFIG_REPORT):
+        if os.path.isfile(self.config_report_path):
             title = "## Configurações <a name='configs'></a>\n"
             description = "Configurações que foram utilizadas na *pipeline* de treinamento e nas *policies*.\n"
             title += description
-            data = open(self.CONFIG_REPORT).read()
-            logging.info(f"Arquivo {self.CONFIG_REPORT} carregado com sucesso")
+            data = open(self.config_report_path, encoding="utf-8").read()
+            logging.info(f"Arquivo {self.config_report_path} carregado com sucesso")
             return f"{title}```yaml\n{data}\n```"
         else:
             logging.warning("O bloco de configuração não será gerado, pois o arquivo não foi encontrado")
@@ -420,11 +420,11 @@ class MarkdownController(Controller):
         """
         Função que salva os dados do relatório em um arquivo.
         """
-        if os.path.isfile(self.OUTPUT_REPORT_FILE):
-            text = f"Arquivo {self.OUTPUT_REPORT_FILE} alterado com sucesso"
+        if os.path.isfile(self.output_report_path):
+            text = f"Arquivo {self.output_report_path} alterado com sucesso"
         else:
-            text = f"Arquivo {self.OUTPUT_REPORT_FILE} criado com sucesso"
-        file = open(self.OUTPUT_REPORT_FILE, "w")
+            text = f"Arquivo {self.output_report_path} criado com sucesso"
+        file = open(self.output_report_path, "w", encoding="utf-8")
         file.write(self.result)
         file.close()
         logging.info(text)

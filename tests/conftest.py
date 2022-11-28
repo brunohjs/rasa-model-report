@@ -3,12 +3,12 @@ import glob
 import pytest
 import responses
 
-import tests.utils as utils
-from src.rasa_model_report.controllers.Controller import Controller
-from src.rasa_model_report.controllers.CsvController import CsvController
-from src.rasa_model_report.controllers.JsonController import JsonController
-from src.rasa_model_report.controllers.MarkdownController import MarkdownController
-from src.rasa_model_report.controllers.NluController import NluController
+from src.rasa_model_report.controllers.controller import Controller
+from src.rasa_model_report.controllers.csv_controller import CsvController
+from src.rasa_model_report.controllers.json_controller import JsonController
+from src.rasa_model_report.controllers.markdown_controller import MarkdownController
+from src.rasa_model_report.controllers.nlu_controller import NluController
+from tests import utils
 
 
 def pytest_generate_tests(metafunc):
