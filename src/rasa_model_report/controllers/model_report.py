@@ -64,15 +64,15 @@ class ModelReport:
             self.markdown.add_text(self.markdown.build_intent_title())
             self.markdown.add_text(self.markdown.build_intent_table())
             self.markdown.add_text(self.markdown.build_intent_errors_table())
-            self.markdown.add_image(self.dirs["INTENT_HISTOGRAM"], "Histograma")
-            self.markdown.add_image(self.dirs["INTENT_MATRIX"], "Matriz de Confusão")
+            self.markdown.add_image(self.dirs["INTENT_HISTOGRAM"], "Histogram")
+            self.markdown.add_image(self.dirs["INTENT_MATRIX"], "Confusion Matrix")
 
             # Entities
             self.markdown.add_text(self.markdown.build_entity_title())
             self.markdown.add_text(self.markdown.build_entity_table())
             self.markdown.add_text(self.markdown.build_entity_errors_table())
-            self.markdown.add_image(self.dirs['ENTITY_HISTOGRAM'], "Histograma")
-            self.markdown.add_image(self.dirs['ENTITY_MATRIX'], "Matriz de Confusão")
+            self.markdown.add_image(self.dirs['ENTITY_HISTOGRAM'], "Histogram")
+            self.markdown.add_image(self.dirs['ENTITY_MATRIX'], "Confusion Matrix")
 
             # NLU
             if self.markdown.nlu.is_connected():
@@ -83,7 +83,7 @@ class ModelReport:
             # Responses
             self.markdown.add_text(self.markdown.build_response_title())
             self.markdown.add_text(self.markdown.build_response_table())
-            self.markdown.add_image(self.dirs['STORY_MATRIX'], "Matriz de Confusão")
+            self.markdown.add_image(self.dirs['STORY_MATRIX'], "Confusion Matrix")
 
             # Save report and overview files
             self.markdown.save_report()
