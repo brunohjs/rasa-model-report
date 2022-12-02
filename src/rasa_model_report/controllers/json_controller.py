@@ -92,6 +92,8 @@ class JsonController(Controller):
             }
             del self._intents["accuracy"]
             del self._intents["macro avg"]
+            if self._intents.get("micro avg"):
+                del self._intents["micro avg"]
             del self._intents["weighted avg"]
         self._intents = self._to_list(self._intents, "f1-score")
 

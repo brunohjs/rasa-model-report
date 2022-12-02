@@ -100,7 +100,7 @@ def test_build_intent_title():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_intent_title()
     assert isinstance(text, str)
-    assert "## Intenções <a name='intents'></a>" in text
+    assert "## Intents <a name='intents'></a>" in text
 
 
 def test_build_intent_overview():
@@ -122,7 +122,7 @@ def test_build_intent_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_intent_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No intentions were found in this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/intent_report.csv")
 
 
@@ -139,7 +139,7 @@ def test_build_intent_errors_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_intent_errors_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No confusions or errors of intent were found in this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/intent_errors.csv")
 
 
@@ -147,7 +147,7 @@ def test_build_entity_title():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_entity_title()
     assert isinstance(text, str)
-    assert "## Entidades <a name='entities'></a>" in text
+    assert "## Entities <a name='entities'></a>" in text
 
 
 def test_build_entity_overview():
@@ -169,7 +169,7 @@ def test_build_entity_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_entity_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No entities were found in this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/DIETClassifier_report.csv")
 
 
@@ -185,14 +185,14 @@ def test_build_entity_errors_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_entity_errors_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No confusions of entities were found in this model" in text
 
 
 def test_build_response_title():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_response_title()
     assert isinstance(text, str)
-    assert "## Respostas <a name='responses'></a>" in text
+    assert "## Responses <a name='responses'></a>" in text
 
 
 def test_build_response_overview():
@@ -214,7 +214,7 @@ def test_build_response_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_response_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No responses were found for this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
 
 
@@ -240,7 +240,7 @@ def test_build_nlu_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_nlu_table()
     assert isinstance(text, str)
-    assert "Não foram encontradas" in text
+    assert "No example sentences were found in this template" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/nlu_report.csv")
 
 
@@ -263,14 +263,14 @@ def test_build_nlu_errors_table_if_len_less_than_2():
     markdown_controller.json = json_controller
     text = markdown_controller.build_nlu_errors_table()
     assert isinstance(text, str)
-    assert "Não há sentenças" in text
+    assert "There are no sentences that were not understood in this model" in text
 
 
 def test_build_config_report():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_config_report()
     assert isinstance(text, str)
-    assert "## Configurações <a name='configs'></a>" in text
+    assert "## Configs <a name='configs'></a>" in text
 
 
 def test_dont_build_config_report_when_there_is_no_config_file():

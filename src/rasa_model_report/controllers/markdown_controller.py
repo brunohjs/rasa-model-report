@@ -333,7 +333,7 @@ class MarkdownController(Controller):
         if data:
             return title + table_data
         else:
-            text = "\nNo confusions or errors of intent were found in this model.\n"
+            text = "\nNo confusions of entities were found in this model.\n"
             return title + text
 
     def build_response_title(self) -> str:
