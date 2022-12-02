@@ -27,7 +27,7 @@ class MarkdownController(Controller):
         super().__init__(rasa_path, output_path, project, version)
 
         self.result: str = ""
-        self.title: str = "# Relatório da saúde do modelo"
+        self.title: str = "# Model health report"
         self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
         self.json: JsonController = JsonController(rasa_path, output_path, self.project, self.version)
