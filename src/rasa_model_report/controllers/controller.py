@@ -14,7 +14,7 @@ class Controller:
         self.project: str = project
         self.version: str = version
         self.rasa_path: str = rasa_path
-        self.output_path: str = output_path
+        self.output_path: str = output_path.replace("//", "/")
         self.nlu_path: str = f"{self.rasa_path}/data".replace("//", "/")
         self.results_path: str = f"{self.rasa_path}/results".replace("//", "/")
         self.config_report_path: str = f"{self.rasa_path}/config.yml".replace("//", "/")

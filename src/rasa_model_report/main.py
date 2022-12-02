@@ -16,7 +16,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Rasa path. (default: ./)"
 )
 @click.option(
-    "--output-dir",
+    "--output-path",
     type=str,
     required=False,
     default="./",

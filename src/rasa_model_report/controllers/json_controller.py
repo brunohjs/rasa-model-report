@@ -57,7 +57,7 @@ class JsonController(Controller):
             file = open(filename, encoding="utf-8")
             data = json.load(file)
             file.close()
-            logging.info(f"{filename} file uploaded successfully.")
+            logging.info(f"{filename} file loaded successfully.")
             return data
         else:
             message = f"{filename} file not found."
@@ -170,7 +170,7 @@ class JsonController(Controller):
             self._overview.update({
                 "created_at": data.get("created_at")
             })
-            logging.info(f"{self.overview_report_path} file uploaded successfully.")
+            logging.info(f"{self.overview_report_path} file loaded successfully.")
         else:
             self._overview.update({
                 "created_at": format_date()

@@ -28,7 +28,7 @@ class MarkdownController(Controller):
 
         self.result: str = ""
         self.title: str = "# Relatório da saúde do modelo"
-        self.output_report_path: str = f"{self.output_path}/model_report.md"
+        self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
         self.json: JsonController = JsonController(rasa_path, output_path, self.project, self.version)
         self.csv: CsvController = CsvController(rasa_path, output_path, self.project, self.version)
