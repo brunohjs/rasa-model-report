@@ -85,6 +85,9 @@ class ModelReport:
             self.markdown.add_text(self.markdown.build_response_table())
             self.markdown.add_image(self.dirs['STORY_MATRIX'], "Confusion Matrix")
 
+            # Credits
+            self.markdown.add_text(self.markdown.build_credits())
+
             # Save report and overview files
             self.markdown.save_report()
             self.markdown.save_overview()
