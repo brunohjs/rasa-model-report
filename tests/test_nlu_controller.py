@@ -45,25 +45,25 @@ def test_init_nlu_controller_when_no_rasa():
 
 def test_get_data():
     nlu_controller = pytest.nlu_controller
-    data = nlu_controller.get_data()
+    data = nlu_controller.data
     data.append({"test": "ok"})
-    assert nlu_controller.get_data() != data
-    assert isinstance(nlu_controller.get_data(), list)
+    assert nlu_controller.data != data
+    assert isinstance(nlu_controller.data, list)
 
 
 def test_get_problem_sentences():
     nlu_controller = pytest.nlu_controller
-    sentences = nlu_controller.get_problem_sentences()
+    sentences = nlu_controller.problem_sentences
     sentences.append({"test": "ok"})
-    assert nlu_controller.get_problem_sentences() != sentences
-    assert isinstance(nlu_controller.get_problem_sentences(), list)
+    assert nlu_controller.problem_sentences != sentences
+    assert isinstance(nlu_controller.problem_sentences, list)
 
 
 def test_get_general_grade():
     nlu_controller = pytest.nlu_controller
     nlu_controller._calculate_general_grade()
-    assert nlu_controller.get_general_grade() >= 0
-    assert isinstance(nlu_controller.get_general_grade(), float)
+    assert nlu_controller.general_grade >= 0
+    assert isinstance(nlu_controller.general_grade, float)
 
 
 @responses.activate

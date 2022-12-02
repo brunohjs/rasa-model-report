@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 from src.rasa_model_report.controllers.controller import Controller
 
@@ -19,7 +18,7 @@ class CsvController(Controller):
         """
         super().__init__(rasa_path, output_path, project, version)
 
-    def save(self, data: List[List[str]], filename: str) -> None:
+    def save(self, data: list[list[str]], filename: str) -> None:
         """
         Save data to a CSV file.
 
@@ -33,6 +32,6 @@ class CsvController(Controller):
                 new_line = ",".join(line)
                 file.writelines(new_line + "\n")
             file.close()
-            logging.info(f"Arquivo {filename} salvo com sucesso.")
+            logging.info(f"{filename} file successfully saved.")
         except FileNotFoundError as error:
-            logging.error(f"Não foi possível encontrar o arquivo: {self.results_path}/{filename}. Erro: {error}.")
+            logging.error(f"Could not find the file: {self.results_path}/{filename}. Error: {error}.")

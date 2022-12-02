@@ -51,35 +51,35 @@ def test_load_json_file_but_a_non_existent_file():
 def test_load_intents():
     json_controller = pytest.json_controller
     json_controller._load_intents()
-    assert isinstance(json_controller.get_intents(), list)
-    assert len(json_controller.get_intents()) > 0
+    assert isinstance(json_controller.intents, list)
+    assert len(json_controller.intents) > 0
 
 
 def test_load_intents_but_a_non_existent_file():
     json_controller = pytest.json_controller
     json_controller.intent_report_path = "path/that/does/not/exist.json"
     json_controller._load_intents()
-    assert json_controller.get_intents() == []
+    assert json_controller.intents == []
 
 
 def test_load_entities():
     json_controller = pytest.json_controller
     json_controller._load_entities()
-    assert isinstance(json_controller.get_entities(), list)
-    assert len(json_controller.get_entities()) > 0
+    assert isinstance(json_controller.entities, list)
+    assert len(json_controller.entities) > 0
 
 
 def test_load_entities_but_a_non_existent_file():
     json_controller = pytest.json_controller
     json_controller.entity_report_path = "path/that/does/not/exist.json"
     json_controller._load_entities()
-    assert json_controller.get_entities() == []
+    assert json_controller.entities == []
 
 
 def test_load_overview():
     json_controller = pytest.json_controller
     json_controller._load_overview()
-    assert isinstance(json_controller.get_overview(), dict)
+    assert isinstance(json_controller.overview, dict)
 
 
 def test_load_overview_if_exists():
@@ -87,7 +87,7 @@ def test_load_overview_if_exists():
     json_controller._load_overview()
     json_controller.save_overview()
     json_controller._load_overview()
-    assert isinstance(json_controller.get_overview(), dict)
+    assert isinstance(json_controller.overview, dict)
 
 
 def test_save_overview():
@@ -99,7 +99,7 @@ def test_save_overview():
 def test_calculate_overall():
     json_controller = pytest.json_controller
     json_controller._calculate_overall()
-    assert isinstance(json_controller.get_overview().get("overall"), (int, float))
+    assert isinstance(json_controller.overview.get("overall"), (int, float))
 
 
 def test_update_overview():
@@ -108,86 +108,86 @@ def test_update_overview():
     json_controller.update_overview({
         "nlu": random_number
     })
-    assert json_controller.get_overview().get("nlu") == random_number
+    assert json_controller.overview.get("nlu") == random_number
 
 
 def test_dont_update_overview_when_not_a_dict_as_a_param():
     json_controller = pytest.json_controller
-    overview = json_controller.get_overview()
+    overview = json_controller.overview
     json_controller.update_overview(["test", "5"])
-    assert json_controller.get_overview() == overview
+    assert json_controller.overview == overview
 
 
 def test_get_intents():
     json_controller = pytest.json_controller
-    intents = json_controller.get_intents()
+    intents = json_controller.intents
     intents.append({"test": "ok"})
-    assert json_controller.get_intents() != intents
-    assert isinstance(json_controller.get_intents(), list)
+    assert json_controller.intents != intents
+    assert isinstance(json_controller.intents, list)
 
 
 def test_get_intent_overview():
     json_controller = pytest.json_controller
-    intent_overview = json_controller.get_intent_overview()
+    intent_overview = json_controller.intent_overview
     intent_overview.update({"test": "ok"})
-    assert json_controller.get_intent_overview() != intent_overview
-    assert isinstance(json_controller.get_intent_overview(), dict)
+    assert json_controller.intent_overview != intent_overview
+    assert isinstance(json_controller.intent_overview, dict)
 
 
 def test_get_intent_errors():
     json_controller = pytest.json_controller
-    intents = json_controller.get_intent_errors()
+    intents = json_controller.intent_errors
     intents.append({"test": "ok"})
-    assert json_controller.get_intent_errors() != intents
-    assert isinstance(json_controller.get_intent_errors(), list)
+    assert json_controller.intent_errors != intents
+    assert isinstance(json_controller.intent_errors, list)
 
 
 def test_get_entities():
     json_controller = pytest.json_controller
-    entities = json_controller.get_entities()
+    entities = json_controller.entities
     entities.append({"test": "ok"})
-    assert json_controller.get_entities() != entities
-    assert isinstance(json_controller.get_entities(), list)
+    assert json_controller.entities != entities
+    assert isinstance(json_controller.entities, list)
 
 
 def test_get_entity_overview():
     json_controller = pytest.json_controller
-    entity_overview = json_controller.get_entity_overview()
+    entity_overview = json_controller.entity_overview
     entity_overview.update({"test": "ok"})
-    assert json_controller.get_entity_overview() != entity_overview
-    assert isinstance(json_controller.get_entity_overview(), dict)
+    assert json_controller.entity_overview != entity_overview
+    assert isinstance(json_controller.entity_overview, dict)
 
 
 def test_get_entity_errors():
     json_controller = pytest.json_controller
-    entities = json_controller.get_entity_errors()
+    entities = json_controller.entity_errors
     entities.append({"test": "ok"})
-    assert json_controller.get_entity_errors() != entities
-    assert isinstance(json_controller.get_entity_errors(), list)
+    assert json_controller.entity_errors != entities
+    assert isinstance(json_controller.entity_errors, list)
 
 
 def test_get_responses():
     json_controller = pytest.json_controller
-    responses = json_controller.get_responses()
+    responses = json_controller.responses
     responses.append({"test": "ok"})
-    assert json_controller.get_responses() != responses
-    assert isinstance(json_controller.get_responses(), list)
+    assert json_controller.responses != responses
+    assert isinstance(json_controller.responses, list)
 
 
 def test_get_response_overview():
     json_controller = pytest.json_controller
-    response_overview = json_controller.get_response_overview()
+    response_overview = json_controller.response_overview
     response_overview.update({"test": "ok"})
-    assert json_controller.get_response_overview() != response_overview
-    assert isinstance(json_controller.get_response_overview(), dict)
+    assert json_controller.response_overview != response_overview
+    assert isinstance(json_controller.response_overview, dict)
 
 
 def test_get_overview():
     json_controller = pytest.json_controller
-    overview = json_controller.get_overview()
+    overview = json_controller.overview
     overview.update({"test": "ok"})
-    assert json_controller.get_overview() != overview
-    assert isinstance(json_controller.get_overview(), dict)
+    assert json_controller.overview != overview
+    assert isinstance(json_controller.overview, dict)
 
 
 def test_to_list():

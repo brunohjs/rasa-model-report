@@ -1,10 +1,6 @@
 import glob
 import logging
 import re
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import requests.exceptions
 from requests.adapters import HTTPAdapter
@@ -12,6 +8,7 @@ from requests.adapters import Retry
 from yaml import safe_load
 
 from src.rasa_model_report.controllers.controller import Controller
+from src.rasa_model_report.helpers.type_aliases import nlu_payload
 
 
 class NluController(Controller):
@@ -25,13 +22,13 @@ class NluController(Controller):
         project: str,
         version: str,
         url: str = "http://localhost:5005",
-        **kwargs: Dict[str, Any]
+        **kwargs: dict
     ) -> None:
         super().__init__(rasa_path, output_path, project, version)
 
-        self._data: List[Dict[str, Any]] = []
-        self._problem_sentences: List[Dict[str, Any]] = []
-        self._general_grade: Optional[float] = None
+        self._data: list[nlu_payload] = []
+        self._problem_sentences: list[nlu_payload] = []
+        self._general_grade: float | None = None
         self._connected: bool = False
         self._disable_nlu: bool = kwargs.get("disable_nlu")
         self.url: str = url
@@ -61,18 +58,18 @@ class NluController(Controller):
         if isinstance(response, requests.Response):
             self._connected = response.status_code == 200
             if self._connected:
-                logging.info("A API do Rasa está habilitada.")
+                logging.info("Rasa API is enabled.")
             else:
-                logging.warning("A API do Rasa está com algum problema. A seção de NLU não será gerada.")
+                logging.warning("Rasa API has some problem. NLU section will not be generated.")
         return self._connected
 
-    def _load_nlu(self) -> Dict[str, Any]:
+    def _load_nlu(self) -> dict[str, str | list[str]]:
         """
         Load all NLU sentences from project of Rasa files.
 
         :return: A dictionary that contains the sentences separeted by intent.
         """
-        logging.info("Procurando arquivos de NLU do Rasa.")
+        logging.info("Looking for Rasa's NLU files.")
         files = glob.glob(f"{self.nlu_path}/**/*.yml") + glob.glob(f"{self.nlu_path}/*.yml")
         nlu = {}
         for filename in files:
@@ -80,16 +77,16 @@ class NluController(Controller):
             if file.get("nlu"):
                 data = {i["intent"]: i["examples"] for i in file["nlu"] if i.get("intent")}
                 if data:
-                    logging.info(f"Encontrado sentenças no arquivo {filename}.")
+                    logging.info(f"Found sentences in {filename} file.")
                     for intent, text in data.items():
                         data[intent] = self._extract_sentences(text)
-                        logging.info(f" - Intenção {intent}: {len(data[intent])} frase(s).")
+                        logging.info(f" - Intent {intent}: {len(data[intent])} sentence(s).")
                     nlu.update(data)
         self._data = nlu
         return nlu
 
-    def _generate_data(self) -> List[Dict[str, Any]]:
-        logging.info("Formatando dados extraídos.")
+    def _generate_data(self) -> list[nlu_payload]:
+        logging.info("Formatting extracted data.")
         data = []
         for intent, examples in self._data.items():
             for text in examples:
@@ -105,19 +102,20 @@ class NluController(Controller):
                 }
                 item["understood"] = predicted_intent.get("nlu_fallback", False) or intent != predicted_intent["name"]
                 data.append(item)
-        logging.info("Ordenando frases.")
+        logging.info("Ordering phrases.")
         data = sorted(data, key=lambda item: item["confidence"], reverse=True)
-        logging.info(f"Total de {len(data)} frases extraídas.")
+        logging.info(f"Total of {len(data)} extracted sentences.")
         self._data = data
         return data
 
-    def _load_problem_sentences(self) -> List[Dict[str, Any]]:
+    def _load_problem_sentences(self) -> list[nlu_payload]:
         self._problem_sentences = [
             sentence for sentence in self._data if sentence.get("understood", False)
         ]
         return self._problem_sentences
 
-    def get_data(self) -> List[Dict[str, Any]]:
+    @property
+    def data(self) -> list[nlu_payload]:
         """
         Return a copy of the generated data.
 
@@ -125,7 +123,8 @@ class NluController(Controller):
         """
         return self._data.copy()
 
-    def get_problem_sentences(self) -> List[Dict[str, Any]]:
+    @property
+    def problem_sentences(self) -> list[nlu_payload]:
         """
         Return a copy of the generated problem sentences.
 
@@ -133,17 +132,18 @@ class NluController(Controller):
         """
         return self._problem_sentences.copy()
 
-    def get_general_grade(self) -> Optional[float]:
+    @property
+    def general_grade(self) -> float | None:
         return self._general_grade
 
-    def _calculate_general_grade(self) -> Optional[float]:
+    def _calculate_general_grade(self) -> float | None:
         total_sentences = len(self._data)
         if total_sentences:
             total_problem_sentences = len(self._problem_sentences)
             self._general_grade = 1 - total_problem_sentences / total_sentences
             return self._general_grade
 
-    def request_nlu(self, text: str) -> Dict[str, Any]:
+    def request_nlu(self, text: str) -> nlu_payload:
         response = requests.request(
             method="POST",
             url=f"{self.url}/model/parse",
@@ -173,7 +173,7 @@ class NluController(Controller):
         return text
 
     @staticmethod
-    def select_intent(payload: Dict[str, Any]) -> Dict[str, str]:
+    def select_intent(payload: nlu_payload) -> dict[str, str]:
         if payload.get("intent", {}).get("name") == "nlu_fallback":
             payload["intent_ranking"][1]["nlu_fallback"] = True
             return payload.get("intent_ranking")[1]
@@ -181,8 +181,8 @@ class NluController(Controller):
             return payload.get("intent", {})
 
     @staticmethod
-    def request_rasa_api(url: str, method: str = "GET", json: Dict[str, Any] = {}) -> Optional[requests.Response]:
-        message = "A seção de NLU não será gerada."
+    def request_rasa_api(url: str, method: str = "GET", json: dict = {}) -> requests.Response | None:
+        message = "NLU section will not be generated."
         response = None
         try:
             session = requests.Session()
@@ -190,7 +190,7 @@ class NluController(Controller):
             session.mount("http://", HTTPAdapter(max_retries=retries))
             response = session.request(method=method, url=url, json=json)
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            logging.warning(f"A API do Rasa está desabilitada. {message}")
+            logging.warning(f"Rasa API is disabled. {message}")
         except requests.exceptions.RequestException:
-            logging.warning(f"A API do Rasa está com algum problema. {message}")
+            logging.warning(f"Rasa API has some problem. {message}")
         return response

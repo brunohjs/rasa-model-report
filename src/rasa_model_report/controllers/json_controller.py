@@ -1,12 +1,11 @@
 import json
 import logging
 import os.path
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Union
 
 from src.rasa_model_report.controllers.controller import Controller
+from src.rasa_model_report.helpers.type_aliases import entity
+from src.rasa_model_report.helpers.type_aliases import intent
+from src.rasa_model_report.helpers.type_aliases import number
 from src.rasa_model_report.helpers.utils import format_date
 
 
@@ -25,15 +24,15 @@ class JsonController(Controller):
         """
         super().__init__(rasa_path, output_path, project, version)
 
-        self.intents: List[Dict[str, Any]] = []
-        self.intent_overview: Dict[str, float] = {}
-        self.intent_errors: List[Dict[str, Any]] = []
-        self.entities: List[Dict[str, Any]] = []
-        self.entity_overview: Dict[str, float] = {}
-        self.entity_errors: List[Dict[str, Any]] = []
-        self.responses: List[Dict[str, Any]] = []
-        self.response_overview: Dict[str, float] = {}
-        self.overview: Dict[str, Union[str, float, int]] = {
+        self._intents: list[dict[str, intent]] = []
+        self._intent_overview: dict[str, float] = {}
+        self._intent_errors: list[dict[str, intent]] = []
+        self._entities: list[dict[str, entity]] = []
+        self._entity_overview: dict[str, float] = {}
+        self._entity_errors: list[dict[str, entity]] = []
+        self._responses: list[dict[str, float]] = []
+        self._response_overview: dict[str, float] = {}
+        self._overview: dict[str, str | number] = {
             "project": self.project,
             "version": self.version
         }
@@ -46,7 +45,7 @@ class JsonController(Controller):
 
         self._load_data()
 
-    def load_json_file(self, filename: str, error_flag: bool = True) -> Union[Dict[Any, Any], List[Any]]:
+    def load_json_file(self, filename: str, error_flag: bool = True) -> dict | list:
         """
         Loads data from a JSON file.
 
@@ -58,10 +57,10 @@ class JsonController(Controller):
             file = open(filename, encoding="utf-8")
             data = json.load(file)
             file.close()
-            logging.info(f"Arquivo {filename} carregado com sucesso")
+            logging.info(f"{filename} file uploaded successfully.")
             return data
         else:
-            message = f"Arquivo {filename} não encontrado"
+            message = f"{filename} file not found."
             if error_flag:
                 logging.error(message)
                 raise Exception(message)
@@ -84,25 +83,25 @@ class JsonController(Controller):
         """
         Load Rasa intent report data.
         """
-        self.intents = self.load_json_file(self.intent_report_path, error_flag=False)
-        if self.intents:
-            self.intent_overview = {
-                "accuracy": self.intents.get("accuracy"),
-                "macro avg": self.intents.get("macro avg"),
-                "weighted avg": self.intents.get("weighted avg")
+        self._intents = self.load_json_file(self.intent_report_path, error_flag=False)
+        if self._intents:
+            self._intent_overview = {
+                "accuracy": self._intents.get("accuracy"),
+                "macro avg": self._intents.get("macro avg"),
+                "weighted avg": self._intents.get("weighted avg")
             }
-            del self.intents["accuracy"]
-            del self.intents["macro avg"]
-            del self.intents["weighted avg"]
-        self.intents = self._to_list(self.intents, "f1-score")
+            del self._intents["accuracy"]
+            del self._intents["macro avg"]
+            del self._intents["weighted avg"]
+        self._intents = self._to_list(self._intents, "f1-score")
 
     def _load_intent_errors(self) -> None:
         """
         Load Rasa intent errors report data.
         """
-        self.intent_errors = self.load_json_file(self.intent_errors_path, error_flag=False)
-        self.intent_errors = sorted(
-            self.intent_errors,
+        self._intent_errors = self.load_json_file(self.intent_errors_path, error_flag=False)
+        self._intent_errors = sorted(
+            self._intent_errors,
             key=lambda d: d["intent_prediction"]["confidence"],
             reverse=True
         )
@@ -111,52 +110,52 @@ class JsonController(Controller):
         """
         Load Rasa entity report data.
         """
-        self.entities = self.load_json_file(self.entity_report_path, error_flag=False)
-        if self.entities:
-            self.entity_overview = {
-                "macro avg": self.entities.get("macro avg"),
-                "micro avg": self.entities.get("micro avg"),
-                "weighted avg": self.entities.get("weighted avg")
+        self._entities = self.load_json_file(self.entity_report_path, error_flag=False)
+        if self._entities:
+            self._entity_overview = {
+                "macro avg": self._entities.get("macro avg"),
+                "micro avg": self._entities.get("micro avg"),
+                "weighted avg": self._entities.get("weighted avg")
             }
-            del self.entities["macro avg"]
-            del self.entities["micro avg"]
-            del self.entities["weighted avg"]
-        self.entities = self._to_list(self.entities, "f1-score")
+            del self._entities["macro avg"]
+            del self._entities["micro avg"]
+            del self._entities["weighted avg"]
+        self._entities = self._to_list(self._entities, "f1-score")
 
     def _load_entity_errors(self) -> None:
         """
         Load Rasa entity errors report data.
         """
-        self.entity_errors = self.load_json_file(self.entity_errors_path, error_flag=False)
+        self._entity_errors = self.load_json_file(self.entity_errors_path, error_flag=False)
 
     def _load_responses(self) -> None:
         """
         Load Rasa response report data.
         """
-        self.responses = self.load_json_file(self.story_report_path, error_flag=False)
-        if self.responses:
-            self.response_overview = {
-                "macro avg": self.responses.get("macro avg"),
-                "weighted avg": self.responses.get("weighted avg"),
-                "conversation_accuracy": self.responses.get("conversation_accuracy")
+        self._responses = self.load_json_file(self.story_report_path, error_flag=False)
+        if self._responses:
+            self._response_overview = {
+                "macro avg": self._responses.get("macro avg"),
+                "weighted avg": self._responses.get("weighted avg"),
+                "conversation_accuracy": self._responses.get("conversation_accuracy")
             }
-            del self.responses["macro avg"]
-            del self.responses["weighted avg"]
-            if self.responses.get("accuracy"):
-                del self.responses["accuracy"]
-            if self.responses.get("conversation_accuracy"):
-                del self.responses["conversation_accuracy"]
-            self.responses = self._to_list(self.responses, "f1-score")
+            del self._responses["macro avg"]
+            del self._responses["weighted avg"]
+            if self._responses.get("accuracy"):
+                del self._responses["accuracy"]
+            if self._responses.get("conversation_accuracy"):
+                del self._responses["conversation_accuracy"]
+            self._responses = self._to_list(self._responses, "f1-score")
 
     def _load_overview(self) -> None:
         """
         Load overview report data.
         """
-        intent_overview = self.intent_overview.get("macro avg", {}).get("f1-score")
-        entity_overview = self.entity_overview.get("macro avg", {}).get("f1-score")
-        response_overview = self.response_overview.get("macro avg", {}).get("f1-score")
-        nlu_overview = self.overview.get("nlu")
-        self.overview.update({
+        intent_overview = self._intent_overview.get("macro avg", {}).get("f1-score")
+        entity_overview = self._entity_overview.get("macro avg", {}).get("f1-score")
+        response_overview = self._response_overview.get("macro avg", {}).get("f1-score")
+        nlu_overview = self._overview.get("nlu")
+        self._overview.update({
             "updated_at": format_date(),
             "intent": intent_overview if intent_overview is not None else None,
             "entity": entity_overview if entity_overview is not None else None,
@@ -168,23 +167,23 @@ class JsonController(Controller):
             file = open(self.overview_report_path, encoding="utf-8")
             data = json.load(file)
             file.close()
-            self.overview.update({
+            self._overview.update({
                 "created_at": data.get("created_at")
             })
-            logging.info(f"Arquivo {self.overview_report_path} carregado com sucesso")
+            logging.info(f"{self.overview_report_path} file uploaded successfully.")
         else:
-            self.overview.update({
+            self._overview.update({
                 "created_at": format_date()
             })
-            logging.error(f"Arquivo {self.overview_report_path} não foi localizado")
+            logging.error(f"{self.overview_report_path} file not found.")
 
     def save_overview(self) -> None:
         """
         Save overview report data.
         """
-        logging.info(f"Arquivo {self.overview_report_path} salvo com sucesso")
+        logging.info(f"{self.overview_report_path} file successfully saved.")
         file = open(self.overview_report_path, "w", encoding="utf-8")
-        json.dump(self.overview, file, indent=4)
+        json.dump(self._overview, file, indent=4)
         file.write("\n")
         file.close()
 
@@ -196,99 +195,108 @@ class JsonController(Controller):
             "nlu": 4
         }
         overview_sum = sum(
-            self.overview[item] * w for item, w in weights.items()
-            if isinstance(self.overview[item], (int, float)) and self.overview[item] >= 0
+            self._overview[item] * w for item, w in weights.items()
+            if isinstance(self._overview[item], (int, float)) and self._overview[item] >= 0
         )
         weight_sum = sum(
             w for item, w in weights.items()
-            if isinstance(self.overview[item], (int, float)) and self.overview[item] >= 0
+            if isinstance(self._overview[item], (int, float)) and self._overview[item] >= 0
         )
         overview_rate = overview_sum / weight_sum if weight_sum else 0
-        self.overview.update({
+        self._overview.update({
             "overall": overview_rate
         })
 
-    def update_overview(self, obj: Dict[Any, Any]) -> None:
+    def update_overview(self, obj: dict[str, number]) -> None:
         """
         Update overview report data.
 
         :param obj: Object that will be used to update the overview object.
         """
         if isinstance(obj, dict):
-            self.overview.update(obj)
+            self._overview.update(obj)
             self._calculate_overall()
 
-    def get_intents(self) -> Dict[str, Any]:
+    @property
+    def intents(self) -> dict[str, intent]:
         """
         Get intents data.
 
         :return: Copy of intents data object.
         """
-        return self.intents.copy()
+        return self._intents.copy()
 
-    def get_intent_overview(self) -> Dict[str, float]:
+    @property
+    def intent_overview(self) -> dict[str, float]:
         """
         Get intent overview data.
 
         :return: Copy of intent overview data object.
         """
-        return self.intent_overview.copy()
+        return self._intent_overview.copy()
 
-    def get_intent_errors(self) -> List[Dict[str, Any]]:
+    @property
+    def intent_errors(self) -> list[dict[str, intent]]:
         """
         Get intent errors data.
 
         :return: Copy of intent errors data object.
         """
-        return self.intent_errors.copy()
+        return self._intent_errors.copy()
 
-    def get_entities(self) -> List[Dict[str, Any]]:
+    @property
+    def entities(self) -> list[dict[str, entity]]:
         """
         Get entities data.
 
         :return: Copy of entities data object.
         """
-        return self.entities.copy()
+        return self._entities.copy()
 
-    def get_entity_overview(self) -> Dict[str, float]:
+    @property
+    def entity_overview(self) -> dict[str, float]:
         """
         Get entity overview data.
 
         :return: Copy of entity overview data object.
         """
-        return self.entity_overview.copy()
+        return self._entity_overview.copy()
 
-    def get_entity_errors(self) -> List[Dict[str, Any]]:
+    @property
+    def entity_errors(self) -> list[dict[str, entity]]:
         """
         Get entity errors data.
 
         :return: Copy of entity errors data object.
         """
-        return self.entity_errors.copy()
+        return self._entity_errors.copy()
 
-    def get_responses(self) -> List[Dict[str, Any]]:
+    @property
+    def responses(self) -> list[dict[str, float]]:
         """
         Get responses data.
 
         :return: Copy of responses data object.
         """
-        return self.responses.copy()
+        return self._responses.copy()
 
-    def get_response_overview(self) -> Dict[str, float]:
+    @property
+    def response_overview(self) -> dict[str, float]:
         """
         Get response overview data.
 
         :return: Copy of response overview data object.
         """
-        return self.response_overview.copy()
+        return self._response_overview.copy()
 
-    def get_overview(self) -> Dict[str, Union[str, float, int]]:
+    @property
+    def overview(self) -> dict[str, str | float]:
         """
         Get overview data.
 
         :return: Copy of overview data object.
         """
-        return self.overview.copy()
+        return self._overview.copy()
 
     def _to_list(self, data, sort_field=None) -> list:
         """
