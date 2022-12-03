@@ -1,14 +1,11 @@
 <div align="center">
 <h1>Rasa Model Report</h1>
 
-<a href="https://www.emojione.com/emoji/1f410">
-  <img
-    height="80"
-    width="80"
-    alt="goat"
-    src="https://raw.githubusercontent.com/testing-library/react-testing-library/main/other/goat.png"
-  />
-</a>
+<img
+    height="180"
+    alt="logo"
+    src="docs/images/logo.png"
+/>
 
 <h4>Simple add-on that generates training model health reports for your Rasa projects.</h4>
 
