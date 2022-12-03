@@ -6,7 +6,13 @@ setup(
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",
     license="Apache 2.0",
-    packages=["src.rasa_model_report", "src.rasa_model_report.controllers", "src.rasa_model_report.helpers"],
+    description="Simple add-on that generates training model health reports for your Rasa projects.",
+    python_requires=">=3.10",
+    packages=[
+        "src.rasa_model_report",
+        "src.rasa_model_report.controllers",
+        "src.rasa_model_report.helpers"
+    ],
     install_requires=[
         "Click",
     ],
