@@ -23,8 +23,8 @@
 <hr />
 
 <!-- prettier-ignore-start -->
-[![version][version-badge]][package]
-[![Code Coverage][coverage-badge]][coverage]
-[![MIT License][license-badge]][license]
-[![All Contributors][all-contributors-badge]](#contributors)
+![Python version](https://img.shields.io/static/v1?label=python&message=v3.10&color=3776AB)
+![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=success)
+![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
+![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report)
 <!-- prettier-ignore-end -->
