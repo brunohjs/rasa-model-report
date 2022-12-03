@@ -10,7 +10,7 @@
   />
 </a>
 
-<h3>Simple add-on that generates training model health reports for your Rasa projects.</h3>
+<h4>Simple add-on that generates training model health reports for your Rasa projects.</h4>
 
 <br />
 
