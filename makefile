@@ -2,12 +2,10 @@ build:
 	pip install . --force-reinstall
 
 install-dev:
-	$(MAKE) install
-	pip install -r requirements.dev.txt
+	pip install . -r requirements.txt -r requirements.dev.txt
 
 install:
-	pip install -r requirements.txt
-	$(MAKE) build
+	pip install . -r requirements.txt
 
 test:
 	pytest

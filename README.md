@@ -36,6 +36,7 @@ rasa-model-report
 ```
 This command must be used in the root of your Rasa project. Otherwise, you can use `--path` parameter to pass the project path.
 
+
 ## ⚙️ Options
 Available options are below:
 
@@ -48,6 +49,27 @@ Available options are below:
 |`--rasa-api`|Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)|string|
 |`--disable-nlu`|Disable NLU section of report.|-|
 |`--help`|Show help message.|-|
+
+
+## 💻 Development
+For development, it's suggested to create an environment using the [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation). To create new environment, use the command:
+```
+mkvirtualenv rasa-model-report --python 3.10
+```
+After that, your new environment will already be activated. If not, to activate just use the command:
+```
+workon rasa-model-report
+```
+
+### Installation
+To install the development environment, use make command:
+```
+make install-dev
+```
+or use `pip install`:
+```
+pip install . -r requirements.txt -r requirements.dev.txt
+```
 
 
 ## 🐞 Bugs
