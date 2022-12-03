@@ -39,12 +39,12 @@ This command must be used in the root of your Rasa project. Otherwise, you can u
 ## Options
 Available options are below:
 
-|Parameter|Description|Type|
-|-|-|-|
-|`--path`|Rasa project path. (default: ./)|string|
-|`--output-path`|Report output path. (default: ./)|string|
-|`--project`|Rasa project name. It's only displayed in the report. (default: My project)|string|
-|`--version`|Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)|string|
-|`--rasa-api`|Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)|string|
-|`--disable-nlu`|Disable NLU section of report.|-|
+|Parameter              |Description|Type|
+|-----------------------|-|-|
+|`--path`               |Rasa project path. (default: ./)|string|
+|`--output-path`        |Report output path. (default: ./)|string|
+|`--project`            |Rasa project name. It's only displayed in the report. (default: My project)|string|
+|`--version`            |Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)|string|
+|`--rasa-api`           |Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)|string|
+|`--disable-nlu`        |Disable NLU section of report.|-|
 |`--help`|Show help message.|-|
