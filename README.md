@@ -7,10 +7,6 @@
     src="docs/images/logo.png"
 />
 <h4>Simple Rasa add-on command-line that generates training model health reports for your projects.</h4>
-<br />
-<!-- [**Read The Docs**](https://testing-library.com/react) | -->
-<!-- [Edit the docs](https://github.com/testing-library/testing-library-docs) -->
-<br />
 </div>
 <hr />
 
