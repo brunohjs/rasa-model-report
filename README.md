@@ -1,5 +1,4 @@
 <div align="center">
-<h1>Rasa Model Report</h1>
 <img
     height="180"
     alt="logo"
