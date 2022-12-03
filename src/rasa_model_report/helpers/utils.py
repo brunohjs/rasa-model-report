@@ -1,7 +1,5 @@
 import datetime
 import os
-from typing import Optional
-from typing import Union
 
 
 def format_date() -> str:
@@ -34,7 +32,7 @@ def check(flag: bool) -> str:
     return "✅" if flag else "❌"
 
 
-def get_color(value: Union[float, int], scale: int = 1) -> str:
+def get_color(value: float, scale: int = 1) -> str:
     """
     Returns a colored icon according to the value.
 
@@ -56,23 +54,23 @@ def get_color(value: Union[float, int], scale: int = 1) -> str:
         return "❌"
 
 
-def scale(value: float, scale: int = 1) -> str:
+def change_scale(value: float, scale: int = 1) -> str:
     """
     Change the value scale and rounds it to display in string format.
 
     :param value: Value that will be changed to scale and rounds it.
-    :param int scale: Scale that will be applied.
-    :return str: Value on the new scale.
+    :param scale: Scale that will be applied.
+    :return: Value on the new scale.
     """
     return f"{int(value * scale)}"
 
 
-def get_project_name(path: Optional[str] = None) -> str:
+def get_project_name(path: str | None = None) -> str:
     """
-    Function that returns the project folder's name.
+    Returns the project folder's name.
 
-    :param str: Project path. If not informed, the current path will be used.
-    :return str: Project folder's name.
+    :param path: Project path. If not informed, the current path will be used.
+    :return: Project folder's name.
     """
     if path:
         return os.path.basename(path)

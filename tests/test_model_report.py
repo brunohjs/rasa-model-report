@@ -3,9 +3,9 @@ import os.path
 import pytest
 import responses
 
-import tests.utils as utils
-from src.rasa_model_report.controllers.ModelReport import ModelReport
-from src.rasa_model_report.controllers.NluController import NluController
+from src.rasa_model_report.controllers.model_report import ModelReport
+from src.rasa_model_report.controllers.nlu_controller import NluController
+from tests import utils
 
 
 @responses.activate
@@ -32,9 +32,9 @@ def test_init_model_report(rasa_path):
     model_report = pytest.model_report
     assert model_report.project == "test-project"
     assert model_report.version == "0.0.0"
-    assert model_report.dirs["RASA_PATH"] == rasa_path
-    assert model_report.dirs["RESULTS_PATH"] == f"{rasa_path}/results"
-    assert model_report.dirs["OUTPUT_DIR"] == "./tests"
+    assert model_report.dirs["rasa_path"] == rasa_path
+    assert model_report.dirs["results_path"] == f"{rasa_path}/results"
+    assert model_report.dirs["output_path"] == "./tests"
     assert model_report.dirs["INTENT_HISTOGRAM"] == "intent_histogram.png"
     assert model_report.dirs["INTENT_MATRIX"] == "intent_confusion_matrix.png"
     assert model_report.dirs["ENTITY_HISTOGRAM"] == "DIETClassifier_histogram.png"
@@ -46,14 +46,14 @@ def test_model_report_with_nlu():
     model_report = pytest.model_report
     model_report.markdown.nlu = pytest.nlu_controller
     model_report.generate_report()
-    assert os.path.isfile(model_report.markdown.OUTPUT_REPORT_FILE)
-    assert os.path.isfile(model_report.markdown.json.OVERVIEW_REPORT)
+    assert os.path.isfile(model_report.markdown.output_report_path)
+    assert os.path.isfile(model_report.markdown.json.overview_report_path)
 
 
 def test_model_report_with_invalid_path(rasa_path):
     model_report = pytest.model_report
     utils.remove_generated_files(rasa_path)
-    model_report.dirs["RESULTS_PATH"] = "invalid/path"
+    model_report.dirs["results_path"] = "invalid/path"
     model_report.generate_report()
-    assert not os.path.isfile(model_report.markdown.OUTPUT_REPORT_FILE)
-    assert not os.path.isfile(model_report.markdown.json.OVERVIEW_REPORT)
+    assert not os.path.isfile(model_report.markdown.output_report_path)
+    assert not os.path.isfile(model_report.markdown.json.overview_report_path)

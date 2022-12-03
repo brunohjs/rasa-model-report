@@ -3,16 +3,16 @@ import datetime
 import pytest
 from freezegun import freeze_time
 
+from src.rasa_model_report.helpers.utils import change_scale
 from src.rasa_model_report.helpers.utils import check
 from src.rasa_model_report.helpers.utils import convert_to_date
 from src.rasa_model_report.helpers.utils import format_date
 from src.rasa_model_report.helpers.utils import get_color
 from src.rasa_model_report.helpers.utils import get_project_name
-from src.rasa_model_report.helpers.utils import scale
 
 
 @pytest.fixture(autouse=True)
-def execute_before_each_test(rasa_path):
+def execute_before_each_test():
     pass
 
 
@@ -26,13 +26,13 @@ def test_get_project_name():
     assert get_project_name("") == "rasa-model-report"
 
 
-def test_scale():
-    assert isinstance(scale(0.123312, 10), str)
-    assert scale(0.123312, 10) == "1"
-    assert scale(98.6, 1) == "98"
-    assert scale(0.4629, 100) == "46"
-    assert scale(90.5, 0.1) == "9"
-    assert scale(0.001) == "0"
+def test_change_scale():
+    assert isinstance(change_scale(0.123312, 10), str)
+    assert change_scale(0.123312, 10) == "1"
+    assert change_scale(98.6, 1) == "98"
+    assert change_scale(0.4629, 100) == "46"
+    assert change_scale(90.5, 0.1) == "9"
+    assert change_scale(0.001) == "0"
 
 
 def test_get_color():

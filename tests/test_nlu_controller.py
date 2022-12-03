@@ -1,11 +1,11 @@
-import unittest.mock as mock
+from unittest import mock
 
 import pytest
-import requests
+import requests.exceptions
 import responses
 
-import tests.utils as utils
-from src.rasa_model_report.controllers.NluController import NluController
+from src.rasa_model_report.controllers.nlu_controller import NluController
+from tests import utils
 
 
 @pytest.fixture(autouse=True)
@@ -30,11 +30,11 @@ def test_init_nlu_controller(rasa_path):
     nlu_controller = pytest.nlu_controller
     assert nlu_controller.project == "test-project"
     assert nlu_controller.version == "0.0.0"
-    assert nlu_controller.RASA_PATH == rasa_path
-    assert nlu_controller.OUTPUT_DIR == "./tests"
-    assert nlu_controller.NLU_PATH == f"{rasa_path}/data"
-    assert nlu_controller.RESULTS_PATH == f"{rasa_path}/results"
-    assert nlu_controller.CONFIG_REPORT == f"{rasa_path}/config.yml"
+    assert nlu_controller.rasa_path == rasa_path
+    assert nlu_controller.output_path == "./tests"
+    assert nlu_controller.nlu_path == f"{rasa_path}/data"
+    assert nlu_controller.results_path == f"{rasa_path}/results"
+    assert nlu_controller.config_report_path == f"{rasa_path}/config.yml"
     assert nlu_controller.is_connected() is True
 
 
@@ -45,25 +45,26 @@ def test_init_nlu_controller_when_no_rasa():
 
 def test_get_data():
     nlu_controller = pytest.nlu_controller
-    data = nlu_controller.get_data()
+    data = nlu_controller.data
     data.append({"test": "ok"})
-    assert nlu_controller.get_data() != data
-    assert isinstance(nlu_controller.get_data(), list)
+    assert nlu_controller.data != data
+    assert isinstance(nlu_controller.data, list)
 
 
 def test_get_problem_sentences():
     nlu_controller = pytest.nlu_controller
-    sentences = nlu_controller.get_problem_sentences()
+    sentences = nlu_controller.problem_sentences
     sentences.append({"test": "ok"})
-    assert nlu_controller.get_problem_sentences() != sentences
-    assert isinstance(nlu_controller.get_problem_sentences(), list)
+    assert nlu_controller.problem_sentences != sentences
+    assert isinstance(nlu_controller.problem_sentences, list)
 
 
-# def test_get_general_grade():
-#     nlu_controller = pytest.nlu_controller
-#     nlu_controller._calculate_general_grade()
-#     assert nlu_controller.get_general_grade() >= 0
-#     assert isinstance(nlu_controller.get_general_grade(), float)
+def test_get_general_grade():
+    nlu_controller = pytest.nlu_controller
+    nlu_controller._calculate_general_grade()
+    assert nlu_controller.general_grade >= 0
+    assert isinstance(nlu_controller.general_grade, float)
+
 
 @responses.activate
 def test_request_nlu():
