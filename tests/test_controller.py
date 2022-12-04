@@ -10,4 +10,3 @@ def test_init_controller(rasa_path):
     assert controller.nlu_path == f"{rasa_path}/data"
     assert controller.results_path == f"{rasa_path}/results"
     assert controller.config_report_path == f"{rasa_path}/config.yml"
-    assert False
