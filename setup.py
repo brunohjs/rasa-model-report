@@ -6,7 +6,8 @@ setup(
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",
     license="Apache 2.0",
-    description="Simple Rasa add-on command-line that generates training model health reports for your projects.",
+    description="Simple open-source Rasa command-line add-on that "
+                "generates training model health reports for your projects.",
     python_requires=">=3.10",
     packages=[
         "src.rasa_model_report",

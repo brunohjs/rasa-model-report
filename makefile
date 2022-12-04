@@ -9,12 +9,16 @@ install:
 
 test:
 	pytest
+	python scripts/change_coverage_badge.py
 
 release-patch:
-	python3 release.py patch
+	python scripts/release.py patch
 
 release-minor:
-	python3 release.py minor
+	python scripts/release.py minor
 
 release-major:
-	python3 release.py major
+	python scripts/release.py major
+
+update-coverage:
+	python scripts/change_coverage_badge.py

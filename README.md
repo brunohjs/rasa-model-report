@@ -6,18 +6,30 @@
     alt="logo"
     src="docs/images/logo.png"
 />
-<h4>Simple Rasa add-on command-line that generates training model health reports for your projects.</h4>
+<h4>Simple open source Rasa command-line add-on that generates training model health reports for your projects.</h4>
 </div>
 <hr />
 
 
 <!-- Badges -->
 ![Python version](https://img.shields.io/static/v1?label=python&message=v3.10&color=3776AB)
-![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=success)
+![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
 ![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report)
 <!--  -->
 
+
+## 🔍 About
+[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The `rasa-model-report` is a unofficial Rasa add-on.
+
+The project was created to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The `rasa-model-report` does just that, it extracts this information to be displayed more clearly in a report.
+
+<img
+    height="22"
+    alt="logo"
+    src="docs/images/open-source-logo.png"
+/>
+*Rasa Model Report is open source.*
 
 ## 📜 Changelog
 Changelog can be found [here](CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github.
