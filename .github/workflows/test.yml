@@ -23,6 +23,7 @@ jobs:
         run: |
           pytest
       - name: Update readme coverage
+        if: always()
         run: |
           make update-coverage
       - name: Commit readme file
