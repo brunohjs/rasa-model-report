@@ -25,7 +25,7 @@ jobs:
       - name: Update readme coverage
         run: |
           make update-coverage
-      - name: Commit readme
+      - name: Commit readme file
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update readme coverage
