@@ -1,7 +1,7 @@
 name: Test
 on: [pull_request]
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         python-version: ["3.10", "3.11"]
@@ -23,6 +23,9 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
       - name: Update readme coverage
         if: always()
         run: |
