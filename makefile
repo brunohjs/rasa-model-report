@@ -1,5 +1,12 @@
-build:
+build-package:
 	pip install . --force-reinstall
+	python -m build
+
+public-test: build-package
+	twine upload -r testpypi dist/* -u brunohjs -p "K6vqVPX2Yl0g;H86br5f"
+
+public-prod: build-package
+	twine upload -r pypi dist/* -u brunohjs -p "K6vqVPX2Yl0g;H86br5f"
 
 install-dev:
 	pip install . -r requirements.txt -r requirements.dev.txt

@@ -4,7 +4,7 @@
 <img
     height="180"
     alt="logo"
-    src="docs/images/logo.png"
+    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/images/logo.png"
 />
 <h4>Simple open source Rasa command-line add-on that generates training model health reports for your projects.</h4>
 </div>
@@ -24,15 +24,17 @@
 
 The project was created to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The `rasa-model-report` does just that, it extracts this information to be displayed more clearly in a report.
 
+You can find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
+
 <img
     height="22"
     alt="logo"
-    src="docs/images/open-source-logo.png"
+    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/images/open-source-logo.png"
 />
 *Rasa Model Report is open source.*
 
 ## 📜 Changelog
-Changelog can be found [here](CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github.
+Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github.
 
 
 ## 📦 Installation
@@ -50,6 +52,13 @@ rasa-model-report
 ```
 This command must be used in the root of your Rasa project. Otherwise, you can use `--path` parameter to pass the project path.
 
+### Step-by-step
+This is the step-by-step guide for using rasa-model-report in your project.
+1. Go to the root folder of your Rasa project.
+2. Train model on your Rasa project, using `rasa train` command.
+3. Run Rasa end-to-end tests, using `rasa test` command.
+4. Run Rasa Model Report, using `rasa-model-report` command.
+5. The result will be in the `model_report.md` file generated in the project root folder.
 
 ## 🦾 Rasa Version Support
 Not every version of Rasa is supported. Check the table below:
@@ -74,6 +83,24 @@ There are parameters that can be used. Available options are below:
 |`--disable-nlu`|Disable NLU section of report.|-|
 |`--help`|Show help message.|-|
 
+### Usage examples
+Some usage examples with parameters:
+- Without parameters is usually used at the root of the Rasa project.
+    ```
+    rasa-model-report
+    ```
+- When you aren't at the root of the project, use `--path` parameter.
+    ```
+    rasa-model-report --path /path/to/rasa/project
+    ```
+- Aren't at the root of the project and without NLU report.
+    ```
+    rasa-model-report --path /path/to/rasa/project --disable-nlu
+    ```
+- Aren't at the root of the project and change the output directory.
+    ```
+    rasa-model-report --path /path/to/rasa/project --output-path path/to/place/report
+    ```
 
 ## 💻 Development
 For development, it's suggested to create an environment using the [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation). To create new environment, use the command:
