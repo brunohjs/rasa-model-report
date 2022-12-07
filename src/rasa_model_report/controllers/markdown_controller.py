@@ -82,9 +82,9 @@ class MarkdownController(Controller):
             return "-"
         return "\n\t\t\t\t\t\t\t".join([f"""<details>
                             <summary>{entity['entity']}</summary>
-                            <pre>início: {entity['start']}
-                            <br>fim: {entity['end']}
-                            <br>valor: {entity['value']}
+                            <pre>start: {entity['start']}
+                            <br>end: {entity['end']}
+                            <br>value: {entity['value']}
                             </pre>
                         </details>""" for entity in entities])
 

@@ -13,28 +13,28 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     type=str,
     required=False,
     default="./",
-    help="Rasa path. (default: ./)"
+    help="Rasa project path. (default: ./)"
 )
 @click.option(
     "--output-path",
     type=str,
     required=False,
     default="./",
-    help="Report output directory. (default: ./)"
+    help="Report output path. (default: ./)"
 )
 @click.option(
     "--project",
     type=str,
     required=False,
     default="My Project",
-    help="Rasa project name. (default: My project)"
+    help="Rasa project name. It's only displayed in the report. (default: My project)"
 )
 @click.option(
     "--version",
     type=str,
     required=False,
     default=None,
-    help="Rasa project version. (default: not identified)"
+    help="Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)"
 )
 @click.option(
     "--rasa-api",
@@ -50,9 +50,14 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     default=False,
     help="Disable NLU section of report. (default: false)"
 )
+@click.help_option(
+    "-h",
+    "--help",
+    help="Show this help message."
+)
 def main(path, output_path, project, version, rasa_api, disable_nlu):
     """
-    Description
+    Simple add-on that generates training model health reports for your Rasa projects. 📈🔍🧾🤖🧠
     """
     report = ModelReport(path, output_path, project, version, disable_nlu=disable_nlu, rasa_api_url=rasa_api)
     return report
