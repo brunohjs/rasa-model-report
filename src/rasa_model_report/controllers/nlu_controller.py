@@ -3,11 +3,10 @@ import logging
 import re
 
 import requests.exceptions
-from requests.adapters import HTTPAdapter
-from requests.adapters import Retry
 from yaml import safe_load
 
 from src.rasa_model_report.controllers.controller import Controller
+from src.rasa_model_report.helpers import utils
 from src.rasa_model_report.helpers.type_aliases import nlu_payload
 
 
@@ -54,7 +53,7 @@ class NluController(Controller):
         :return: True if is available or False.
         """
         self._connected = False
-        response = self.request_rasa_api(self.url)
+        response = utils.request(self.url)
         if isinstance(response, requests.Response):
             self._connected = response.status_code == 200
             if self._connected:
@@ -86,9 +85,18 @@ class NluController(Controller):
         return nlu
 
     def _generate_data(self) -> list[nlu_payload]:
+        """
+        Load and process the NLU sentences data.
+
+        :return: Processed NLU sentences data.
+        """
         logging.info("Formatting extracted data.")
         data = []
+        index = 1
         for intent, examples in self._data.items():
+            progress = index / len(self._data) * 100
+            index += 1
+            logging.info(f" - Analyzing NLU of the {intent} intent ({progress:<5.1f}%).")
             for text in examples:
                 text = self.remove_entities_from_text(text)
                 nlu_requested = self.request_nlu(text)
@@ -109,6 +117,11 @@ class NluController(Controller):
         return data
 
     def _load_problem_sentences(self) -> list[nlu_payload]:
+        """
+        Load problem sentences list.
+
+        :return: Problem sentences list.
+        """
         self._problem_sentences = [
             sentence for sentence in self._data if sentence.get("understood", False)
         ]
@@ -119,7 +132,7 @@ class NluController(Controller):
         """
         Return a copy of the generated data.
 
-        :return: Generated data.
+        :return: Copy of generated data object.
         """
         return self._data.copy()
 
@@ -128,15 +141,25 @@ class NluController(Controller):
         """
         Return a copy of the generated problem sentences.
 
-        :return: Generated data.
+        :return: Copy of problem sentences object.
         """
         return self._problem_sentences.copy()
 
     @property
     def general_grade(self) -> float | None:
+        """
+        Return a copy of the general grade value.
+
+        :return: Copy of general grade value.
+        """
         return self._general_grade
 
     def _calculate_general_grade(self) -> float | None:
+        """
+        Calculate the general grade value.
+
+        :return: General grade value.
+        """
         total_sentences = len(self._data)
         if total_sentences:
             total_problem_sentences = len(self._problem_sentences)
@@ -144,7 +167,13 @@ class NluController(Controller):
             return self._general_grade
 
     def request_nlu(self, text: str) -> nlu_payload:
-        response = requests.request(
+        """
+        Function that requests the NLU payload to the Rasa API.
+
+        :param text: Sentence.
+        :return: NLU payload.
+        """
+        response = utils.request(
             method="POST",
             url=f"{self.url}/model/parse",
             json={"text": text}
@@ -155,13 +184,24 @@ class NluController(Controller):
         return {}
 
     @staticmethod
-    def _extract_sentences(text: str) -> str:
+    def _extract_sentences(text: str) -> list[str]:
+        """
+        Split and arrange sentences in a list.
+
+        :param text: Sentences string file.
+        :return: List of sentences.
+        """
         text = text.split("\n")
-        text = [item[2:] for item in text if item != ""]
-        return text
+        return [item[2:] for item in text if item != ""]
 
     @staticmethod
     def remove_entities_from_text(text: str) -> str:
+        """
+        Remove Rasa entity syntax from text.
+
+        :param text: Text with Rasa entity syntax.
+        :return: Text without Rasa entity syntax.
+        """
         letter = "[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ_\\-'\"\\s]"
         regex = f"(\\[{letter}+\\](\\({letter}+\\)|{{\"entity\":{letter}+,(\\s+)?\"value\":{letter}+}}))"
         matched = re.findall(regex, text)
@@ -173,24 +213,29 @@ class NluController(Controller):
         return text
 
     @staticmethod
-    def select_intent(payload: nlu_payload) -> dict[str, str]:
-        if payload.get("intent", {}).get("name") == "nlu_fallback":
-            payload["intent_ranking"][1]["nlu_fallback"] = True
-            return payload.get("intent_ranking")[1]
-        else:
-            return payload.get("intent", {})
+    def select_intent(payload: nlu_payload) -> dict[str, nlu_payload]:
+        """
+        From the NLU payload returned from RASA API, the correct intent is selected.
 
-    @staticmethod
-    def request_rasa_api(url: str, method: str = "GET", json: dict = {}) -> requests.Response | None:
-        message = "NLU section will not be generated."
-        response = None
-        try:
-            session = requests.Session()
-            retries = Retry(total=2, backoff_factor=3)
-            session.mount("http://", HTTPAdapter(max_retries=retries))
-            response = session.request(method=method, url=url, json=json)
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            logging.warning(f"Rasa API is disabled. {message}")
-        except requests.exceptions.RequestException:
-            logging.warning(f"Rasa API has some problem. {message}")
-        return response
+        :param payload: NLU payload returned from RASA API.
+        :return: Formatted intent object.
+        """
+        intent = payload.get("intent", {})
+        intent_name = intent.get("name")
+        response_selector = payload.get("response_selector", {})
+        if intent_name == "nlu_fallback":
+            intent = payload["intent_ranking"][1].copy()
+            intent["nlu_fallback"] = True
+        elif intent_name in response_selector.get("all_retrieval_intents", []):
+            response = response_selector.get(intent_name, {})
+            for r in response.get("ranking", []):
+                r["name"] = r.pop("intent_response_key")
+            intent = response.get("response")
+            return {
+                "id": intent.get("id"),
+                "name": intent.get("intent_response_key"),
+                "confidence": intent.get("confidence"),
+                "intent_ranking": response.get("ranking", [])
+            }
+        intent["intent_ranking"] = payload.get("intent_ranking", [])
+        return intent

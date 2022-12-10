@@ -1,6 +1,9 @@
 import datetime
+from unittest import mock
 
 import pytest
+import requests.exceptions
+import responses
 from freezegun import freeze_time
 
 from src.rasa_model_report.helpers.utils import change_scale
@@ -9,6 +12,8 @@ from src.rasa_model_report.helpers.utils import convert_to_date
 from src.rasa_model_report.helpers.utils import format_date
 from src.rasa_model_report.helpers.utils import get_color
 from src.rasa_model_report.helpers.utils import get_project_name
+from src.rasa_model_report.helpers.utils import request
+from tests import utils
 
 
 @pytest.fixture(autouse=True)
@@ -88,3 +93,24 @@ def test_convert_to_date():
 @freeze_time("02-01-2003")
 def test_format_date():
     assert format_date() == "01/02/03 00:00:00"
+
+
+@responses.activate
+def test_request_200():
+    utils.load_mock_payloads()
+    response = request("http://localhost:5005")
+    assert response.status_code == 200
+
+
+@responses.activate
+def test_request_general_error():
+    utils.load_mock_payloads()
+    response = request("invalid url")
+    assert response is None
+
+
+@responses.activate
+def test_request_connection_error():
+    with mock.patch("requests.get", side_effect=requests.exceptions.ConnectionError()):
+        response = request("http://localhost:5005")
+        assert response is None
