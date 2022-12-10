@@ -173,7 +173,7 @@ class NluController(Controller):
         return text
 
     @staticmethod
-    def select_intent(payload: nlu_payload) -> dict[str, str]:
+    def select_intent(payload: nlu_payload, retrieval_intent: bool = False) -> dict[str, str]:
         if payload.get("intent", {}).get("name") == "nlu_fallback":
             payload["intent_ranking"][1]["nlu_fallback"] = True
             return payload.get("intent_ranking")[1]
