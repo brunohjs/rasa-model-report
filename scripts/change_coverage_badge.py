@@ -1,3 +1,4 @@
+# This script is responsable for update the coverage badge in the README.md file.
 import re
 from xml.dom import minidom
 

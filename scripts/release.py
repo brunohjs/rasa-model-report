@@ -1,3 +1,4 @@
+# This script is responsable for launching new app releases.
 import logging
 import subprocess
 import sys
