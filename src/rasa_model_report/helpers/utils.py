@@ -1,5 +1,10 @@
 import datetime
+import logging
 import os
+
+import requests.exceptions
+from requests.adapters import HTTPAdapter
+from requests.adapters import Retry
 
 
 def format_date() -> str:
@@ -76,3 +81,28 @@ def get_project_name(path: str | None = None) -> str:
         return os.path.basename(path)
     directory_path = os.getcwd()
     return os.path.basename(directory_path)
+
+
+def request(url: str, method: str = "GET", json: dict = {}) -> requests.Response | None:
+    """
+    Function that makes requests.
+
+    :param url: URL.
+    :param method: Request method (default: "GET").
+    :param json: JSON body request (default: {}).
+    :return: Response object.
+    """
+    response = None
+    try:
+        session = requests.Session()
+        retries = Retry(total=2, backoff_factor=3)
+        session.mount("http://", HTTPAdapter(max_retries=retries))
+        response = session.request(method=method, url=url, json=json)
+    except (
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        requests.exceptions.RequestException
+    ) as error:
+        logging.warning(f"Error connecting to {url}. Message: {error}")
+    finally:
+        return response

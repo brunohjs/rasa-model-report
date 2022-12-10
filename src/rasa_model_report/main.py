@@ -48,7 +48,8 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     is_flag=True,
     required=False,
     default=False,
-    help="Disable NLU section of report. (default: false)"
+    help="Disable processing NLU sentences. NLU section will not be generated "
+    "in the report. Required Rasa API. (default: false)"
 )
 @click.help_option(
     "-h",

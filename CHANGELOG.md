@@ -5,8 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
 
+<!-- ## [Unreleased]
+### Added
+- Added Dutch translation
+### Fixed
+- Fixed foldouts in Dutch translation -->
+
+
+## [1.0.0] - In progress
 ### Added
 - Added script that generates Rasa model report.
 - Created command `rasa-model-report` for the command-line.
@@ -15,5 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created unit test and the automation on Github action.
   - The automation will execute the tests every time a PR is opened.
 
+### Fixed
+- [#16](https://github.com/brunohjs/rasa-model-report/issues/16): Created a handler for retrieval intents in the report.
 
-[unreleased]: https://github.com/brunohjs/rasa-model-report
+
+<!-- [unreleased]: https://github.com/brunohjs/rasa-model-report/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/v1.0.0 -->

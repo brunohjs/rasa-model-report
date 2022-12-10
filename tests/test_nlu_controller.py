@@ -1,7 +1,4 @@
-from unittest import mock
-
 import pytest
-import requests.exceptions
 import responses
 
 from src.rasa_model_report.controllers.nlu_controller import NluController
@@ -123,7 +120,24 @@ def test_select_normal_intent():
             }
         ]
     }
-    assert nlu_controller.select_intent(payload) == payload.get("intent")
+    result = {
+        "id": 6130133147372115834,
+        "name": "greet",
+        "confidence": 0.77470862865448,
+        "intent_ranking": [
+            {
+                "id": 6130133147372115834,
+                "name": "greet",
+                "confidence": 0.77470862865448
+            },
+            {
+                "id": 684865172093367490,
+                "name": "affirm",
+                "confidence": 0.15055057406425476
+            }
+        ]
+    }
+    assert nlu_controller.select_intent(payload) == result
 
 
 def test_select_nlu_fallback_intent():
@@ -149,30 +163,99 @@ def test_select_nlu_fallback_intent():
             }
         ]
     }
-    result = payload["intent_ranking"][1]
-    result["nlu_fallback"] = True
+    result = {
+        "id": 6130133147372115834,
+        "name": "greet",
+        "confidence": 0.77470862865448,
+        "nlu_fallback": True,
+        "intent_ranking": [
+            {
+                "id": 6136533147372685482,
+                "name": "nlu_fallback",
+                "confidence": 0.8
+            },
+            {
+                "id": 6130133147372115834,
+                "name": "greet",
+                "confidence": 0.77470862865448
+            }
+        ]
+    }
     assert nlu_controller.select_intent(payload) == result
 
 
-@responses.activate
-def test_request_rasa_api_200():
-    utils.load_mock_payloads()
+def test_select_chitchat_intent():
     nlu_controller = pytest.nlu_controller
-    response = nlu_controller.request_rasa_api("http://localhost:5005")
-    assert response.status_code == 200
-
-
-@responses.activate
-def test_request_rasa_api_general_error():
-    utils.load_mock_payloads()
-    nlu_controller = pytest.nlu_controller
-    response = nlu_controller.request_rasa_api("invalid url")
-    assert response is None
-
-
-@responses.activate
-def test_request_rasa_api_connection_error():
-    nlu_controller = pytest.nlu_controller
-    with mock.patch("requests.get", side_effect=requests.exceptions.ConnectionError()):
-        response = nlu_controller.request_rasa_api("http://localhost:5005")
-        assert response is None
+    payload = {
+        "text": "What's up man",
+        "intent": {
+            "id": 2906457073168819123,
+            "name": "chitchat",
+            "confidence": 0.999968945980072
+        },
+        "entities": [],
+        "intent_ranking": [
+            {
+                "id": 2906457073168819123,
+                "name": "chitchat",
+                "confidence": 0.999968945980072
+            },
+            {
+                "id": 7260289726461652906,
+                "name": "ask_which_events",
+                "confidence": 1.3520077118300833e-05
+            }
+        ],
+        "response_selector": {
+            "all_retrieval_intents": [
+                "chitchat"
+            ],
+            "chitchat": {
+                "response": {
+                    "id": 1089191035510850432,
+                    "responses": [
+                        {
+                            "text": "I'm great! Thanks for asking."
+                        }
+                    ],
+                    "response_templates": [
+                        {
+                            "text": "I'm great! Thanks for asking."
+                        }
+                    ],
+                    "confidence": 0.9999934434890747,
+                    "intent_response_key": "chitchat/ask_howdoing",
+                    "utter_action": "utter_chitchat/ask_howdoing",
+                    "template_name": "utter_chitchat/ask_howdoing"
+                },
+                "ranking": [
+                    {
+                        "id": 1089191035510850432,
+                        "confidence": 0.9999934434890747,
+                        "intent_response_key": "chitchat/ask_howdoing"
+                    },
+                    {
+                        "id": 1401854538324391268,
+                        "confidence": 4.242805516696535e-06,
+                        "intent_response_key": "chitchat/ask_whatisrasa"
+                    }
+                ]
+            }
+        }
+    }
+    result = {
+        "id": 1089191035510850432,
+        "confidence": 0.9999934434890747,
+        "name": "chitchat/ask_howdoing",
+        "intent_ranking": [{
+            "id": 1089191035510850432,
+            "confidence": 0.9999934434890747,
+            "name": "chitchat/ask_howdoing"
+        },
+            {
+            "id": 1401854538324391268,
+            "confidence": 4.242805516696535e-06,
+            "name": "chitchat/ask_whatisrasa"
+        }]
+    }
+    assert nlu_controller.select_intent(payload) == result

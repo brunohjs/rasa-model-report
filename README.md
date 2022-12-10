@@ -80,7 +80,7 @@ There are parameters that can be used. Available options are below:
 |`--project`|Rasa project name. It's only displayed in the report. (default: My project)|string|
 |`--version`|Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)|string|
 |`--rasa-api`|Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)|string|
-|`--disable-nlu`|Disable NLU section of report.|-|
+|`--disable-nlu`|Disable processing NLU sentences. NLU section will not be generated in the report. Required Rasa API. (default: false)|-|
 |`--help`|Show help message.|-|
 
 ### Usage examples
