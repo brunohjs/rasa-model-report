@@ -55,7 +55,7 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
 1. Go to the root folder of your Rasa project.
 2. Train model on your Rasa project using `rasa train` command.
 3. Run Rasa end-to-end tests using `rasa test` command.
-   - This command will generate some data in json and image files in `result/` directory.
+   - This command will generate some data in json, markdown and image files in `result/` directory.
    - This data **is needed** for **rasa-model-report** to generate the report.
 4. (Optional) If you want to know model NLU rating for each sentence in your project, run your project's Rasa API through the command `rasa run --enable-api`.
    - When you run **rasa-model-report**, autommaticly it will know this and it will request NLU rating for each sentence. The result will be in the *NLU* section of the report.
@@ -64,7 +64,7 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
    - If you haven't install it, see [how to install](https://github.com/brunohjs/rasa-model-report#-installation).
 6. The result will be in the `model_report.md` file generated in the project root folder.
 
-Below, I created this video to show how to use the **rasa-model-report**. I used the Rasa sample project (from `rasa-init` command). In this [link](docs/markdown/sample_model_report.md) is the generated report.
+Below, I created this video to show how to use the **rasa-model-report**. I used the Rasa sample project (from `rasa-init` command). In this [link](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/sample_model_report.md) is the generated report.
 
 https://user-images.githubusercontent.com/26513013/206880601-3145c3d6-e05f-4221-ba16-6a6da06a1edb.mp4
 
