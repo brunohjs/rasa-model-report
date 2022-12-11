@@ -50,18 +50,18 @@ def release(version):
     logging.info(f"Current branch: {branch_name}")
     if branch_name != MAIN_BRANCH:
         logging.info(f"Switching to branch {MAIN_BRANCH}")
-        subprocess.run(["git checkout", f"'{MAIN_BRANCH}'"], shell=True)
+        subprocess.run([f"git checkout '{MAIN_BRANCH}'"], shell=True)
     logging.info(f"Updating branch {MAIN_BRANCH}")
     subprocess.run(["git pull"], shell=True)
     logging.info("Updating setup.py file")
     update_version_setup_file(version)
     logging.info("Committing updates")
-    subprocess.run(["git add", "setup.py"], shell=True)
-    subprocess.run(["git commit", "-n", "-m", f"New version released v{version}"], shell=True)
+    subprocess.run(["git add setup.py"], shell=True)
+    subprocess.run([f"git commit -n -m \"New version released v{version}\""], shell=True)
     subprocess.run(["git push"], shell=True)
     logging.info("Committing tag")
-    subprocess.run(["git tag", f"{version}"], shell=True)
-    subprocess.run(["git push", "--tags"])
+    subprocess.run([f"git tag {version}"], shell=True)
+    subprocess.run(["git", "push", "--tags"])
     logging.info(f"Finished process. New version v{version}")
 
 
