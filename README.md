@@ -4,7 +4,7 @@
 <img
     height="180"
     alt="logo"
-    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/images/logo.png"
+    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/image/logo.png"
 />
 <h4>Simple open source Rasa command-line add-on that generates training model health reports for your projects.</h4>
 </div>
