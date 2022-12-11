@@ -20,9 +20,7 @@
 
 
 ## 🔍 About
-[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The **rasa-model-report** is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The **rasa-model-report** does just that, it extracts this information to be displayed more clearly in a report.
-
-You can find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
+[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The **rasa-model-report** is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The **rasa-model-report** does just that, it extracts this information to be displayed more clearly in a report. You can see [this](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/sample_model_report.md) example.
 
 <img
     height="22"
@@ -32,7 +30,7 @@ You can find planned enhancements for project in the [Project Board](https://git
 ***rasa-model-report** is a open source project.*
 
 ## 📜 Changelog
-Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github.
+Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github and find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
 
 
 ## 📦 Installation
@@ -58,8 +56,8 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
    - This command will generate some data in json, markdown and image files in `result/` directory.
    - This data **is needed** for **rasa-model-report** to generate the report.
 4. (Optional) If you want to know model NLU rating for each sentence in your project, run your project's Rasa API through the command `rasa run --enable-api`.
-   - When you run **rasa-model-report**, autommaticly it will know this and it will request NLU rating for each sentence. The result will be in the *NLU* section of the report.
-   - If you don't want to use this option, just pass the parameter `--disable-nlu` or don't run Rasa API (**rasa-model-report** will try to connect twice, after that it will skip this step).
+   - When you run **rasa-model-report**, automatically it will request NLU rating for each sentence. The result will be in the *NLU* section of the report.
+   - If you don't want to use this option, just pass the parameter `--disable-nlu` or don't run Rasa API (if you don't run Rasa API, **rasa-model-report** will try to connect, after two tries it will skip this step).
 5. Run **rasa-model-report** in root project.
    - If you haven't install it, see [how to install](https://github.com/brunohjs/rasa-model-report#-installation).
 6. The result will be in the `model_report.md` file generated in the project root folder.
@@ -82,15 +80,21 @@ Not every version of Rasa is supported. Check the table below:
 ## ⚙️ Options
 There are parameters that can be used. Available options are below:
 
-|Parameter|Description|Type|
-|-|-|-|
-|`--path`|Rasa project path. (default: ./)|string|
-|`--output-path`|Report output path. (default: ./)|string|
-|`--project`|Rasa project name. It's only displayed in the report. (default: My project)|string|
-|`--version`|Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)|string|
-|`--rasa-api`|Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)|string|
-|`--disable-nlu`|Disable processing NLU sentences. NLU section will not be generated in the report. Required Rasa API. (default: false)|-|
-|`--help`|Show help message.|-|
+```
+  --path TEXT         Rasa project path. (default: ./)
+  --output-path TEXT  Report output path. (default: ./)
+  --project TEXT      Rasa project name. It's only displayed in the report.
+                      (default: My project)
+  --version TEXT      Rasa project version. It's only displayed in the report
+                      for project versioning. (default: not-identified)
+  --rasa-api TEXT     Rasa API URL. Is needed to create NLU section of report.
+                      (default: http://localhost:5005)
+  --disable-nlu       Disable processing NLU sentences. NLU section will not
+                      be generated in the report. Required Rasa API. (default:
+                      false)
+  -h, --help          Show this help message.
+```
+
 
 ### Usage examples
 Some usage examples with parameters:
@@ -106,7 +110,7 @@ Some usage examples with parameters:
     ```
     rasa-model-report --path /path/to/rasa/project --disable-nlu
     ```
-- Aren't at the root of the project and change the output directory.
+- Aren't at the root of the project and change the report output directory.
     ```
     rasa-model-report --path /path/to/rasa/project --output-path path/to/place/report
     ```
@@ -130,6 +134,15 @@ or use `pip install`:
 ```
 pip install . -r requirements.txt -r requirements.dev.txt
 ```
+
+### Test
+Before test any changes you've made, you need to install the package again to update package files. Use the command:
+```
+pip install .
+```
+After that, you can test using `rasa-model-report` command with or without parameters.
+
+To run unit tests, use `make test` or `pytest` command.
 
 
 ## 🐞 Bugs
