@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed foldouts in Dutch translation -->
 
 
-## [1.0.0] - In progress
+## [1.0.0] - 2022-12-10
 ### Added
 - Added script that generates Rasa model report.
 - Created command `rasa-model-report` for the command-line.
@@ -26,5 +26,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16): Created a handler for retrieval intents in the report.
 
 
-<!-- [unreleased]: https://github.com/brunohjs/rasa-model-report/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/v1.0.0 -->
+[unreleased]: https://github.com/brunohjs/rasa-model-report/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/v1.0.0
