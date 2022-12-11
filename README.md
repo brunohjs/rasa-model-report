@@ -25,7 +25,7 @@
 <img
     height="22"
     alt="logo"
-    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/images/open_source_logo.png"
+    src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/image/open_source_logo.png"
 />
 ***rasa-model-report** is a open source project.*
 
