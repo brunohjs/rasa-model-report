@@ -20,7 +20,7 @@
 
 
 ## 🔍 About
-[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The `rasa-model-report` is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The `rasa-model-report` does just that, it extracts this information to be displayed more clearly in a report.
+[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The **rasa-model-report** is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The **rasa-model-report** does just that, it extracts this information to be displayed more clearly in a report.
 
 You can find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
 
@@ -29,7 +29,7 @@ You can find planned enhancements for project in the [Project Board](https://git
     alt="logo"
     src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/images/open_source_logo.png"
 />
-*rasa-model-report is a open source project.*
+***rasa-model-report** is a open source project.*
 
 ## 📜 Changelog
 Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github.
