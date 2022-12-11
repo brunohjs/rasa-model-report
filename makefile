@@ -19,7 +19,7 @@ test:
 	python scripts/change_coverage_badge.py
 
 release-patch:
-	python scripts/release.py patch
+	python scripts/release.py patch && $(MAKE) public-test
 
 release-minor:
 	python scripts/release.py minor
