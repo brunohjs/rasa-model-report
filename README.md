@@ -12,6 +12,7 @@
 
 
 <!-- Badges -->
+![Version](https://img.shields.io/pypi/v/rasa-model-report)
 ![Python version](https://img.shields.io/static/v1?label=python&message=v3.10&color=3776AB)
 ![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
