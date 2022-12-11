@@ -31,7 +31,7 @@
 ***rasa-model-report** is a open source project.*
 
 ## 📜 Changelog
-Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github and find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
+Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md#changelog). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github and find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
 
 
 ## 📦 Installation
