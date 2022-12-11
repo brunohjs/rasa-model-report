@@ -66,7 +66,7 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
 
 Below, I created this video to show how to use the **rasa-model-report**. I used the Rasa sample project (from `rasa-init` command). In this [link](docs/markdown/sample_model_report.md) is the generated report.
 
-<video src="docs/video/example.mp4">
+https://user-images.githubusercontent.com/26513013/206880601-3145c3d6-e05f-4221-ba16-6a6da06a1edb.mp4
 
 
 ## 🦾 Rasa Version Support
