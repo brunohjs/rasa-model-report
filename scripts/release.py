@@ -1,6 +1,8 @@
 # This script is responsable for launching new app releases.
 import logging
+import os.path
 import re
+import shutil
 import subprocess
 import sys
 
@@ -62,6 +64,8 @@ def release(version):
     logging.info("Committing tag")
     subprocess.run([f"git tag {version}"], shell=True)
     subprocess.run(["git", "push", "origin", f"{version}"])
+    if os.path.isdir("dist"):
+        shutil.rmtree("dist")
     logging.info(f"Finished process. New version v{version}")
 
 
