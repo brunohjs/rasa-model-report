@@ -6,7 +6,7 @@ import sys
 
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
-MAIN_BRANCH = "#10"
+MAIN_BRANCH = "main"
 
 
 def update_version_setup_file(new_version):
@@ -61,7 +61,7 @@ def release(version):
     subprocess.run(["git push"], shell=True)
     logging.info("Committing tag")
     subprocess.run([f"git tag {version}"], shell=True)
-    subprocess.run(["git", "push", "--tags"])
+    subprocess.run(["git", "push", "origin", f"{version}"])
     logging.info(f"Finished process. New version v{version}")
 
 

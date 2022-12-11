@@ -19,13 +19,13 @@ test:
 	python scripts/change_coverage_badge.py
 
 release-patch:
-	python scripts/release.py patch && $(MAKE) public-test
+	python scripts/release.py patch && $(MAKE) public-prod
 
 release-minor:
-	python scripts/release.py minor
+	python scripts/release.py minor && $(MAKE) public-prod
 
 release-major:
-	python scripts/release.py major
+	python scripts/release.py major && $(MAKE) public-prod
 
 update-coverage:
 	python scripts/change_coverage_badge.py
