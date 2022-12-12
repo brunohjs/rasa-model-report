@@ -13,7 +13,7 @@
 
 <!-- Badges -->
 ![Version](https://img.shields.io/pypi/v/rasa-model-report)
-![Python version](https://img.shields.io/static/v1?label=python&message=v3.10&color=3776AB)
+![Python version](https://img.shields.io/static/v1?label=python&message=v3.8&color=3776AB)
 ![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
 ![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report)
@@ -36,7 +36,7 @@ Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob
 
 ## 📦 Installation
 
-This module is distributed via [Pypi](https://pypi.org/) and is required to use **Python v3.10** or higher. To install the package, use the command:
+This module is distributed via [Pypi](https://pypi.org/) and is required to use **Python v3.8** or higher. To install the package, use the command:
 ```
 pip install rasa-model-report
 ```
@@ -60,7 +60,7 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
    - When you run **rasa-model-report**, automatically it will request NLU rating for each sentence. The result will be in the *NLU* section of the report.
    - If you don't want to use this option, just pass the parameter `--disable-nlu` or don't run Rasa API (if you don't run Rasa API, **rasa-model-report** will try to connect, after two tries it will skip this step).
 5. Run **rasa-model-report** in root project.
-   - If you haven't install it, see [how to install](https://github.com/brunohjs/rasa-model-report#-installation).
+   - If you haven't installed it, see [how to install](https://github.com/brunohjs/rasa-model-report#-installation).
 6. The result will be in the `model_report.md` file generated in the project root folder.
 
 Below, I created this video to show how to use the **rasa-model-report**. I used the Rasa sample project (from `rasa-init` command). In this [link](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/sample_model_report.md) is the generated report.

@@ -1,13 +1,14 @@
 import glob
 import logging
 import re
+from typing import Optional, Union, Dict, List
 
 import requests.exceptions
 from yaml import safe_load
 
-from src.rasa_model_report.controllers.controller import Controller
-from src.rasa_model_report.helpers import utils
-from src.rasa_model_report.helpers.type_aliases import nlu_payload
+from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.helpers import utils
+from rasa_model_report.helpers.type_aliases import nlu_payload
 
 
 class NluController(Controller):
@@ -25,9 +26,9 @@ class NluController(Controller):
     ) -> None:
         super().__init__(rasa_path, output_path, project, version)
 
-        self._data: list[nlu_payload] = []
-        self._problem_sentences: list[nlu_payload] = []
-        self._general_grade: float | None = None
+        self._data: List[nlu_payload] = []
+        self._problem_sentences: List[nlu_payload] = []
+        self._general_grade: Optional[float] = None
         self._connected: bool = False
         self._disable_nlu: bool = kwargs.get("disable_nlu")
         self.url: str = url
@@ -62,7 +63,7 @@ class NluController(Controller):
                 logging.warning("Rasa API has some problem. NLU section will not be generated.")
         return self._connected
 
-    def _load_nlu(self) -> dict[str, str | list[str]]:
+    def _load_nlu(self) -> Dict[str, Union[str, List[str]]]:
         """
         Load all NLU sentences from project of Rasa files.
 
@@ -84,7 +85,7 @@ class NluController(Controller):
         self._data = nlu
         return nlu
 
-    def _generate_data(self) -> list[nlu_payload]:
+    def _generate_data(self) -> List[nlu_payload]:
         """
         Load and process the NLU sentences data.
 
@@ -116,7 +117,7 @@ class NluController(Controller):
         self._data = data
         return data
 
-    def _load_problem_sentences(self) -> list[nlu_payload]:
+    def _load_problem_sentences(self) -> List[nlu_payload]:
         """
         Load problem sentences list.
 
@@ -128,7 +129,7 @@ class NluController(Controller):
         return self._problem_sentences
 
     @property
-    def data(self) -> list[nlu_payload]:
+    def data(self) -> List[nlu_payload]:
         """
         Return a copy of the generated data.
 
@@ -137,7 +138,7 @@ class NluController(Controller):
         return self._data.copy()
 
     @property
-    def problem_sentences(self) -> list[nlu_payload]:
+    def problem_sentences(self) -> List[nlu_payload]:
         """
         Return a copy of the generated problem sentences.
 
@@ -146,7 +147,7 @@ class NluController(Controller):
         return self._problem_sentences.copy()
 
     @property
-    def general_grade(self) -> float | None:
+    def general_grade(self) -> Optional[float]:
         """
         Return a copy of the general grade value.
 
@@ -154,7 +155,7 @@ class NluController(Controller):
         """
         return self._general_grade
 
-    def _calculate_general_grade(self) -> float | None:
+    def _calculate_general_grade(self) -> Optional[float]:
         """
         Calculate the general grade value.
 
@@ -184,7 +185,7 @@ class NluController(Controller):
         return {}
 
     @staticmethod
-    def _extract_sentences(text: str) -> list[str]:
+    def _extract_sentences(text: str) -> List[str]:
         """
         Split and arrange sentences in a list.
 
@@ -213,7 +214,7 @@ class NluController(Controller):
         return text
 
     @staticmethod
-    def select_intent(payload: nlu_payload) -> dict[str, nlu_payload]:
+    def select_intent(payload: nlu_payload) -> Dict[str, nlu_payload]:
         """
         From the NLU payload returned from RASA API, the correct intent is selected.
 

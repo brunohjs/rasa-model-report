@@ -3,8 +3,8 @@ import os.path
 import pytest
 import responses
 
-from src.rasa_model_report.controllers.model_report import ModelReport
-from src.rasa_model_report.controllers.nlu_controller import NluController
+from rasa_model_report.controllers.model_report import ModelReport
+from rasa_model_report.controllers.nlu_controller import NluController
 from tests import utils
 
 

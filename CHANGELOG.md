@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created command `rasa-model-report` for the command-line.
 - Created the README.md file.
 - Created the CHANGELOG.md file.
-- Created unit test and the automation on Github action.
+- Created unit test and the automation on GitHub action.
   - The automation will execute the tests every time a PR is opened.
 
 ### Fixed
