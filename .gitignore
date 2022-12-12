@@ -137,3 +137,6 @@ model_report.md
 
 # VS Code
 settings.json
+
+# PyCharm
+.idea/

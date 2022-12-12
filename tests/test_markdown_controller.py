@@ -3,7 +3,7 @@ import os.path
 import pytest
 import responses
 
-from src.rasa_model_report.controllers.json_controller import JsonController
+from rasa_model_report.controllers.json_controller import JsonController
 
 
 def test_init_markdown_controller(rasa_path):

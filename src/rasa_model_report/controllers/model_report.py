@@ -1,8 +1,10 @@
 import logging
 import os.path
 
-from src.rasa_model_report.controllers.markdown_controller import MarkdownController
-from src.rasa_model_report.helpers.utils import get_project_name
+from typing import Dict
+
+from rasa_model_report.controllers.markdown_controller import MarkdownController
+from rasa_model_report.helpers.utils import get_project_name
 
 
 class ModelReport:
@@ -27,7 +29,7 @@ class ModelReport:
             self.version,
             **kwargs
         )
-        self.dirs: dict[str, str] = {
+        self.dirs: Dict[str, str] = {
             "rasa_path": rasa_path,
             "results_path": f"{rasa_path}/results",
             "output_path": output_path,

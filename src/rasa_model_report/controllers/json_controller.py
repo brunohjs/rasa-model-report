@@ -2,11 +2,13 @@ import json
 import logging
 import os.path
 
-from src.rasa_model_report.controllers.controller import Controller
-from src.rasa_model_report.helpers.type_aliases import entity
-from src.rasa_model_report.helpers.type_aliases import intent
-from src.rasa_model_report.helpers.type_aliases import number
-from src.rasa_model_report.helpers.utils import format_date
+from typing import Dict, Union, List
+
+from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.helpers.type_aliases import entity
+from rasa_model_report.helpers.type_aliases import intent
+from rasa_model_report.helpers.type_aliases import number
+from rasa_model_report.helpers.utils import format_date
 
 
 class JsonController(Controller):
@@ -24,15 +26,15 @@ class JsonController(Controller):
         """
         super().__init__(rasa_path, output_path, project, version)
 
-        self._intents: list[dict[str, intent]] = []
-        self._intent_overview: dict[str, float] = {}
-        self._intent_errors: list[dict[str, intent]] = []
-        self._entities: list[dict[str, entity]] = []
-        self._entity_overview: dict[str, float] = {}
-        self._entity_errors: list[dict[str, entity]] = []
-        self._responses: list[dict[str, float]] = []
-        self._response_overview: dict[str, float] = {}
-        self._overview: dict[str, str | number] = {
+        self._intents: List[Dict[str, intent]] = []
+        self._intent_overview: Dict[str, float] = {}
+        self._intent_errors: List[Dict[str, intent]] = []
+        self._entities: List[Dict[str, entity]] = []
+        self._entity_overview: Dict[str, float] = {}
+        self._entity_errors: List[Dict[str, entity]] = []
+        self._responses: List[Dict[str, float]] = []
+        self._response_overview: Dict[str, float] = {}
+        self._overview: Dict[str, Union[str, number]] = {
             "project": self.project,
             "version": self.version
         }
@@ -45,7 +47,7 @@ class JsonController(Controller):
 
         self._load_data()
 
-    def load_json_file(self, filename: str, error_flag: bool = True) -> dict | list:
+    def load_json_file(self, filename: str, error_flag: bool = True) -> Union[dict, list]:
         """
         Loads data from a JSON file.
 
@@ -209,7 +211,7 @@ class JsonController(Controller):
             "overall": overview_rate
         })
 
-    def update_overview(self, obj: dict[str, number]) -> None:
+    def update_overview(self, obj: Dict[str, number]) -> None:
         """
         Update overview report data.
 
@@ -220,7 +222,7 @@ class JsonController(Controller):
             self._calculate_overall()
 
     @property
-    def intents(self) -> dict[str, intent]:
+    def intents(self) -> Dict[str, intent]:
         """
         Get intents data.
 
@@ -229,7 +231,7 @@ class JsonController(Controller):
         return self._intents.copy()
 
     @property
-    def intent_overview(self) -> dict[str, float]:
+    def intent_overview(self) -> Dict[str, float]:
         """
         Get intent overview data.
 
@@ -238,7 +240,7 @@ class JsonController(Controller):
         return self._intent_overview.copy()
 
     @property
-    def intent_errors(self) -> list[dict[str, intent]]:
+    def intent_errors(self) -> List[Dict[str, intent]]:
         """
         Get intent errors data.
 
@@ -247,7 +249,7 @@ class JsonController(Controller):
         return self._intent_errors.copy()
 
     @property
-    def entities(self) -> list[dict[str, entity]]:
+    def entities(self) -> List[Dict[str, entity]]:
         """
         Get entities data.
 
@@ -256,7 +258,7 @@ class JsonController(Controller):
         return self._entities.copy()
 
     @property
-    def entity_overview(self) -> dict[str, float]:
+    def entity_overview(self) -> Dict[str, float]:
         """
         Get entity overview data.
 
@@ -265,7 +267,7 @@ class JsonController(Controller):
         return self._entity_overview.copy()
 
     @property
-    def entity_errors(self) -> list[dict[str, entity]]:
+    def entity_errors(self) -> List[Dict[str, entity]]:
         """
         Get entity errors data.
 
@@ -274,7 +276,7 @@ class JsonController(Controller):
         return self._entity_errors.copy()
 
     @property
-    def responses(self) -> list[dict[str, float]]:
+    def responses(self) -> List[Dict[str, float]]:
         """
         Get responses data.
 
@@ -283,7 +285,7 @@ class JsonController(Controller):
         return self._responses.copy()
 
     @property
-    def response_overview(self) -> dict[str, float]:
+    def response_overview(self) -> Dict[str, float]:
         """
         Get response overview data.
 
@@ -292,7 +294,7 @@ class JsonController(Controller):
         return self._response_overview.copy()
 
     @property
-    def overview(self) -> dict[str, str | float]:
+    def overview(self) -> Dict[str, Union[str, float]]:
         """
         Get overview data.
 

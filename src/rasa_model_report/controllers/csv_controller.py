@@ -1,6 +1,7 @@
 import logging
+from typing import List
 
-from src.rasa_model_report.controllers.controller import Controller
+from rasa_model_report.controllers.controller import Controller
 
 
 class CsvController(Controller):
@@ -18,7 +19,7 @@ class CsvController(Controller):
         """
         super().__init__(rasa_path, output_path, project, version)
 
-    def save(self, data: list[list[str]], filename: str) -> None:
+    def save(self, data: List[List[str]], filename: str) -> None:
         """
         Save data to a CSV file.
 

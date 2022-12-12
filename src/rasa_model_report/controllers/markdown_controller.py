@@ -1,14 +1,15 @@
 import logging
 import os.path
+from typing import List, Union, Dict
 
-from src.rasa_model_report.controllers.controller import Controller
-from src.rasa_model_report.controllers.csv_controller import CsvController
-from src.rasa_model_report.controllers.json_controller import JsonController
-from src.rasa_model_report.controllers.nlu_controller import NluController
-from src.rasa_model_report.helpers.type_aliases import entity
-from src.rasa_model_report.helpers.utils import change_scale
-from src.rasa_model_report.helpers.utils import check
-from src.rasa_model_report.helpers.utils import get_color
+from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.controllers.csv_controller import CsvController
+from rasa_model_report.controllers.json_controller import JsonController
+from rasa_model_report.controllers.nlu_controller import NluController
+from rasa_model_report.helpers.type_aliases import entity
+from rasa_model_report.helpers.utils import change_scale
+from rasa_model_report.helpers.utils import check
+from rasa_model_report.helpers.utils import get_color
 
 
 class MarkdownController(Controller):
@@ -71,7 +72,7 @@ class MarkdownController(Controller):
         """
         self.result += "\n"
 
-    def build_line_entity(self, entities: list[entity]) -> str:
+    def build_line_entity(self, entities: List[entity]) -> str:
         """
         Create a entity lines table in markdown format.
 
@@ -106,7 +107,7 @@ class MarkdownController(Controller):
         text += "\n"
         return text
 
-    def build_table(self, data: list[str | float]) -> str:
+    def build_table(self, data: List[Union[str, float]]) -> str:
         """
         Build a table in markdown format.
 
@@ -501,7 +502,7 @@ class MarkdownController(Controller):
         text += f"Github repository at this [link]({repository_url})."
         return text
 
-    def _build_line_table(self, data: dict[str, str | float | dict]) -> list[str]:
+    def _build_line_table(self, data: Dict[str, Union[str, float, dict]]) -> List[str]:
         """
         Returns list representing a line table in markdown format.
 
