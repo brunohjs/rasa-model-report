@@ -12,14 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed foldouts in Dutch translation -->
 
+## [1.0.1] - In progress
+### Added
+- [#30](https://github.com/brunohjs/rasa-model-report/issues/30) Added more badges to README.md.
+
 
 ## [1.0.0] - 2022-12-10
 ### Added
-- Added script that generates Rasa model report.
-- Created command `rasa-model-report` for the command-line.
-- Created the README.md file.
-- Created the CHANGELOG.md file.
-- Created unit test and the automation on Github action.
+- [#1](https://github.com/brunohjs/rasa-model-report/issues/1) Created command `rasa-model-report` for the command-line.
+- [#2](https://github.com/brunohjs/rasa-model-report/issues/2) Repository creation and initial setup.
+- [#3](https://github.com/brunohjs/rasa-model-report/issues/3) Created the README.md and CHANGELOG.md file.
+- [#5](https://github.com/brunohjs/rasa-model-report/issues/5) Created unit test and the automation on Github action.
   - The automation will execute the tests every time a PR is opened.
 
 ### Fixed
@@ -27,4 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 [unreleased]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...HEAD
+[1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/1.0.0
