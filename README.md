@@ -12,11 +12,17 @@
 
 
 <!-- Badges -->
+![Stars](https://img.shields.io/github/stars/brunohjs/rasa-model-report?style=social)
+![Followers](https://img.shields.io/github/followers/brunohjs?style=social)
 ![Version](https://img.shields.io/pypi/v/rasa-model-report)
 ![Python version](https://img.shields.io/static/v1?label=python&message=v3.10&color=3776AB)
-![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
 ![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report)
+![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/brunohjs/rasa-model-report)
+![Code Climate issues](https://img.shields.io/codeclimate/issues/brunohjs/rasa-model-report)
+![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brunohjs/rasa-model-report)
+![Snyk vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/brunohjs/rasa-model-report)
 <!--  -->
 
 
@@ -28,7 +34,7 @@
     alt="logo"
     src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/image/open_source_logo.png"
 />
-***rasa-model-report** is a open source project.*
+***rasa-model-report** is an open source project.*
 
 ## 📜 Changelog
 Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md#changelog). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github and find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
