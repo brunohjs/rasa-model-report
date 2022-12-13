@@ -25,6 +25,8 @@ setup(
     ],
     install_requires=[
         "Click",
+        "requests>=2.28.1",
+        "pyyaml>=6.0"
     ],
     entry_points="""
         [console_scripts]

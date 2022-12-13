@@ -9,10 +9,10 @@ public-prod: build-package
 	twine upload -r pypi dist/* -u brunohjs -p "K6vqVPX2Yl0g;H86br5f"
 
 install-dev:
-	pip install . -r requirements.txt -r requirements.dev.txt
+	pip install . -r requirements.dev.txt
 
 install:
-	pip install . -r requirements.txt
+	pip install .
 
 test:
 	pytest
