@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1](https://github.com/brunohjs/rasa-model-report/issues/1) Created command `rasa-model-report` for the command-line.
 - [#2](https://github.com/brunohjs/rasa-model-report/issues/2) Repository creation and initial setup.
 - [#3](https://github.com/brunohjs/rasa-model-report/issues/3) Created the README.md and CHANGELOG.md file.
-- [#5](https://github.com/brunohjs/rasa-model-report/issues/5) Created unit test and the automation on Github action.
+- [#5](https://github.com/brunohjs/rasa-model-report/issues/5) Created unit test and the automation on GitHub action.
   - The automation will execute the tests every time a PR is opened.
 
 ### Fixed
