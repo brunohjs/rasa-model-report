@@ -141,7 +141,7 @@ make install-dev
 ```
 or use `pip install`:
 ```
-pip install . -r requirements.txt -r requirements.dev.txt
+pip install . -r requirements.dev.txt
 ```
 
 ### Test
