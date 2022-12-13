@@ -3,7 +3,7 @@ import random
 
 import pytest
 
-from src.rasa_model_report.controllers.json_controller import JsonController
+from rasa_model_report.controllers.json_controller import JsonController
 from tests import utils
 
 

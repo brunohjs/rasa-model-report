@@ -3,11 +3,11 @@ import glob
 import pytest
 import responses
 
-from src.rasa_model_report.controllers.controller import Controller
-from src.rasa_model_report.controllers.csv_controller import CsvController
-from src.rasa_model_report.controllers.json_controller import JsonController
-from src.rasa_model_report.controllers.markdown_controller import MarkdownController
-from src.rasa_model_report.controllers.nlu_controller import NluController
+from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.controllers.csv_controller import CsvController
+from rasa_model_report.controllers.json_controller import JsonController
+from rasa_model_report.controllers.markdown_controller import MarkdownController
+from rasa_model_report.controllers.nlu_controller import NluController
 from tests import utils
 
 
