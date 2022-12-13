@@ -12,9 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed foldouts in Dutch translation -->
 
-## [1.0.1] - In progress
+## [1.0.1] - 2022-12-13
 ### Added
 - [#30](https://github.com/brunohjs/rasa-model-report/issues/30) Added more badges to README.md.
+
+### Fixed
+- [#32](https://github.com/brunohjs/rasa-model-report/issues/16) Fixed module not found error.
 
 
 ## [1.0.0] - 2022-12-10
@@ -26,9 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The automation will execute the tests every time a PR is opened.
 
 ### Fixed
-- [#16](https://github.com/brunohjs/rasa-model-report/issues/16): Created a handler for retrieval intents in the report.
+- [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
 
-[unreleased]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...HEAD
-[1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.1.0
+[unreleased]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/1.0.0
