@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from rasa_model_report.controllers.csv_controller import CsvController
+from src.rasa_model_report.controllers.csv_controller import CsvController
 from tests import utils
 
 

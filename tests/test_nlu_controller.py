@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from rasa_model_report.controllers.nlu_controller import NluController
+from src.rasa_model_report.controllers.nlu_controller import NluController
 from tests import utils
 
 
