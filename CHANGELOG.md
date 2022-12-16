@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - In progress
 ### Added
 - [#31](https://github.com/brunohjs/rasa-model-report/issues/30) Support for python version 3.8 or higher.
+- [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command.
 
 ## [1.0.1] - 2022-12-13
 ### Added

@@ -1,7 +1,6 @@
 import logging
 
 import click
-
 from rasa_model_report.controllers.model_report import ModelReport
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
@@ -50,6 +49,13 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     default=False,
     help="Disable processing NLU sentences. NLU section will not be generated "
     "in the report. Required Rasa API. (default: false)"
+)
+@click.version_option(
+    None,
+    "--version",
+    "-v",
+    message="v%(version)s",
+    help="Show installed rasa-model-report version.",
 )
 @click.help_option(
     "-h",

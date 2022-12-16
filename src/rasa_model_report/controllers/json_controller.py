@@ -1,8 +1,9 @@
 import json
 import logging
 import os.path
-
-from typing import Dict, Union, List
+from typing import Dict
+from typing import List
+from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.helpers.type_aliases import entity
