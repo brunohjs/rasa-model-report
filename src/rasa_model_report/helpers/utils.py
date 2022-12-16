@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+from typing import Optional
 
 import requests.exceptions
 from requests.adapters import HTTPAdapter
@@ -70,7 +71,7 @@ def change_scale(value: float, scale: int = 1) -> str:
     return f"{int(value * scale)}"
 
 
-def get_project_name(path: str | None = None) -> str:
+def get_project_name(path: Optional[str] = None) -> str:
     """
     Returns the project folder's name.
 
@@ -83,7 +84,7 @@ def get_project_name(path: str | None = None) -> str:
     return os.path.basename(directory_path)
 
 
-def request(url: str, method: str = "GET", json: dict = {}) -> requests.Response | None:
+def request(url: str, method: str = "GET", json: dict = {}) -> Optional[requests.Response]:
     """
     Function that makes requests.
 

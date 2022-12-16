@@ -6,13 +6,13 @@ import requests.exceptions
 import responses
 from freezegun import freeze_time
 
-from src.rasa_model_report.helpers.utils import change_scale
-from src.rasa_model_report.helpers.utils import check
-from src.rasa_model_report.helpers.utils import convert_to_date
-from src.rasa_model_report.helpers.utils import format_date
-from src.rasa_model_report.helpers.utils import get_color
-from src.rasa_model_report.helpers.utils import get_project_name
-from src.rasa_model_report.helpers.utils import request
+from rasa_model_report.helpers.utils import change_scale
+from rasa_model_report.helpers.utils import check
+from rasa_model_report.helpers.utils import convert_to_date
+from rasa_model_report.helpers.utils import format_date
+from rasa_model_report.helpers.utils import get_color
+from rasa_model_report.helpers.utils import get_project_name
+from rasa_model_report.helpers.utils import request
 from tests import utils
 
 
