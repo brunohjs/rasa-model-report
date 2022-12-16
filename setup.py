@@ -16,13 +16,14 @@ setup(
                 "generates training model health reports for your projects.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    python_requires=">=3.10",
+    python_requires=">=3.8",
     url="https://github.com/brunohjs/rasa-model-report",
     packages=[
-        "src.rasa_model_report",
-        "src.rasa_model_report.controllers",
-        "src.rasa_model_report.helpers"
+        "rasa_model_report",
+        "rasa_model_report.controllers",
+        "rasa_model_report.helpers"
     ],
+    package_dir={'': 'src'},
     install_requires=[
         "Click",
         "requests>=2.28.1",
@@ -30,6 +31,6 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        rasa-model-report=src.rasa_model_report.main:main
+        rasa-model-report=rasa_model_report.main:main
     """,
 )
