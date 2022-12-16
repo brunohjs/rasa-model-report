@@ -1,14 +1,16 @@
 import glob
 import logging
 import re
-from typing import Optional, Union, Dict, List
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 
 import requests.exceptions
-from yaml import safe_load
-
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.helpers import utils
 from rasa_model_report.helpers.type_aliases import nlu_payload
+from yaml import safe_load
 
 
 class NluController(Controller):

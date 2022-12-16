@@ -12,8 +12,6 @@
 
 
 <!-- Badges -->
-![Stars](https://img.shields.io/github/stars/brunohjs/rasa-model-report?style=social)
-![Followers](https://img.shields.io/github/followers/brunohjs?style=social)
 ![Version](https://img.shields.io/pypi/v/rasa-model-report)
 ![Python version](https://img.shields.io/static/v1?label=python&message=v3.8&color=3776AB)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
@@ -22,7 +20,8 @@
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/brunohjs/rasa-model-report)
 ![Code Climate issues](https://img.shields.io/codeclimate/issues/brunohjs/rasa-model-report)
 ![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brunohjs/rasa-model-report)
-![Snyk vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/brunohjs/rasa-model-report)
+![Stars](https://img.shields.io/github/stars/brunohjs/rasa-model-report?style=social)
+![Followers](https://img.shields.io/github/followers/brunohjs?style=social)
 <!--  -->
 
 
@@ -90,18 +89,19 @@ Not every version of Rasa is supported. Check the table below:
 There are parameters that can be used. Available options are below:
 
 ```
-  --path TEXT         Rasa project path. (default: ./)
-  --output-path TEXT  Report output path. (default: ./)
-  --project TEXT      Rasa project name. It's only displayed in the report.
-                      (default: My project)
-  --version TEXT      Rasa project version. It's only displayed in the report
-                      for project versioning. (default: not-identified)
-  --rasa-api TEXT     Rasa API URL. Is needed to create NLU section of report.
-                      (default: http://localhost:5005)
-  --disable-nlu       Disable processing NLU sentences. NLU section will not
-                      be generated in the report. Required Rasa API. (default:
-                      false)
-  -h, --help          Show this help message.
+--path TEXT         Rasa project path. (default: ./)
+--output-path TEXT  Report output path. (default: ./)
+--project TEXT      Rasa project name. It's only displayed in the report.
+                    (default: My project)
+--version TEXT      Rasa project version. It's only displayed in the report
+                    for project versioning. (default: not-identified)
+--rasa-api TEXT     Rasa API URL. Is needed to create NLU section of report.
+                    (default: http://localhost:5005)
+--disable-nlu       Disable processing NLU sentences. NLU section will not
+                    be generated in the report. Required Rasa API. (default:
+                    false)
+-v, --version       Show installed rasa-model-report version.
+-h, --help          Show this help message.
 ```
 
 

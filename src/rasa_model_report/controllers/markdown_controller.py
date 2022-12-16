@@ -1,6 +1,8 @@
 import logging
 import os.path
-from typing import List, Union, Dict
+from typing import Dict
+from typing import List
+from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.controllers.csv_controller import CsvController
