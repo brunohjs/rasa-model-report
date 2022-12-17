@@ -18,28 +18,38 @@ class MarkdownController(Controller):
     """
     Controller responsible for markdown files.
     """
-    def __init__(self, rasa_path: str, output_path: str, project: str, version: str, **kwargs: dict) -> None:
+    def __init__(
+        self,
+        rasa_path: str,
+        output_path: str,
+        project_name: str,
+        rasa_version: str,
+        project_version: str,
+        **kwargs: dict
+    ) -> None:
         """
         __init__ method.
 
         :param rasa_path: Rasa project path.
         :param output_path: Output directory of CSV files.
-        :param project: Project name.
-        :param version: Project version.
+        :param project_name: Project name.
+        :param rasa_version: Rasa version.
+        :param project_version: Project version.
         """
-        super().__init__(rasa_path, output_path, project, version)
+        super().__init__(rasa_path, output_path, project_name, project_version)
 
         self.result: str = ""
         self.title: str = "# Model health report"
+        self.rasa_version: str = rasa_version
         self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
-        self.json: JsonController = JsonController(rasa_path, output_path, self.project, self.version)
-        self.csv: CsvController = CsvController(rasa_path, output_path, self.project, self.version)
+        self.json: JsonController = JsonController(rasa_path, output_path, self.project_name, self.project_version)
+        self.csv: CsvController = CsvController(rasa_path, output_path, self.project_name, self.project_version)
         self.nlu: NluController = NluController(
             rasa_path,
             output_path,
-            self.project,
-            self.version,
+            self.project_name,
+            self.project_version,
             url=kwargs.get("rasa_api_url"),
             disable_nlu=kwargs.get("disable_nlu")
         )
@@ -135,12 +145,20 @@ class MarkdownController(Controller):
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else 0
         text = "## Overview <a name='overview'></a>\n"
         style = "style='font-size:16px'"
-        text += "|Bot|Version|Creation date|Updated date|\n"
-        text += "|:-:|:-:|:-:|:-:|\n"
-        text += f"|<span {style}>**{self.project}**</span>|\
-            <span {style}>{self.version if self.version else 'not identified'}</span>|\
-            <span {style}>{overview['created_at']}</span>|\
-            <span {style}>{overview['updated_at']}</span>|\n\n"
+        data = [
+            ["Bot Name", self.project_name]
+        ]
+        if self.project_version:
+            data.append(["Bot Version", self.project_version])
+        if self.rasa_version:
+            data.append(["Rasa Version", self.rasa_version])
+        data.extend([
+            ["Creation date", overview["created_at"]],
+            ["Updated date", overview["updated_at"]]
+        ])
+        text += "|" + "|".join([item[0] for item in data]) + "|\n"
+        text += "|" + "|".join([":-:" for i in range(len(data))]) + "|\n"
+        text += "|" + "|".join([f"<span {style}>{item[1]}</span>" for item in data]) + "|\n\n"
         style = "style='font-size:20px'"
         text += f"|Intent|Entity|NLU|Response|<span {style}>General</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|\n"

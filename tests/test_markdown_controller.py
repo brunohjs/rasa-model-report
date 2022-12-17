@@ -8,8 +8,9 @@ from rasa_model_report.controllers.json_controller import JsonController
 
 def test_init_markdown_controller(rasa_path):
     markdown_controller = pytest.markdown_controller
-    assert markdown_controller.project == "test-project"
-    assert markdown_controller.version == "0.0.0"
+    assert markdown_controller.project_name == "test-project"
+    assert markdown_controller.project_version == "0.0.0"
+    assert markdown_controller.rasa_version == "0.0.0"
     assert markdown_controller.rasa_path == rasa_path
     assert markdown_controller.output_path == "./tests"
     assert markdown_controller.nlu_path == f"{rasa_path}/data"

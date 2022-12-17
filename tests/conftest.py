@@ -29,13 +29,14 @@ def execute_before_each_test(rasa_path):
 def load_controllers(rasa_path):
     output_path = "./tests"
     project_name = "test-project"
-    version = "0.0.0"
+    project_version = "0.0.0"
+    rasa_version = "0.0.0"
     utils.load_mock_payloads()
-    controller = Controller(rasa_path, output_path, project_name, version)
-    json_controller = JsonController(rasa_path, output_path, project_name, version)
-    csv_controller = CsvController(rasa_path, output_path, project_name, version)
-    nlu_controller = NluController(rasa_path, output_path, project_name, version)
-    markdown_controller = MarkdownController(rasa_path, output_path, project_name, version)
+    controller = Controller(rasa_path, output_path, project_name, project_version)
+    json_controller = JsonController(rasa_path, output_path, project_name, project_version)
+    csv_controller = CsvController(rasa_path, output_path, project_name, project_version)
+    nlu_controller = NluController(rasa_path, output_path, project_name, project_version)
+    markdown_controller = MarkdownController(rasa_path, output_path, project_name, rasa_version, project_version)
     pytest.controller = controller
     pytest.json_controller = json_controller
     pytest.csv_controller = csv_controller

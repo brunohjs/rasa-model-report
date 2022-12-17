@@ -36,8 +36,8 @@ class JsonController(Controller):
         self._responses: List[Dict[str, float]] = []
         self._response_overview: Dict[str, float] = {}
         self._overview: Dict[str, Union[str, number]] = {
-            "project": self.project,
-            "version": self.version
+            "project": self.project_name,
+            "version": self.project_version
         }
         self.intent_report_path: str = f"{self.results_path}/intent_report.json"
         self.intent_errors_path: str = f"{self.results_path}/intent_errors.json"
@@ -180,7 +180,7 @@ class JsonController(Controller):
             self._overview.update({
                 "created_at": format_date()
             })
-            logging.error(f"{self.overview_report_path} file not found.")
+            logging.warn(f"{self.overview_report_path} file not found.")
 
     def save_overview(self) -> None:
         """

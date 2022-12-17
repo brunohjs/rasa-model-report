@@ -10,8 +10,8 @@ from tests import utils
 def execute_before_each_test(rasa_path):
     output_path = "./tests"
     project_name = "test-project"
-    version = "0.0.0"
-    csv_controller = CsvController(rasa_path, output_path, project_name, version)
+    project_version = "0.0.0"
+    csv_controller = CsvController(rasa_path, output_path, project_name, project_version)
     pytest.csv_controller = csv_controller
     yield
     utils.remove_generated_files(rasa_path)
@@ -19,8 +19,8 @@ def execute_before_each_test(rasa_path):
 
 def test_init_csv_controller(rasa_path):
     csv_controller = pytest.csv_controller
-    assert csv_controller.project == "test-project"
-    assert csv_controller.version == "0.0.0"
+    assert csv_controller.project_name == "test-project"
+    assert csv_controller.project_version == "0.0.0"
     assert csv_controller.rasa_path == rasa_path
     assert csv_controller.output_path == "./tests"
     assert csv_controller.nlu_path == f"{rasa_path}/data"

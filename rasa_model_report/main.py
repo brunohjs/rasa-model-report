@@ -1,6 +1,7 @@
 import logging
 
 import click
+
 from rasa_model_report.controllers.model_report import ModelReport
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
@@ -9,6 +10,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 @click.command()
 @click.option(
     "--path",
+    "-p",
     type=str,
     required=False,
     default="./",
@@ -22,18 +24,25 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Report output path. (default: ./)"
 )
 @click.option(
-    "--project",
+    "--project-name",
     type=str,
     required=False,
     default="My Project",
     help="Rasa project name. It's only displayed in the report. (default: My project)"
 )
 @click.option(
-    "--version",
+    "--rasa-version",
     type=str,
     required=False,
     default=None,
-    help="Rasa project version. It's only displayed in the report for project versioning. (default: not-identified)"
+    help="Rasa version. It's only displayed in the report for project documentation."
+)
+@click.option(
+    "--project-version",
+    type=str,
+    required=False,
+    default=None,
+    help="Project version. It's only displayed in the report for project documentation."
 )
 @click.option(
     "--rasa-api",
@@ -58,13 +67,21 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Show installed rasa-model-report version.",
 )
 @click.help_option(
-    "-h",
     "--help",
+    "-h",
     help="Show this help message."
 )
-def main(path, output_path, project, version, rasa_api, disable_nlu):
+def main(path, output_path, project_name, rasa_version, project_version, rasa_api, disable_nlu):
     """
     Simple add-on that generates training model health reports for your Rasa projects. 📈🔍🧾🤖🧠
     """
-    report = ModelReport(path, output_path, project, version, disable_nlu=disable_nlu, rasa_api_url=rasa_api)
+    report = ModelReport(
+        path,
+        output_path,
+        project_name,
+        rasa_version,
+        project_version,
+        disable_nlu=disable_nlu,
+        rasa_api_url=rasa_api
+    )
     return report

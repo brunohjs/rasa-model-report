@@ -8,16 +8,16 @@ class CsvController(Controller):
     """
     Controller responsible for CSV files.
     """
-    def __init__(self, rasa_path: str, output_path: str, project: str, version: str) -> None:
+    def __init__(self, rasa_path: str, output_path: str, project_name: str, project_version: str) -> None:
         """
         __init__ method.
 
         :param rasa_path: Rasa project path.
         :param output_path: Output directory of CSV files.
-        :param project: Project name.
-        :param version: Project version.
+        :param project_name: Project name.
+        :param project_version: Project version.
         """
-        super().__init__(rasa_path, output_path, project, version)
+        super().__init__(rasa_path, output_path, project_name, project_version)
 
     def save(self, data: List[List[str]], filename: str) -> None:
         """
