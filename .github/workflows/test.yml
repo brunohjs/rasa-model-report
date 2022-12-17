@@ -1,5 +1,9 @@
 name: Test
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - "**.py"
+      - "tests/mocks/**"
 jobs:
   test:
     name: Lint and test
