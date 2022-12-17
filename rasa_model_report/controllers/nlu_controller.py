@@ -27,6 +27,15 @@ class NluController(Controller):
         url: str = "http://localhost:5005",
         **kwargs: dict
     ) -> None:
+        """
+        __init__ method.
+
+        :param rasa_path: Rasa project path.
+        :param output_path: Output directory of CSV files.
+        :param project_name: Project name.
+        :param project_version: Project version.
+        :param url: Rasa API URL (default: "http://localhost:5005")
+        """
         super().__init__(rasa_path, output_path, project_name, project_version)
         self._data: List[nlu_payload] = []
         self._problem_sentences: List[nlu_payload] = []
