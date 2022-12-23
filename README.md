@@ -89,21 +89,21 @@ Not every version of Rasa is supported. Check the table below:
 There are parameters that can be used. Available options are below:
 
 ```
--p, --path TEXT         Rasa project path. (default: ./)
+--disable-nlu           Disable processing NLU sentences. NLU section will
+                        not be generated in the report. Required Rasa API.
+                        (default: false)
+-h, --help              Show this help message.
 --output-path TEXT      Report output path. (default: ./)
+-p, --path TEXT         Rasa project path. (default: ./)
 --project-name TEXT     Rasa project name. It's only displayed in the
                         report. (default: My project)
---rasa-version TEXT     Rasa version. It's only displayed in the report for
-                        project documentation.
 --project-version TEXT  Project version. It's only displayed in the report
                         for project documentation.
 --rasa-api TEXT         Rasa API URL. Is needed to create NLU section of
                         report. (default: http://localhost:5005)
---disable-nlu           Disable processing NLU sentences. NLU section will
-                        not be generated in the report. Required Rasa API.
-                        (default: false)
+--rasa-version TEXT     Rasa version. It's only displayed in the report for
+                        project documentation.
 -v, --version           Show installed rasa-model-report version.
--h, --help              Show this help message.
 ```
 
 
