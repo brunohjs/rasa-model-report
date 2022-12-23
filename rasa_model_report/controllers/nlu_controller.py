@@ -7,10 +7,11 @@ from typing import Optional
 from typing import Union
 
 import requests.exceptions
+from yaml import safe_load
+
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.helpers import utils
 from rasa_model_report.helpers.type_aliases import nlu_payload
-from yaml import safe_load
 
 
 class NluController(Controller):
@@ -21,13 +22,21 @@ class NluController(Controller):
         self,
         rasa_path: str,
         output_path: str,
-        project: str,
-        version: str,
+        project_name: str,
+        project_version: str,
         url: str = "http://localhost:5005",
         **kwargs: dict
     ) -> None:
-        super().__init__(rasa_path, output_path, project, version)
+        """
+        __init__ method.
 
+        :param rasa_path: Rasa project path.
+        :param output_path: Output directory of CSV files.
+        :param project_name: Project name.
+        :param project_version: Project version.
+        :param url: Rasa API URL (default: "http://localhost:5005")
+        """
+        super().__init__(rasa_path, output_path, project_name, project_version)
         self._data: List[nlu_payload] = []
         self._problem_sentences: List[nlu_payload] = []
         self._general_grade: Optional[float] = None

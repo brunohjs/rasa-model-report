@@ -11,8 +11,8 @@ from tests import utils
 def execute_before_each_test(rasa_path):
     output_path = "./tests"
     project_name = "test-project"
-    version = "0.0.0"
-    json_controller = JsonController(rasa_path, output_path, project_name, version)
+    project_version = "0.0.0"
+    json_controller = JsonController(rasa_path, output_path, project_name, project_version)
     pytest.json_controller = json_controller
     yield
     utils.remove_generated_files(rasa_path)
@@ -20,8 +20,8 @@ def execute_before_each_test(rasa_path):
 
 def test_init_json_controller(rasa_path):
     json_controller = pytest.json_controller
-    assert json_controller.project == "test-project"
-    assert json_controller.version == "0.0.0"
+    assert json_controller.project_name == "test-project"
+    assert json_controller.project_version == "0.0.0"
     assert json_controller.rasa_path == rasa_path
     assert json_controller.output_path == "./tests"
     assert json_controller.nlu_path == f"{rasa_path}/data"

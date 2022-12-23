@@ -12,10 +12,11 @@ from tests import utils
 def load_controllers(rasa_path):
     output_path = "./tests"
     project_name = "test-project"
-    version = "0.0.0"
+    project_version = "0.0.0"
+    rasa_version = "0.0.0"
     utils.load_mock_payloads()
-    model_report = ModelReport(rasa_path, output_path, project_name, version)
-    nlu_controller = NluController(rasa_path, output_path, project_name, version)
+    model_report = ModelReport(rasa_path, output_path, project_name, rasa_version, project_version)
+    nlu_controller = NluController(rasa_path, output_path, project_name, project_version)
     pytest.model_report = model_report
     pytest.nlu_controller = nlu_controller
 
@@ -30,8 +31,9 @@ def execute_before_each_test(rasa_path):
 
 def test_init_model_report(rasa_path):
     model_report = pytest.model_report
-    assert model_report.project == "test-project"
-    assert model_report.version == "0.0.0"
+    assert model_report.project_name == "test-project"
+    assert model_report.project_version == "0.0.0"
+    assert model_report.rasa_version == "0.0.0"
     assert model_report.dirs["rasa_path"] == rasa_path
     assert model_report.dirs["results_path"] == f"{rasa_path}/results"
     assert model_report.dirs["output_path"] == "./tests"

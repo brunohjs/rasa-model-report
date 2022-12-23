@@ -17,16 +17,16 @@ def execute_before_each_test(rasa_path):
 def load_controllers(rasa_path):
     output_path = "./tests"
     project_name = "test-project"
-    version = "0.0.0"
+    project_version = "0.0.0"
     utils.load_mock_payloads()
-    nlu_controller = NluController(rasa_path, output_path, project_name, version)
+    nlu_controller = NluController(rasa_path, output_path, project_name, project_version)
     pytest.nlu_controller = nlu_controller
 
 
 def test_init_nlu_controller(rasa_path):
     nlu_controller = pytest.nlu_controller
-    assert nlu_controller.project == "test-project"
-    assert nlu_controller.version == "0.0.0"
+    assert nlu_controller.project_name == "test-project"
+    assert nlu_controller.project_version == "0.0.0"
     assert nlu_controller.rasa_path == rasa_path
     assert nlu_controller.output_path == "./tests"
     assert nlu_controller.nlu_path == f"{rasa_path}/data"

@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - In progress
 ### Added
 - [#31](https://github.com/brunohjs/rasa-model-report/issues/30) Support for python version 3.8 or higher.
-- [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command.
+- [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command. This command shows installed **rasa-model-report** version.
+- [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Created `--rasa-version` CLI command. This command is used to inform the Rasa version that will be displayed in the report.
+- [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Added `-p` to abbreviate `--path` parameter.
+
+### Changed
+- [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Changed CLI parameters to be clearer:
+  - `--project` to `--project-name`.
+  - `--version` to `--project-version` (this parameter was duplicated).
 
 ## [1.0.1] - 2022-12-13
 ### Added
@@ -31,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
 
-[1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...HEAD
+<!-- [1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...HEAD -->
+[1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/1.0.0

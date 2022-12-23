@@ -23,7 +23,6 @@ setup(
         "rasa_model_report.controllers",
         "rasa_model_report.helpers"
     ],
-    package_dir={'': 'src'},
     install_requires=[
         "Click",
         "requests>=2.28.1",
