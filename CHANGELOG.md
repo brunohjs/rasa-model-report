@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.1.0] - In progress
+## [1.1.0] - 2022-12-28
 ### Added
 - [#31](https://github.com/brunohjs/rasa-model-report/issues/30) Support for python version 3.8 or higher.
 - [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command. This command shows installed **rasa-model-report** version.
