@@ -98,6 +98,10 @@ class ModelReport:
             self.markdown.add_text(self.markdown.build_response_table())
             self.markdown.add_image(self.dirs['STORY_MATRIX'], "Confusion Matrix")
 
+            # E2E Coverage
+            self.markdown.add_text(self.markdown.build_e2e_coverage_title())
+            self.markdown.add_text(self.markdown.build_e2e_coverage_list())
+
             # Credits
             self.markdown.add_text(self.markdown.build_credits())
 

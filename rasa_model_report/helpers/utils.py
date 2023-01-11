@@ -2,10 +2,12 @@ import datetime
 import logging
 import os
 from typing import Optional
+from typing import Union
 
 import requests.exceptions
 from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
+from yaml import safe_load
 
 
 def format_date() -> str:
@@ -54,7 +56,7 @@ def get_color(value: float, scale: int = 1) -> str:
         return "🟡"
     elif value >= 0.4:
         return "🟠"
-    elif value >= 0.01:
+    elif value >= 0.001:
         return "🔴"
     else:
         return "❌"
@@ -107,3 +109,27 @@ def request(url: str, method: str = "GET", json: dict = {}) -> Optional[requests
         logging.warning(f"Error connecting to {url}. Message: {error}")
     finally:
         return response
+
+
+def load_yaml_file(filename: str, error_flag: bool = True) -> Union[dict, list]:
+    """
+    Load data from YAML file.
+
+    :param filename: YAML filename.
+    :param error_flag: If True, an exception will be raised when the file isn't found (default: True).
+    :return: Data in list or dict format.
+    """
+    if os.path.isfile(filename):
+        file = open(filename, encoding="utf-8")
+        data = safe_load(file)
+        file.close()
+        logging.info(f"{filename} file loaded successfully.")
+        return data
+    else:
+        message = f"{filename} file not found."
+        if error_flag:
+            logging.error(message)
+            raise Exception(message)
+        else:
+            logging.warning(message)
+            return {}

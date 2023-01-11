@@ -16,16 +16,16 @@ class JsonController(Controller):
     """
     Controller responsible for JSON files.
     """
-    def __init__(self, rasa_path: str, output_path: str, project: str, version: str) -> None:
+    def __init__(self, rasa_path: str, output_path: str, project_name: str, project_version: str) -> None:
         """
         __init__ method.
 
         :param rasa_path: Rasa project path.
         :param output_path: Output directory of CSV files.
-        :param project: Project name.
-        :param version: Project version.
+        :param project_name: Project name.
+        :param project_version: Project version.
         """
-        super().__init__(rasa_path, output_path, project, version)
+        super().__init__(rasa_path, output_path, project_name, project_version)
 
         self._intents: List[Dict[str, intent]] = []
         self._intent_overview: Dict[str, float] = {}
@@ -36,8 +36,8 @@ class JsonController(Controller):
         self._responses: List[Dict[str, float]] = []
         self._response_overview: Dict[str, float] = {}
         self._overview: Dict[str, Union[str, number]] = {
-            "project": self.project_name,
-            "version": self.project_version
+            "project": project_name,
+            "version": project_version
         }
         self.intent_report_path: str = f"{self.results_path}/intent_report.json"
         self.intent_errors_path: str = f"{self.results_path}/intent_errors.json"
@@ -48,7 +48,8 @@ class JsonController(Controller):
 
         self._load_data()
 
-    def load_json_file(self, filename: str, error_flag: bool = True) -> Union[dict, list]:
+    @staticmethod
+    def load_json_file(filename: str, error_flag: bool = True) -> Union[dict, list]:
         """
         Loads data from a JSON file.
 
