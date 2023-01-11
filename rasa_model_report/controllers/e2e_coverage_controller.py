@@ -1,4 +1,5 @@
 import glob
+import logging
 from typing import Dict
 from typing import List
 from typing import Union
@@ -38,6 +39,8 @@ class E2ECoverageController(Controller):
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
 
         self._load_domain_elements()
+        self._generate()
+        self.save()
 
     def _load_domain_elements(self) -> None:
         """
@@ -65,9 +68,11 @@ class E2ECoverageController(Controller):
                         setattr(self, "_actions", getattr(self, "_actions") + data)
                     else:
                         setattr(self, f"_{element}", getattr(self, f"_{element}") + data)
-        self._generate()
 
-    def _generate(self) -> Dict[str, Union[List[str], float]]:
+    def _generate(self) -> None:
+        """
+        Generate E2E tests coverage report.
+        """
         not_covered = {}
         report_data = [item["name"] for item in self.json.responses]
         for element in ["intents", "entities", "actions"]:
@@ -80,29 +85,88 @@ class E2ECoverageController(Controller):
                 not_covered[element]["rate"] = 1 - len(not_covered[element]["items"]) / len(element_list)
             self._total_num_elements += len(element_list)
             self._total_num_not_covered += len(not_covered[element]["items"])
-        if True in [bool(element["items"]) for element in not_covered.values()]:
-            self._data = not_covered
+        self._data = not_covered
+        if self.have_not_covered_items():
             self._total_rate = 1 - self._total_num_not_covered / self._total_num_elements
+
+    def save(self) -> None:
+        """
+        Save E2E tests coverage report to a text file.
+        """
+        file_path = f"{self.results_path}/e2e_coverage_report.txt"
+        if self.have_not_covered_items():
+            with open(file_path, "w") as file:
+                file.write("-------------------------------------------------\n")
+                file.write("End-to-end tests coverage report\n")
+                file.write("-------------------------------------------------\n")
+                file.write("Elements that aren't covered:\n")
+                for element in self._data:
+                    file.write(f" + {element.capitalize()}\n")
+                    if self._data[element].get("items"):
+                        for item in self._data[element]["items"]:
+                            file.write(f"   - {item}\n")
+                    else:
+                        file.write("   - (no elements not covered)\n")
+                file.write("\n")
+                file.write(f"Total number of elements: {self._total_num_elements}\n")
+                file.write(f"Total number of not covered elements: {self._total_num_not_covered}\n")
+                file.write(f"Coverage rate: {self._total_rate * 100:.1f}%\n")
+                file.write("-------------------------------------------------\n")
+            logging.info(f"{file_path} file successfully saved.")
         else:
-            self._data = {}
-            self._total_rate = 0
+            logging.info("All elements are included in end-to-end tests.")
+
+    def have_not_covered_items(self) -> bool:
+        """
+        Returns 'True' if have some not covered element in model E2E tests.
+
+        :return: Flag that represents if have not covered elements.
+        """
+        return True in [bool(element["items"]) for element in self._data.values()]
 
     @staticmethod
     def diff(l1: List[str], l2: List[str]) -> List[str]:
+        """
+        Returns a list with the difference between l1 and l2.
+
+        :param l1: First list.
+        :param l2: Second list.
+        :return: Difference between l1 and l2.
+        """
         return [element for element in l1 if element not in l2]
 
     @property
-    def data(self):
+    def data(self) -> Dict[str, Union[List[str], float]]:
+        """
+        Get E2E tests not covered elements data.
+
+        :return: Copy of E2E tests not covered elements data.
+        """
         return self._data.copy()
 
     @property
-    def total_rate(self):
+    def total_rate(self) -> float:
+        """
+        Get E2E tests coverage rate.
+
+        :return float: Copy of E2E tests coverage rate.
+        """
         return self._total_rate
 
     @property
-    def total_num_elements(self):
+    def total_num_elements(self) -> int:
+        """
+        Get total number of E2E tests elements.
+
+        :return int: Total number of E2E tests elements.
+        """
         return self._total_num_elements
 
     @property
-    def total_num_not_covered(self):
+    def total_num_not_covered(self) -> int:
+        """
+        Get total number of E2E tests not covered elements.
+
+        :return int: Total number of E2E tests not covered elements.
+        """
         return self._total_num_not_covered

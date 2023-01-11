@@ -53,7 +53,7 @@ class ModelReport:
 
         logging.info("---")
         logging.info(
-            f"Starting report creation from {self.project_name} bot template,"
+            f"Starting report creation from {self.project_name} bot template, "
             f"version {self.project_version if self.project_version else 'not identified'}"
         )
         self.generate_report()

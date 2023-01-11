@@ -134,6 +134,7 @@ models/
 model_report.md
 **/rasa.v*/results/*.csv
 **/rasa.v*/results/overview.json
+**/rasa.v*/results/e2e_coverage_report.txt
 
 # VS Code
 settings.json

@@ -551,13 +551,13 @@ class MarkdownController(Controller):
                     for item in data[element]["items"]:
                         text += f" - {item}\n"
                 else:
-                    text += " - No elements not covered\n"
+                    text += " - (no elements not covered)\n"
                 text += "\n"
-            text += f"Total number of not covered elements: {total_num_not_covered}\n\n"
             text += f"Total number of elements: {total_num_elements}\n\n"
+            text += f"Total number of not covered elements: {total_num_not_covered}\n\n"
             text += f"Coverage rate: {rate * 100:.1f}% ({get_color(rate)})\n\n"
         else:
-            text = "\nThere are no end-to-end coverage.\n"
+            text = "\nThere are no end-to-end tests coverage.\n"
         return title + text
 
     def build_credits(self) -> str:
