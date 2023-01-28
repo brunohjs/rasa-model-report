@@ -79,7 +79,18 @@ def test_load_entities_but_a_non_existent_file():
 def test_load_overview():
     json_controller = pytest.json_controller
     json_controller._load_overview()
-    assert isinstance(json_controller.overview, dict)
+    overview = json_controller.overview
+    assert isinstance(overview, dict)
+    assert isinstance(overview.get("project"), str)
+    assert isinstance(overview.get("version"), str)
+    assert isinstance(overview.get("updated_at"), str)
+    assert isinstance(overview.get("intent"), float)
+    assert isinstance(overview.get("entity"), float)
+    assert isinstance(overview.get("core"), float)
+    assert isinstance(overview.get("nlu"), float) or overview.get("nlu") is None
+    assert isinstance(overview.get("e2e_coverage"), float) or overview.get("e2e_coverage") is None
+    assert isinstance(overview.get("overall"), float)
+    assert isinstance(overview.get("created_at"), str)
 
 
 def test_load_overview_if_exists():
@@ -99,7 +110,7 @@ def test_save_overview():
 def test_calculate_overall():
     json_controller = pytest.json_controller
     json_controller._calculate_overall()
-    assert isinstance(json_controller.overview.get("overall"), (int, float))
+    assert isinstance(json_controller.overview.get("overall"), float)
 
 
 def test_update_overview():
@@ -166,20 +177,20 @@ def test_get_entity_errors():
     assert isinstance(json_controller.entity_errors, list)
 
 
-def test_get_responses():
+def test_get_core():
     json_controller = pytest.json_controller
-    responses = json_controller.responses
-    responses.append({"test": "ok"})
-    assert json_controller.responses != responses
-    assert isinstance(json_controller.responses, list)
+    core = json_controller.core
+    core.append({"test": "ok"})
+    assert json_controller.core != core
+    assert isinstance(json_controller.core, list)
 
 
-def test_get_response_overview():
+def test_get_core_overview():
     json_controller = pytest.json_controller
-    response_overview = json_controller.response_overview
-    response_overview.update({"test": "ok"})
-    assert json_controller.response_overview != response_overview
-    assert isinstance(json_controller.response_overview, dict)
+    core_overview = json_controller.core_overview
+    core_overview.update({"test": "ok"})
+    assert json_controller.core_overview != core_overview
+    assert isinstance(json_controller.core_overview, dict)
 
 
 def test_get_overview():

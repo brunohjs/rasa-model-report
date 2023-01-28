@@ -189,33 +189,33 @@ def test_build_entity_errors_table_if_len_less_than_2():
     assert "No confusions of entities were found in this model" in text
 
 
-def test_build_response_title():
+def test_build_core_title():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_response_title()
+    text = markdown_controller.build_core_title()
     assert isinstance(text, str)
-    assert "## Responses <a name='responses'></a>" in text
+    assert "## Core <a name='core'></a>" in text
 
 
-def test_build_response_overview():
+def test_build_core_overview():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_response_overview()
+    text = markdown_controller.build_core_overview()
     assert isinstance(text, str)
 
 
-def test_build_response_table():
+def test_build_core_table():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_response_table()
+    text = markdown_controller.build_core_table()
     assert isinstance(text, str)
     assert os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
 
 
-def test_build_response_table_if_len_less_than_2():
+def test_build_core_table_if_len_less_than_2():
     markdown_controller = pytest.markdown_controller
     json_controller = JsonController("invelid/path", "./", "test-project", "0.0.0")
     markdown_controller.json = json_controller
-    text = markdown_controller.build_response_table()
+    text = markdown_controller.build_core_table()
     assert isinstance(text, str)
-    assert "No responses were found for this model" in text
+    assert "No responses or actions were found for this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
 
 
