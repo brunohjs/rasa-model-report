@@ -5,18 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - In progress...
+## [1.2.0] - 2023-01-28
 ### Added
 - [#43](https://github.com/brunohjs/rasa-model-report/issues/43) End-to-end coverage feature.
+- [#46](https://github.com/brunohjs/rasa-model-report/issues/46) Created `--model-link` CLI command parameter. This command is used to inform the model link that will be displayed in the report to download.
+
+### Changed
+- [#33](https://github.com/brunohjs/rasa-model-report/issues/33) Change response section title to `Core`.
 
 
 ## [1.1.0] - 2022-12-28
 ### Added
-- [#31](https://github.com/brunohjs/rasa-model-report/issues/30) Support for python version 3.8 or higher.
-- [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command. This command shows installed **rasa-model-report** version.
-- [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Created `--rasa-version` CLI command. This command is used to inform the Rasa version that will be displayed in the report.
 - [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Added `-p` to abbreviate `--path` parameter.
+- [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Created `--rasa-version` CLI command parameter. This command is used to inform the Rasa version that will be displayed in the report.
 - [#18](https://github.com/brunohjs/rasa-model-report/issues/18) Created repository social media preview.
+- [#31](https://github.com/brunohjs/rasa-model-report/issues/30) Support for python version 3.8 or higher.
+- [#38](https://github.com/brunohjs/rasa-model-report/issues/38) Created `--version` CLI command parameter. This command shows installed **rasa-model-report** version.
 
 ### Changed
 - [#15](https://github.com/brunohjs/rasa-model-report/issues/15) Changed CLI parameters to be clearer:
@@ -43,7 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
 
-[1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...HEAD
+<!-- [1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...HEAD -->
+[1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/brunohjs/rasa-model-report/releases/tag/1.0.0

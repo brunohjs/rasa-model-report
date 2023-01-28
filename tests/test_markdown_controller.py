@@ -97,6 +97,15 @@ def test_build_overview():
     assert "## Overview" in text
 
 
+def test_build_overview_with_model_link():
+    markdown_controller = pytest.markdown_controller
+    markdown_controller.model_link = "http://teste.com"
+    text = markdown_controller.build_overview()
+    assert markdown_controller.model_link
+    assert "|Model|" in text
+    assert f"[Download]({markdown_controller.model_link})" in text
+
+
 def test_build_intent_title():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_intent_title()

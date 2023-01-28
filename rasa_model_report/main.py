@@ -22,6 +22,12 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Show this help message."
 )
 @click.option(
+    "--model-link",
+    type=str,
+    required=False,
+    help="Model download link. It's only displayed in the report to model download."
+)
+@click.option(
     "--output-path",
     type=str,
     required=False,
@@ -71,7 +77,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     message="v%(version)s",
     help="Show installed rasa-model-report version.",
 )
-def main(disable_nlu, output_path, path, project_name, project_version, rasa_api, rasa_version):
+def main(disable_nlu, model_link, output_path, path, project_name, project_version, rasa_api, rasa_version):
     """
     Simple add-on that generates training model health reports for your Rasa projects. 📈🔍🧾🤖🧠
     """
@@ -82,6 +88,7 @@ def main(disable_nlu, output_path, path, project_name, project_version, rasa_api
         rasa_version,
         project_version,
         disable_nlu=disable_nlu,
-        rasa_api_url=rasa_api
+        rasa_api_url=rasa_api,
+        model_link=model_link
     )
     return report
