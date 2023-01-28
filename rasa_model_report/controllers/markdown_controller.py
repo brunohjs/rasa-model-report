@@ -61,7 +61,10 @@ class MarkdownController(Controller):
             project_version
         )
 
-        self.json.update_overview({"nlu": self.nlu.general_grade})
+        self.json.update_overview({
+            "nlu": self.nlu.general_grade,
+            "e2e_coverage": self.e2e_coverage.total_rate
+        })
 
     def add_text(self, text: str) -> None:
         """
@@ -122,7 +125,7 @@ class MarkdownController(Controller):
         text += " - [Entities](#entities)\n"
         if self.nlu.is_connected():
             text += " - [NLU](#nlu)\n"
-        text += " - [Responses](#responses)\n"
+        text += " - [Core](#core)\n"
         text += " - [E2E Coverage](#e2e)\n"
         text += "\n"
         return text
@@ -149,7 +152,7 @@ class MarkdownController(Controller):
         :return: Overview report in markdown format.
         """
         overview = self.json.overview
-        for item in ["intent", "entity", "response", "nlu"]:
+        for item in ["intent", "entity", "core", "nlu"]:
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else 0
         text = "## Overview <a name='overview'></a>\n"
         style = "style='font-size:16px'"
@@ -168,17 +171,19 @@ class MarkdownController(Controller):
         text += "|" + "|".join([":-:" for i in range(len(data))]) + "|\n"
         text += "|" + "|".join([f"<span {style}>{item[1]}</span>" for item in data]) + "|\n\n"
         style = "style='font-size:20px'"
-        text += f"|Intent|Entity|NLU|Response|<span {style}>General</span>|\n"
-        text += "|:-:|:-:|:-:|:-:|:-:|\n"
+        text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
+        text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
         text += f"|{change_scale(overview['intent'], 10)}\
             |{change_scale(overview['entity'], 10)}\
             |{change_scale(overview['nlu'], 10)}\
-            |{change_scale(overview['response'], 10)}\
+            |{change_scale(overview['core'], 10)}\
+            |{change_scale(overview['e2e_coverage'], 10)}\
             |<span {style}>**{change_scale(overview['overall'], 10)}**</span>|\n"
         text += f"{get_color(overview['intent'])}\
             |{get_color(overview['entity'])}\
             |{get_color(overview['nlu'])}\
-            |{get_color(overview['response'])}\
+            |{get_color(overview['core'])}\
+            |{get_color(overview['e2e_coverage'])}\
             |<span {style}>{get_color(overview['overall'])}</span>|"
         return text
 
@@ -365,43 +370,43 @@ class MarkdownController(Controller):
             text = "\nNo confusions of entities were found in this model.\n"
             return title + text
 
-    def build_response_title(self) -> str:
+    def build_core_title(self) -> str:
         """
-        Build the report response title block.
+        Build the report response and actinos title block.
 
         :return: Title block in markdown format.
         """
-        title = "## Responses <a name='responses'></a>\n"
-        description = "Section that discusses metrics about bot responses and stories.\n"
+        title = "## Core <a name='core'></a>\n"
+        description = "Section that discusses metrics about bot responses and actions.\n"
         return title + description
 
-    def build_response_overview(self) -> str:
+    def build_core_overview(self) -> str:
         """
-        Build the report response overview block.
+        Build the report response and actions overview block.
 
         :return: Overview block in markdown format.
         """
-        response_overview = self.json.response_overview.get("macro avg")
+        core_overview = self.json.core_overview.get("macro avg")
         text = "|Precision|Recall|F1 Score|Examples|\n"
         text += "|:-:|:-:|:-:|:-:|\n"
-        text += f"|{response_overview['precision'] * 100:.1f}%\
-            |{response_overview['recall'] * 100:.1f}%\
-            |{response_overview['f1-score'] * 100:.1f}%\
-            |{response_overview['support']}|\n"
-        text += f"|{get_color(response_overview['precision'])}\
-            |{get_color(response_overview['recall'])}\
-            |{get_color(response_overview['f1-score'])}\
+        text += f"|{core_overview['precision'] * 100:.1f}%\
+            |{core_overview['recall'] * 100:.1f}%\
+            |{core_overview['f1-score'] * 100:.1f}%\
+            |{core_overview['support']}|\n"
+        text += f"|{get_color(core_overview['precision'])}\
+            |{get_color(core_overview['recall'])}\
+            |{get_color(core_overview['f1-score'])}\
             ||\n"
         return text
 
-    def build_response_table(self) -> str:
+    def build_core_table(self) -> str:
         """
-        Função que monta o bloco de texto das histórias no relatório.
+        Build the report core table block.
         """
         title = "### Metrics\n"
-        description = "Table with bot response metrics.\n"
+        description = "Table with bot core metrics.\n"
         title += description + "\n"
-        data = self.json.responses
+        data = self.json.core
         table_data = [[
             "",
             "Response",
@@ -419,7 +424,7 @@ class MarkdownController(Controller):
             self.csv.save(table_data, "story_report.csv")
             return title + self.build_table(table_data)
         else:
-            text = "\nNo responses were found for this model.\n"
+            text = "\nNo responses or actions were found for this model.\n"
             return title + text
 
     def build_nlu_title(self) -> str:

@@ -33,8 +33,8 @@ class JsonController(Controller):
         self._entities: List[Dict[str, entity]] = []
         self._entity_overview: Dict[str, float] = {}
         self._entity_errors: List[Dict[str, entity]] = []
-        self._responses: List[Dict[str, float]] = []
-        self._response_overview: Dict[str, float] = {}
+        self._core: List[Dict[str, float]] = []
+        self._core_overview: Dict[str, float] = {}
         self._overview: Dict[str, Union[str, number]] = {
             "project": project_name,
             "version": project_version
@@ -80,7 +80,7 @@ class JsonController(Controller):
         self._load_intent_errors()
         self._load_entities()
         self._load_entity_errors()
-        self._load_responses()
+        self._load_core()
         self._load_overview()
 
     def _load_intents(self) -> None:
@@ -134,24 +134,24 @@ class JsonController(Controller):
         """
         self._entity_errors = self.load_json_file(self.entity_errors_path, error_flag=False)
 
-    def _load_responses(self) -> None:
+    def _load_core(self) -> None:
         """
-        Load Rasa response report data.
+        Load Rasa core report data.
         """
-        self._responses = self.load_json_file(self.story_report_path, error_flag=False)
-        if self._responses:
-            self._response_overview = {
-                "macro avg": self._responses.get("macro avg"),
-                "weighted avg": self._responses.get("weighted avg"),
-                "conversation_accuracy": self._responses.get("conversation_accuracy")
+        self._core = self.load_json_file(self.story_report_path, error_flag=False)
+        if self._core:
+            self._core_overview = {
+                "macro avg": self._core.get("macro avg"),
+                "weighted avg": self._core.get("weighted avg"),
+                "conversation_accuracy": self._core.get("conversation_accuracy")
             }
-            del self._responses["macro avg"]
-            del self._responses["weighted avg"]
-            if self._responses.get("accuracy"):
-                del self._responses["accuracy"]
-            if self._responses.get("conversation_accuracy"):
-                del self._responses["conversation_accuracy"]
-            self._responses = self._to_list(self._responses, "f1-score")
+            del self._core["macro avg"]
+            del self._core["weighted avg"]
+            if self._core.get("accuracy"):
+                del self._core["accuracy"]
+            if self._core.get("conversation_accuracy"):
+                del self._core["conversation_accuracy"]
+            self._core = self._to_list(self._core, "f1-score")
 
     def _load_overview(self) -> None:
         """
@@ -159,14 +159,16 @@ class JsonController(Controller):
         """
         intent_overview = self._intent_overview.get("macro avg", {}).get("f1-score")
         entity_overview = self._entity_overview.get("macro avg", {}).get("f1-score")
-        response_overview = self._response_overview.get("macro avg", {}).get("f1-score")
+        core_overview = self._core_overview.get("macro avg", {}).get("f1-score")
         nlu_overview = self._overview.get("nlu")
+        e2e_coverage_overview = self._overview.get("e2e_coverage")
         self._overview.update({
             "updated_at": format_date(),
             "intent": intent_overview if intent_overview is not None else None,
             "entity": entity_overview if entity_overview is not None else None,
-            "response": response_overview if response_overview is not None else None,
-            "nlu": nlu_overview
+            "core": core_overview if core_overview is not None else None,
+            "nlu": nlu_overview,
+            "e2e_coverage": e2e_coverage_overview
         })
         self._calculate_overall()
         if os.path.isfile(self.overview_report_path):
@@ -195,10 +197,11 @@ class JsonController(Controller):
 
     def _calculate_overall(self) -> None:
         weights = {
-            "intent": 3,
-            "entity": 2,
-            "response": 1,
-            "nlu": 4
+            "intent": 2,
+            "entity": 1,
+            "core": 1,
+            "nlu": 3,
+            "e2e_coverage": 3
         }
         overview_sum = sum(
             self._overview[item] * w for item, w in weights.items()
@@ -220,6 +223,7 @@ class JsonController(Controller):
         :param obj: Object that will be used to update the overview object.
         """
         if isinstance(obj, dict):
+            obj.update({"updated_at": format_date()})
             self._overview.update(obj)
             self._calculate_overall()
 
@@ -278,22 +282,22 @@ class JsonController(Controller):
         return self._entity_errors.copy()
 
     @property
-    def responses(self) -> List[Dict[str, float]]:
+    def core(self) -> List[Dict[str, float]]:
         """
-        Get responses data.
+        Get core data.
 
-        :return: Copy of responses data object.
+        :return: Copy of core data object.
         """
-        return self._responses.copy()
+        return self._core.copy()
 
     @property
-    def response_overview(self) -> Dict[str, float]:
+    def core_overview(self) -> Dict[str, float]:
         """
-        Get response overview data.
+        Get core overview data.
 
-        :return: Copy of response overview data object.
+        :return: Copy of core overview data object.
         """
-        return self._response_overview.copy()
+        return self._core_overview.copy()
 
     @property
     def overview(self) -> Dict[str, Union[str, float]]:

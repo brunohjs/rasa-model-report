@@ -93,9 +93,9 @@ class ModelReport:
                 self.markdown.add_text(self.markdown.build_nlu_table())
                 self.markdown.add_text(self.markdown.build_nlu_errors_table())
 
-            # Responses
-            self.markdown.add_text(self.markdown.build_response_title())
-            self.markdown.add_text(self.markdown.build_response_table())
+            # Core
+            self.markdown.add_text(self.markdown.build_core_title())
+            self.markdown.add_text(self.markdown.build_core_table())
             self.markdown.add_image(self.dirs['STORY_MATRIX'], "Confusion Matrix")
 
             # E2E Coverage
