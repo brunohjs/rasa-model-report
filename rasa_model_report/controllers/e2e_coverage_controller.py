@@ -6,6 +6,7 @@ from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.controllers.json_controller import JsonController
+from rasa_model_report.helpers.utils import list_diff
 from rasa_model_report.helpers.utils import load_yaml_file
 
 
@@ -35,7 +36,6 @@ class E2ECoverageController(Controller):
         self._entities: List[str] = []
         self._actions: List[str] = []
         self._total_rate: float = 0
-        self.domain_path: str = f"{self.rasa_path}/domain.yml".replace("//", "/")
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
 
         self._load_domain_elements()
@@ -71,14 +71,14 @@ class E2ECoverageController(Controller):
 
     def _generate(self) -> None:
         """
-        Generate E2E tests coverage report.
+        Generate E2E tests coverage report string.
         """
         not_covered = {}
         report_data = [item["name"] for item in self.json.responses]
         for element in ["intents", "entities", "actions"]:
             element_list = getattr(self, f"_{element}")
             not_covered[element] = {
-                "items": self.diff(element_list, report_data)
+                "items": list_diff(element_list, report_data)
             }
             not_covered[element]["rate"] = 0
             if element_list:
@@ -123,17 +123,6 @@ class E2ECoverageController(Controller):
         :return: Flag that represents if have not covered elements.
         """
         return True in [bool(element["items"]) for element in self._data.values()]
-
-    @staticmethod
-    def diff(l1: List[str], l2: List[str]) -> List[str]:
-        """
-        Returns a list with the difference between l1 and l2.
-
-        :param l1: First list.
-        :param l2: Second list.
-        :return: Difference between l1 and l2.
-        """
-        return [element for element in l1 if element not in l2]
 
     @property
     def data(self) -> Dict[str, Union[List[str], float]]:

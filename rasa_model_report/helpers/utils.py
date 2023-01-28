@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+from typing import List
 from typing import Optional
 from typing import Union
 
@@ -133,3 +134,14 @@ def load_yaml_file(filename: str, error_flag: bool = True) -> Union[dict, list]:
         else:
             logging.warning(message)
             return {}
+
+
+def list_diff(l1: List[str], l2: List[str]) -> List[str]:
+    """
+    Returns a list with the difference between l1 and l2 (l1 - l2).
+
+    :param l1: First list.
+    :param l2: Second list.
+    :return: Difference between l1 and l2.
+    """
+    return [element for element in l1 if element not in l2]

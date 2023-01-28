@@ -3,7 +3,8 @@ version: "3.1"
 intents:
   - greet
   - goodbye
-  - affirm
+  - affirm:
+    use_entities: []
   - deny
   - mood_great
   - mood_unhappy

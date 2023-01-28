@@ -312,3 +312,28 @@ def test_build_line_table():
         "recall": 0.9
     })
     assert text == ["🟢", "test-name", "80.0%", "90.0%", "100.0%", "0.9"]
+
+
+def test_build_e2e_coverage_title():
+    markdown_controller = pytest.markdown_controller
+    text = markdown_controller.build_e2e_coverage_title()
+    assert isinstance(text, str)
+    assert "## E2E Coverage <a name='e2e'></a>" in text
+
+
+def test_build_e2e_coverage_list():
+    markdown_controller = pytest.markdown_controller
+    text = markdown_controller.build_e2e_coverage_list()
+    assert isinstance(text, str)
+    assert "### Not covered elements" in text
+    assert "Total number of elements:" in text
+
+
+def test_build_e2e_coverage_list_when_havent_elements():
+    markdown_controller = pytest.markdown_controller
+    markdown_controller.e2e_coverage._data = {}
+    text = markdown_controller.build_e2e_coverage_list()
+    assert isinstance(text, str)
+    assert "### Not covered elements" in text
+    assert "Total number of elements:" not in text
+    assert "There are no end-to-end tests coverage." in text

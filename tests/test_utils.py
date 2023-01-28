@@ -12,6 +12,8 @@ from rasa_model_report.helpers.utils import convert_to_date
 from rasa_model_report.helpers.utils import format_date
 from rasa_model_report.helpers.utils import get_color
 from rasa_model_report.helpers.utils import get_project_name
+from rasa_model_report.helpers.utils import list_diff
+from rasa_model_report.helpers.utils import load_yaml_file
 from rasa_model_report.helpers.utils import request
 from tests import utils
 
@@ -115,3 +117,27 @@ def test_request_connection_error():
     with mock.patch("requests.get", side_effect=requests.exceptions.ConnectionError()):
         response = request("http://localhost:5005")
         assert response is None
+
+
+def test_load_yaml_file(rasa_path):
+    # When file exist is expected a dict.
+    assert isinstance(load_yaml_file(f"{rasa_path}/domain.yml"), dict)
+
+    # When file doesn't exist and erro_flag is False is expected {} in return.
+    assert load_yaml_file(f"{rasa_path}/file.not.exist", error_flag=False) == {}
+
+    # When file doesn't exist and erro_flag is True is expected Exception.
+    with pytest.raises(Exception):
+        load_yaml_file(f"{rasa_path}/file.not.exist")
+
+
+def test_list_diff():
+    list_1 = [1, 2, 3, 4, 5]
+    list_2 = [7, 6, 5, 4]
+    assert list_diff(list_1, list_2) == [1, 2, 3]
+    assert list_diff(list_2, list_1) == [7, 6]
+    assert list_diff(list_2, list_diff(list_2, list_1)) == [5, 4]
+    assert list_diff([], []) == []
+    assert list_diff(list_1, []) == list_1
+    assert list_diff([], list_1) == []
+    assert list_diff(list_1, list_1) == []
