@@ -44,6 +44,7 @@ class MarkdownController(Controller):
         self.rasa_version: str = rasa_version
         self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
+        self.model_link: str = kwargs.get("model_link")
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
         self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
         self.nlu: NluController = NluController(
@@ -167,6 +168,8 @@ class MarkdownController(Controller):
             ["Creation date", overview["created_at"]],
             ["Updated date", overview["updated_at"]]
         ])
+        if self.model_link:
+            data.append(["Model", f"[Download]({self.model_link})"])
         text += "|" + "|".join([item[0] for item in data]) + "|\n"
         text += "|" + "|".join([":-:" for i in range(len(data))]) + "|\n"
         text += "|" + "|".join([f"<span {style}>{item[1]}</span>" for item in data]) + "|\n\n"
