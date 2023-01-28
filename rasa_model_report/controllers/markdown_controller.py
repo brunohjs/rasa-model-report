@@ -6,6 +6,7 @@ from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.controllers.csv_controller import CsvController
+from rasa_model_report.controllers.e2e_coverage_controller import E2ECoverageController
 from rasa_model_report.controllers.json_controller import JsonController
 from rasa_model_report.controllers.nlu_controller import NluController
 from rasa_model_report.helpers.type_aliases import entity
@@ -43,15 +44,21 @@ class MarkdownController(Controller):
         self.rasa_version: str = rasa_version
         self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
-        self.json: JsonController = JsonController(rasa_path, output_path, self.project_name, self.project_version)
-        self.csv: CsvController = CsvController(rasa_path, output_path, self.project_name, self.project_version)
+        self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
+        self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
         self.nlu: NluController = NluController(
             rasa_path,
             output_path,
-            self.project_name,
-            self.project_version,
+            project_name,
+            project_version,
             url=kwargs.get("rasa_api_url"),
             disable_nlu=kwargs.get("disable_nlu")
+        )
+        self.e2e_coverage: E2ECoverageController = E2ECoverageController(
+            rasa_path,
+            output_path,
+            project_name,
+            project_version
         )
 
         self.json.update_overview({"nlu": self.nlu.general_grade})
@@ -116,6 +123,7 @@ class MarkdownController(Controller):
         if self.nlu.is_connected():
             text += " - [NLU](#nlu)\n"
         text += " - [Responses](#responses)\n"
+        text += " - [E2E Coverage](#e2e)\n"
         text += "\n"
         return text
 
@@ -510,6 +518,47 @@ class MarkdownController(Controller):
         else:
             logging.warning("Configuration block will not be generated, as the file was not found.")
             return ""
+
+    def build_e2e_coverage_title(self) -> str:
+        """
+        Build the report E2E coverage title block.
+
+        :return: Title block in markdown format.
+        """
+        title = "## E2E Coverage <a name='e2e'></a>\n"
+        description = "Section that shows data from intents, entities " \
+            "and responses that aren't covered by end-to-end tests.\n"
+        return title + description
+
+    def build_e2e_coverage_list(self) -> str:
+        """
+        Build the report E2E coverage list block.
+
+        :return: List block in markdown format.
+        """
+        title = "### Not covered elements\n"
+        description = "List with not covered elements by end-to-end tests.\n"
+        title += description + "\n"
+        text = ""
+        data = self.e2e_coverage.data
+        rate = self.e2e_coverage.total_rate
+        total_num_elements = self.e2e_coverage.total_num_elements
+        total_num_not_covered = self.e2e_coverage.total_num_not_covered
+        if data:
+            for element in data:
+                text += f"#### {element.capitalize()}\n"
+                if data[element]["items"]:
+                    for item in data[element]["items"]:
+                        text += f" - {item}\n"
+                else:
+                    text += " - (no elements not covered)\n"
+                text += "\n"
+            text += f"Total number of elements: {total_num_elements}\n\n"
+            text += f"Total number of not covered elements: {total_num_not_covered}\n\n"
+            text += f"Coverage rate: {rate * 100:.1f}% ({get_color(rate)})\n\n"
+        else:
+            text = "\nThere are no end-to-end tests coverage.\n"
+        return title + text
 
     def build_credits(self) -> str:
         """

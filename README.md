@@ -15,13 +15,13 @@
 ![Version](https://img.shields.io/pypi/v/rasa-model-report)
 ![Python version](https://img.shields.io/static/v1?label=python&message=v3.8&color=3776AB)
 ![Apache 2.0 License](https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=yellowgreen)
-![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report)
 ![Code coverage](https://img.shields.io/static/v1?label=coverage&message=100%&color=brightgreen)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/brunohjs/rasa-model-report)
-![Code Climate issues](https://img.shields.io/codeclimate/issues/brunohjs/rasa-model-report)
-![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brunohjs/rasa-model-report)
 ![Stars](https://img.shields.io/github/stars/brunohjs/rasa-model-report?style=social)
 ![Followers](https://img.shields.io/github/followers/brunohjs?style=social)
+<!-- ![Contributors](https://img.shields.io/github/contributors/brunohjs/rasa-model-report) -->
+<!-- ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/brunohjs/rasa-model-report) -->
+<!-- ![Code Climate issues](https://img.shields.io/codeclimate/issues/brunohjs/rasa-model-report) -->
+<!-- ![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brunohjs/rasa-model-report) -->
 <!--  -->
 
 

@@ -53,7 +53,7 @@ class ModelReport:
 
         logging.info("---")
         logging.info(
-            f"Starting report creation from {self.project_name} bot template,"
+            f"Starting report creation from {self.project_name} bot template, "
             f"version {self.project_version if self.project_version else 'not identified'}"
         )
         self.generate_report()
@@ -97,6 +97,10 @@ class ModelReport:
             self.markdown.add_text(self.markdown.build_response_title())
             self.markdown.add_text(self.markdown.build_response_table())
             self.markdown.add_image(self.dirs['STORY_MATRIX'], "Confusion Matrix")
+
+            # E2E Coverage
+            self.markdown.add_text(self.markdown.build_e2e_coverage_title())
+            self.markdown.add_text(self.markdown.build_e2e_coverage_list())
 
             # Credits
             self.markdown.add_text(self.markdown.build_credits())

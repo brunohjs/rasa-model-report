@@ -7,7 +7,6 @@ from typing import Optional
 from typing import Union
 
 import requests.exceptions
-from yaml import safe_load
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.helpers import utils
@@ -84,7 +83,7 @@ class NluController(Controller):
         files = glob.glob(f"{self.nlu_path}/**/*.yml") + glob.glob(f"{self.nlu_path}/*.yml")
         nlu = {}
         for filename in files:
-            file = safe_load(open(filename, encoding="utf-8"))
+            file = utils.load_yaml_file(filename)
             if file.get("nlu"):
                 data = {i["intent"]: i["examples"] for i in file["nlu"] if i.get("intent")}
                 if data:
