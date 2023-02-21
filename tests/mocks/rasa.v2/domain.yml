@@ -12,6 +12,9 @@ intents:
 entities:
   - day
 
+actions:
+  - utter_greet
+
 responses:
   utter_greet:
   - text: "Hey! How are you?"

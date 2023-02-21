@@ -24,6 +24,7 @@ def remove_generated_files(rasa_path):
         f"{rasa_path}/results/overview.json",
         f"{rasa_path}/results/e2e_coverage_report.txt",
         "tests/model_report.md",
+        "model_report.md",
         "test.csv",
         f"{rasa_path}/results/*.csv"
     )
