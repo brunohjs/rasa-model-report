@@ -52,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
 
-[1.3.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...HEAD
+[1.3.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/brunohjs/rasa-model-report/compare/1.0.0...1.0.1
