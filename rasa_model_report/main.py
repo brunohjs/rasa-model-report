@@ -9,6 +9,11 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 
 @click.command()
 @click.option(
+    "--actions-path",
+    required=False,
+    help="Actions path. (default: actions/ inside Rasa project path)"
+)
+@click.option(
     "--disable-nlu",
     is_flag=True,
     required=False,
@@ -77,7 +82,16 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     message="v%(version)s",
     help="Show installed rasa-model-report version.",
 )
-def main(disable_nlu, model_link, output_path, path, project_name, project_version, rasa_api, rasa_version):
+def main(
+    actions_path,
+    disable_nlu,
+    model_link,
+    output_path, path,
+    project_name,
+    project_version,
+    rasa_api,
+    rasa_version
+):
     """
     Simple add-on that generates training model health reports for your Rasa projects. 📈🔍🧾🤖🧠
     """
@@ -89,6 +103,7 @@ def main(disable_nlu, model_link, output_path, path, project_name, project_versi
         project_version,
         disable_nlu=disable_nlu,
         rasa_api_url=rasa_api,
-        model_link=model_link
+        model_link=model_link,
+        actions_path=actions_path
     )
     return report

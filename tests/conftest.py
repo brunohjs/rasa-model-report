@@ -29,6 +29,7 @@ def execute_before_each_test(rasa_path):
 @responses.activate
 def load_controllers(rasa_path):
     output_path = "./tests"
+    actions_path = None
     project_name = "test-project"
     project_version = "0.0.0"
     rasa_version = "0.0.0"
@@ -37,7 +38,7 @@ def load_controllers(rasa_path):
     json_controller = JsonController(rasa_path, output_path, project_name, project_version)
     csv_controller = CsvController(rasa_path, output_path, project_name, project_version)
     nlu_controller = NluController(rasa_path, output_path, project_name, project_version)
-    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, project_name, project_version)
+    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, actions_path, project_name, project_version)
     markdown_controller = MarkdownController(rasa_path, output_path, project_name, rasa_version, project_version)
     pytest.controller = controller
     pytest.json_controller = json_controller

@@ -1,5 +1,6 @@
 import logging
 import os.path
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
@@ -26,7 +27,7 @@ class MarkdownController(Controller):
         project_name: str,
         rasa_version: str,
         project_version: str,
-        **kwargs: dict
+        **kwargs: Dict[str, Any]
     ) -> None:
         """
         __init__ method.
@@ -58,6 +59,7 @@ class MarkdownController(Controller):
         self.e2e_coverage: E2ECoverageController = E2ECoverageController(
             rasa_path,
             output_path,
+            kwargs.get("actions_path"),
             project_name,
             project_version
         )

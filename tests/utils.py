@@ -24,6 +24,7 @@ def remove_generated_files(rasa_path):
         f"{rasa_path}/results/overview.json",
         f"{rasa_path}/results/e2e_coverage_report.txt",
         "tests/model_report.md",
+        "model_report.md",
         "test.csv",
         f"{rasa_path}/results/*.csv"
     )
@@ -35,6 +36,12 @@ def remove_generated_files(rasa_path):
             os.remove(file)
 
 
+def check_string_in_file(string, filename):
+    file = open(filename, encoding="utf-8")
+    file_data = file.read()
+    return string in file_data
+
+
 def load_mock_payloads():
     current_test_name = (
         os.environ.get("PYTEST_CURRENT_TEST").split(":")[-1].split(" ")[0]
@@ -43,4 +50,28 @@ def load_mock_payloads():
     tests = MOCK_PAYLOADS.get(current_test_name, []) + MOCK_PAYLOADS["default"]
     for test in tests:
         responses.add(**test)
+    return True
+
+
+def check_model_report(model_report_path):
+    file = open(model_report_path, encoding="utf-8")
+    file_data = file.read()
+    file.close()
+
+    assert "# Model health report" in file_data
+    assert "## Index" in file_data
+    assert "## Overview" in file_data
+    assert "## Config" in file_data
+    assert "## Intents" in file_data
+    assert "## Entities" in file_data
+    assert "## Core" in file_data
+    assert "## E2E Coverage" in file_data
+
+    assert "/intent_histogram.png" in file_data
+    assert "/intent_confusion_matrix.png" in file_data
+    assert "/DIETClassifier_histogram.png" in file_data
+    assert "/DIETClassifier_confusion_matrix.png" in file_data
+    assert "/story_confusion_matrix.png" in file_data
+    assert "/intent_histogram.png" in file_data
+
     return True

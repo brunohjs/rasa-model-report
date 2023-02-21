@@ -1,6 +1,7 @@
 import glob
 import logging
 import re
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -24,7 +25,7 @@ class NluController(Controller):
         project_name: str,
         project_version: str,
         url: str = "http://localhost:5005",
-        **kwargs: dict
+        **kwargs: Dict[str, Any]
     ) -> None:
         """
         __init__ method.

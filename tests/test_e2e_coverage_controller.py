@@ -9,9 +9,10 @@ from tests import utils
 @pytest.fixture(autouse=True)
 def execute_before_each_test(rasa_path):
     output_path = "./tests"
+    actions_path = None
     project_name = "test-project"
     project_version = "0.0.0"
-    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, project_name, project_version)
+    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, actions_path, project_name, project_version)
     pytest.e2e_coverage_controller = e2e_coverage_controller
     yield
     utils.remove_generated_files(rasa_path)
@@ -125,3 +126,31 @@ def test_e2e_coverage_get_total_num_not_covered():
     total_num_not_covered += 1
     assert e2e_coverage_controller.total_num_not_covered != total_num_not_covered
     assert isinstance(e2e_coverage_controller.total_num_not_covered, int)
+
+
+def test_e2e_coverage_exclude_special_actions():
+    e2e_coverage_controller = pytest.e2e_coverage_controller
+    e2e_coverage_controller.json._core.extend([
+        {"name": "utter_ask_test_slot"},
+        {"name": "validate_slot_form"},
+        {"name": "action_ask_slot"},
+        {"name": "action_correct"},
+        {"name": "utter_ok"}
+    ])
+    actions = e2e_coverage_controller._exclude_special_actions()
+    assert "utter_ask_test_slot" not in actions
+    assert "validate_slot_form" not in actions
+    assert "action_ask_slot" not in actions
+    assert "action_correct" in actions
+    assert "utter_ok" in actions
+
+
+def test_e2e_coverage_get_utters_in_actions(rasa_path):
+    e2e_coverage_controller = pytest.e2e_coverage_controller
+    utters = e2e_coverage_controller.get_utters_in_actions()
+    assert len(utters) == 4
+    assert "utter_test" in utters
+    assert "action_test" in utters
+    assert "action_test2" in utters
+    assert "action_test3" in utters
+    assert "validate_slot" not in utters

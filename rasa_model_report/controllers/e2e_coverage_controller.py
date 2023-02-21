@@ -1,5 +1,7 @@
 import glob
 import logging
+import re
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
@@ -15,9 +17,10 @@ class E2ECoverageController(Controller):
         self,
         rasa_path: str,
         output_path: str,
+        actions_path: str,
         project_name: str,
         project_version: str,
-        **kwargs: dict
+        **kwargs: Dict[str, Any]
     ):
         """
         __init__ method.
@@ -27,7 +30,7 @@ class E2ECoverageController(Controller):
         :param project_name: Project name.
         :param project_version: Project version.
         """
-        super().__init__(rasa_path, output_path, project_name, project_version)
+        super().__init__(rasa_path, output_path, project_name, project_version, actions_path=actions_path)
 
         self._data: Dict[str, Union[List[str], float]] = {}
         self._total_num_elements: int = 0
@@ -68,6 +71,9 @@ class E2ECoverageController(Controller):
                         setattr(self, "_actions", getattr(self, "_actions") + data)
                     else:
                         setattr(self, f"_{element}", getattr(self, f"_{element}") + data)
+        self._actions = list(dict.fromkeys(self._actions))
+        self._actions = self._exclude_special_actions()
+        self._actions = list_diff(self._actions, self.get_utters_in_actions())
 
     def _generate(self) -> None:
         """
@@ -88,6 +94,48 @@ class E2ECoverageController(Controller):
         self._data = not_covered
         if self.have_not_covered_items():
             self._total_rate = 1 - self._total_num_not_covered / self._total_num_elements
+
+    def _exclude_special_actions(self) -> List[str]:
+        """
+        Exclude special actions from coverage report, like actions_ask_slot and validates.
+
+        :return: Actions list without special actions.
+        """
+        actions = []
+        for item in self.json.core:
+            name = item["name"]
+            patterns_to_exclude = [
+                name.startswith("action_ask_"),
+                name.startswith("utter_ask_"),
+                name.startswith("validate_")
+            ]
+            if True not in patterns_to_exclude:
+                actions.append(name)
+        return actions
+
+    def get_utters_in_actions(self) -> List[str]:
+        """
+        Get all utters in actions code.
+
+        :return: Found utter list.
+        """
+        result = []
+        patterns = [
+            r"template|response\s?=\s?[\'|\"].*[\'|\"]",
+            r"FollowupAction\(\s?[\'|\"].*[\'|\"]\s?\)",
+            r"ActionExecuted\(\s?[\'|\"].*[\'|\"]\s?\)"
+        ]
+        actions_data = glob.glob(f"{self.actions_path}/**/*.py") + glob.glob(f"{self.actions_path}/*.py")
+        actions_files = [open(file).read() for file in actions_data]
+        for file in actions_files:
+            for pattern in patterns:
+                strings = re.findall(pattern, file)
+                if strings:
+                    for string in strings:
+                        utter = re.search(r"(utter|action)_[a-zA-Z0-9_-]+", string)
+                        if utter and utter.group() not in result:
+                            result.append(utter.group())
+        return result
 
     def save(self) -> None:
         """
