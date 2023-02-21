@@ -39,6 +39,7 @@ def test_add_image():
     markdown_controller = pytest.markdown_controller
     markdown_controller.add_image(path_to_image, "Title")
     assert os.path.isfile(f"{markdown_controller.results_path}/{path_to_image}")
+    assert "/intent_confusion_matrix.png" in markdown_controller.result
 
 
 def test_add_image_that_doesnt_exist():
@@ -46,6 +47,16 @@ def test_add_image_that_doesnt_exist():
     markdown_controller = pytest.markdown_controller
     markdown_controller.add_image(path_to_image, "Title")
     assert not os.path.isfile(f"{markdown_controller.results_path}/{path_to_image}")
+    assert "/image_that_doesnt_exist.png" not in markdown_controller.result
+
+
+def test_add_image_when_no_images_param_is_activated():
+    path_to_image = "intent_confusion_matrix.png"
+    markdown_controller = pytest.markdown_controller
+    markdown_controller.no_images = True
+    markdown_controller.add_image(path_to_image, "Title")
+    assert os.path.isfile(f"{markdown_controller.results_path}/{path_to_image}")
+    assert "/intent_confusion_matrix.png" not in markdown_controller.result
 
 
 def test_break_line():

@@ -53,25 +53,27 @@ def load_mock_payloads():
     return True
 
 
-def check_model_report(model_report_path):
+def check_model_report_sections(model_report_path):
     file = open(model_report_path, encoding="utf-8")
     file_data = file.read()
     file.close()
+    return "# Model health report" in file_data and \
+        "## Index" in file_data and \
+        "## Overview" in file_data and \
+        "## Config" in file_data and \
+        "## Intents" in file_data and \
+        "## Entities" in file_data and \
+        "## Core" in file_data and \
+        "## E2E Coverage" in file_data
 
-    assert "# Model health report" in file_data
-    assert "## Index" in file_data
-    assert "## Overview" in file_data
-    assert "## Config" in file_data
-    assert "## Intents" in file_data
-    assert "## Entities" in file_data
-    assert "## Core" in file_data
-    assert "## E2E Coverage" in file_data
 
-    assert "/intent_histogram.png" in file_data
-    assert "/intent_confusion_matrix.png" in file_data
-    assert "/DIETClassifier_histogram.png" in file_data
-    assert "/DIETClassifier_confusion_matrix.png" in file_data
-    assert "/story_confusion_matrix.png" in file_data
-    assert "/intent_histogram.png" in file_data
-
-    return True
+def check_model_report_images(model_report_path):
+    file = open(model_report_path, encoding="utf-8")
+    file_data = file.read()
+    file.close()
+    return "/intent_histogram.png" in file_data and \
+        "/intent_confusion_matrix.png" in file_data and \
+        "/DIETClassifier_histogram.png" in file_data and \
+        "/DIETClassifier_confusion_matrix.png" in file_data and \
+        "/story_confusion_matrix.png" in file_data and \
+        "/intent_histogram.png" in file_data

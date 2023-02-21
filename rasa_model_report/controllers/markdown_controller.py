@@ -46,6 +46,7 @@ class MarkdownController(Controller):
         self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
         self.readme_path: str = "README.md"
         self.model_link: str = kwargs.get("model_link")
+        self.no_images: bool = kwargs.get("no_images", False)
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
         self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
         self.nlu: NluController = NluController(
@@ -68,6 +69,8 @@ class MarkdownController(Controller):
             "nlu": self.nlu.general_grade,
             "e2e_coverage": self.e2e_coverage.total_rate
         })
+        if self.no_images:
+            logging.info("--no-images activated. Images will not be displayed in the report.")
 
     def add_text(self, text: str) -> None:
         """
@@ -85,6 +88,8 @@ class MarkdownController(Controller):
         :param image: Image path.
         :param title: Image title.
         """
+        if self.no_images:
+            return None
         if os.path.isfile(f"{self.results_path}/{image}"):
             self.result += f"### {title}\n![{title}]({self.results_path}/{image} '{title}')" + "\n"
             logging.info(f"Image {image} has been successfully added.")

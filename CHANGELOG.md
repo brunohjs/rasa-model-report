@@ -5,8 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - In progress...
+## [1.3.0] - 2023-02-21
 ### Added
+- [#42](https://github.com/brunohjs/rasa-model-report/issues/42) Created `--no-images` CLI command parameter. This command is used to not show images in the report.
 - [#49](https://github.com/brunohjs/rasa-model-report/issues/49) Created `--actions-path` CLI command parameter, to inform actions path. In addition, end-to-end coverage can now identify utters or actions that are inside actions code.
 
 ## [1.2.0] - 2023-01-28
