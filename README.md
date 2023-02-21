@@ -89,6 +89,8 @@ Not every version of Rasa is supported. Check the table below:
 There are parameters that can be used. Available options are below:
 
 ```
+--actions-path TEXT     Actions path. (default: actions/ inside Rasa project
+                        path)
 --disable-nlu           Disable processing NLU sentences. NLU section will
                         not be generated in the report. Required Rasa API.
                         (default: false)

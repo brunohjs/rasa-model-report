@@ -11,7 +11,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 @click.option(
     "--actions-path",
     required=False,
-    help="Actions path. (default: actions/ inside Rasa project path.)"
+    help="Actions path. (default: actions/ inside Rasa project path)"
 )
 @click.option(
     "--disable-nlu",
