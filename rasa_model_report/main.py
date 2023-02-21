@@ -33,6 +33,13 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Model download link. It's only displayed in the report to model download."
 )
 @click.option(
+    "--no-images",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Generate model report without images. (default: false)"
+)
+@click.option(
     "--output-path",
     type=str,
     required=False,
@@ -86,6 +93,7 @@ def main(
     actions_path,
     disable_nlu,
     model_link,
+    no_images,
     output_path, path,
     project_name,
     project_version,
@@ -104,6 +112,7 @@ def main(
         disable_nlu=disable_nlu,
         rasa_api_url=rasa_api,
         model_link=model_link,
-        actions_path=actions_path
+        actions_path=actions_path,
+        no_images=no_images
     )
     return report

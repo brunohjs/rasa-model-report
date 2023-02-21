@@ -97,6 +97,8 @@ There are parameters that can be used. Available options are below:
 -h, --help              Show this help message.
 --model-link TEXT       Model download link. It's only displayed in the
                         report to model download.
+--no-images             Generate model report without images. (default:
+                        false)
 --output-path TEXT      Report output path. (default: ./)
 -p, --path TEXT         Rasa project path. (default: ./)
 --project-name TEXT     Rasa project name. It's only displayed in the
