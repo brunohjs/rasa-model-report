@@ -5,10 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - In progress...
+### Fixed
+- [#52](https://github.com/brunohjs/rasa-model-report/issues/52) Fixed E2E coverage report not extracting entities correctly.
+
+
 ## [1.3.0] - 2023-02-21
 ### Added
 - [#42](https://github.com/brunohjs/rasa-model-report/issues/42) Created `--no-images` CLI command parameter. This command is used to not show images in the report.
 - [#49](https://github.com/brunohjs/rasa-model-report/issues/49) Created `--actions-path` CLI command parameter, to inform actions path. In addition, end-to-end coverage can now identify utters or actions that are inside actions code.
+
 
 ## [1.2.0] - 2023-01-28
 ### Added
@@ -32,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `--project` to `--project-name`.
   - `--version` to `--project-version` (this parameter was duplicated).
 
+
 ## [1.0.1] - 2022-12-13
 ### Added
 - [#30](https://github.com/brunohjs/rasa-model-report/issues/30) Added more badges to README.md.
@@ -52,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
 
+[1.3.1]: https://github.com/brunohjs/rasa-model-report/compare/1.3.0...HEAD
 [1.3.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/brunohjs/rasa-model-report/compare/1.0.1...1.1.0
