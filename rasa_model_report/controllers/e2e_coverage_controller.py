@@ -80,7 +80,7 @@ class E2ECoverageController(Controller):
         Generate E2E tests coverage report string.
         """
         not_covered = {}
-        report_data = [item["name"] for item in self.json.core]
+        report_data = [self.json.extract_entity_from_string(item["name"]) for item in self.json.core]
         for element in ["intents", "entities", "actions"]:
             element_list = getattr(self, f"_{element}")
             not_covered[element] = {
@@ -102,15 +102,14 @@ class E2ECoverageController(Controller):
         :return: Actions list without special actions.
         """
         actions = []
-        for item in self.json.core:
-            name = item["name"]
+        for item in self._actions:
             patterns_to_exclude = [
-                name.startswith("action_ask_"),
-                name.startswith("utter_ask_"),
-                name.startswith("validate_")
+                item.startswith("action_ask_"),
+                item.startswith("utter_ask_"),
+                item.startswith("validate_")
             ]
             if True not in patterns_to_exclude:
-                actions.append(name)
+                actions.append(item)
         return actions
 
     def get_utters_in_actions(self) -> List[str]:

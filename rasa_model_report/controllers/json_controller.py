@@ -1,6 +1,7 @@
 import json
 import logging
 import os.path
+import re
 from typing import Dict
 from typing import List
 from typing import Union
@@ -71,6 +72,28 @@ class JsonController(Controller):
             else:
                 logging.warning(message)
                 return {}
+
+    @staticmethod
+    def extract_entity_from_string(string: str) -> str:
+        """
+        Extract entity from NLU sample sentence.
+
+        :param string: Text.
+        :return: Entity extracted from text.
+        """
+        regex = r"({(\"|')entity(\"|'):\s+?(\"|').*(\"|'),\s+?(\"|')value(\"|'):\s+?(\"|').*(\"|')}|\(.*\))"
+        main_regex = r"\[.*\]" + regex
+        result = re.search(main_regex, string)
+        if result:
+            result = re.search(regex, string)
+            try:
+                result = json.loads(result.group())
+                if result.get("entity"):
+                    return result["entity"]
+            except Exception:
+                result = re.sub(r"\(|\)", "", result.group())
+                return result
+        return string
 
     def _load_data(self) -> None:
         """

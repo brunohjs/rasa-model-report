@@ -228,3 +228,25 @@ def test_error_when_execute_to_list_passing_invalid_params():
     json_controller = pytest.json_controller
     with pytest.raises(TypeError):
         json_controller._to_list(["a", "b", "c"])
+
+
+def test_extract_entity_from_string():
+    json_controller = pytest.json_controller
+    assert json_controller.extract_entity_from_string(
+        "[depósito]{\"entity\": \"meio_pagamento\", \"value\": \"deposito\"}"
+    ) == "meio_pagamento"
+    assert json_controller.extract_entity_from_string(
+        "[débito automático]{\"entity\": \"meio_pagamento\", \"value\": \"debito automatico\"}"
+    ) == "meio_pagamento"
+    assert json_controller.extract_entity_from_string(
+        "[transferências]{\"entity\": \"tipo_operacao\", \"value\": \"transferencia\"}"
+    ) == "tipo_operacao"
+    assert json_controller.extract_entity_from_string(
+        "[saldo](meio_pagamento)"
+    ) == "meio_pagamento"
+    assert json_controller.extract_entity_from_string(
+        "[bo20](erros_outros)"
+    ) == "erros_outros"
+    assert json_controller.extract_entity_from_string("utter_without_entity_test") == "utter_without_entity_test"
+    with pytest.raises(TypeError):
+        json_controller.extract_entity_from_string()
