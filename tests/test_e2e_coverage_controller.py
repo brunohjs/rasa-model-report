@@ -130,12 +130,12 @@ def test_e2e_coverage_get_total_num_not_covered():
 
 def test_e2e_coverage_exclude_special_actions():
     e2e_coverage_controller = pytest.e2e_coverage_controller
-    e2e_coverage_controller.json._core.extend([
-        {"name": "utter_ask_test_slot"},
-        {"name": "validate_slot_form"},
-        {"name": "action_ask_slot"},
-        {"name": "action_correct"},
-        {"name": "utter_ok"}
+    e2e_coverage_controller._actions.extend([
+        "utter_ask_test_slot",
+        "validate_slot_form",
+        "action_ask_slot",
+        "action_correct",
+        "utter_ok"
     ])
     actions = e2e_coverage_controller._exclude_special_actions()
     assert "utter_ask_test_slot" not in actions
