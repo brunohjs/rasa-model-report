@@ -7,10 +7,8 @@ from typing import List
 from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
-from rasa_model_report.helpers.type_aliases import entity
-from rasa_model_report.helpers.type_aliases import intent
-from rasa_model_report.helpers.type_aliases import number
-from rasa_model_report.helpers.utils import format_date
+from rasa_model_report.helpers import type_aliases
+from rasa_model_report.helpers import utils
 
 
 class JsonController(Controller):
@@ -28,15 +26,15 @@ class JsonController(Controller):
         """
         super().__init__(rasa_path, output_path, project_name, project_version)
 
-        self._intents: List[Dict[str, intent]] = []
+        self._intents: List[Dict[str, type_aliases.intent]] = []
         self._intent_overview: Dict[str, float] = {}
-        self._intent_errors: List[Dict[str, intent]] = []
-        self._entities: List[Dict[str, entity]] = []
+        self._intent_errors: List[Dict[str, type_aliases.intent]] = []
+        self._entities: List[Dict[str, type_aliases.entity]] = []
         self._entity_overview: Dict[str, float] = {}
-        self._entity_errors: List[Dict[str, entity]] = []
+        self._entity_errors: List[Dict[str, type_aliases.entity]] = []
         self._core: List[Dict[str, float]] = []
         self._core_overview: Dict[str, float] = {}
-        self._overview: Dict[str, Union[str, number]] = {
+        self._overview: Dict[str, Union[str, float]] = {
             "project": project_name,
             "version": project_version
         }
@@ -186,7 +184,7 @@ class JsonController(Controller):
         nlu_overview = self._overview.get("nlu")
         e2e_coverage_overview = self._overview.get("e2e_coverage")
         self._overview.update({
-            "updated_at": format_date(),
+            "updated_at": utils.format_date(),
             "intent": intent_overview if intent_overview is not None else None,
             "entity": entity_overview if entity_overview is not None else None,
             "core": core_overview if core_overview is not None else None,
@@ -204,7 +202,7 @@ class JsonController(Controller):
             logging.info(f"{self.overview_report_path} file loaded successfully.")
         else:
             self._overview.update({
-                "created_at": format_date()
+                "created_at": utils.format_date()
             })
             logging.warn(f"{self.overview_report_path} file not found.")
 
@@ -239,19 +237,19 @@ class JsonController(Controller):
             "overall": overview_rate
         })
 
-    def update_overview(self, obj: Dict[str, number]) -> None:
+    def update_overview(self, obj: Dict[str, float]) -> None:
         """
         Update overview report data.
 
         :param obj: Object that will be used to update the overview object.
         """
         if isinstance(obj, dict):
-            obj.update({"updated_at": format_date()})
+            obj.update({"updated_at": utils.format_date()})
             self._overview.update(obj)
             self._calculate_overall()
 
     @property
-    def intents(self) -> Dict[str, intent]:
+    def intents(self) -> Dict[str, type_aliases.intent]:
         """
         Get intents data.
 
@@ -269,7 +267,7 @@ class JsonController(Controller):
         return self._intent_overview.copy()
 
     @property
-    def intent_errors(self) -> List[Dict[str, intent]]:
+    def intent_errors(self) -> List[Dict[str, type_aliases.intent]]:
         """
         Get intent errors data.
 
@@ -278,7 +276,7 @@ class JsonController(Controller):
         return self._intent_errors.copy()
 
     @property
-    def entities(self) -> List[Dict[str, entity]]:
+    def entities(self) -> List[Dict[str, type_aliases.entity]]:
         """
         Get entities data.
 
@@ -296,7 +294,7 @@ class JsonController(Controller):
         return self._entity_overview.copy()
 
     @property
-    def entity_errors(self) -> List[Dict[str, entity]]:
+    def entity_errors(self) -> List[Dict[str, type_aliases.entity]]:
         """
         Get entity errors data.
 

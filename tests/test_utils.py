@@ -14,6 +14,8 @@ from rasa_model_report.helpers.utils import get_color
 from rasa_model_report.helpers.utils import get_project_name
 from rasa_model_report.helpers.utils import list_diff
 from rasa_model_report.helpers.utils import load_yaml_file
+from rasa_model_report.helpers.utils import path_to
+from rasa_model_report.helpers.utils import remove_duplicate_slashs
 from rasa_model_report.helpers.utils import request
 from tests import utils
 
@@ -141,3 +143,24 @@ def test_list_diff():
     assert list_diff(list_1, []) == list_1
     assert list_diff([], list_1) == []
     assert list_diff(list_1, list_1) == []
+
+
+def test_path_to():
+    assert path_to("tests/mocks/rasa.v2/results/", "tests/mocks/rasa.v2/results") == ""
+    assert path_to("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results") == ""
+    assert path_to("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results/") == ""
+    assert path_to("tests//mocks/rasa.v2/results", "tests/mocks/rasa.v2/results") == ""
+    assert path_to("tests/mocks", "tests/mocks/rasa.v2/results") == "rasa.v2/results/"
+    assert path_to("tests/mocks/rasa.v3", "tests/mocks/rasa.v2/results") == "../rasa.v2/results/"
+    assert path_to("actions/", "tests/mocks/rasa.v2/results") == "../tests/mocks/rasa.v2/results/"
+    assert path_to("actions", "tests/mocks/rasa.v2/results") == "../tests/mocks/rasa.v2/results/"
+    assert path_to("actions/src/results", "tests/mocks/rasa.v2/results") == "../../../tests/mocks/rasa.v2/results/"
+    assert path_to("actions/src/results/", "tests/mocks/rasa.v2/results") == "../../../tests/mocks/rasa.v2/results/"
+
+
+def test_remove_duplicate_slash():
+    assert remove_duplicate_slashs("tests//mocks/rasa.v2/results") == "tests/mocks/rasa.v2/results"
+    assert remove_duplicate_slashs("tests///mocks/rasa.v2//results//") == "tests/mocks/rasa.v2/results/"
+    assert remove_duplicate_slashs("tests////mocks/rasa.v2/results/") == "tests/mocks/rasa.v2/results/"
+    assert remove_duplicate_slashs("tests////mocks/////rasa.v2/results/") == "tests/mocks/rasa.v2/results/"
+    assert remove_duplicate_slashs("///") == "/"

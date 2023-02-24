@@ -8,8 +8,7 @@ from typing import Union
 
 from rasa_model_report.controllers.controller import Controller
 from rasa_model_report.controllers.json_controller import JsonController
-from rasa_model_report.helpers.utils import list_diff
-from rasa_model_report.helpers.utils import load_yaml_file
+from rasa_model_report.helpers import utils
 
 
 class E2ECoverageController(Controller):
@@ -58,7 +57,7 @@ class E2ECoverageController(Controller):
         for path in paths:
             files.extend(glob.glob(path))
         for file in files:
-            file_data = load_yaml_file(file)
+            file_data = utils.load_yaml_file(file)
             if file_data:
                 for element in ["intents", "entities", "responses", "actions"]:
                     data = []
@@ -73,7 +72,7 @@ class E2ECoverageController(Controller):
                         setattr(self, f"_{element}", getattr(self, f"_{element}") + data)
         self._actions = list(dict.fromkeys(self._actions))
         self._actions = self._exclude_special_actions()
-        self._actions = list_diff(self._actions, self.get_utters_in_actions())
+        self._actions = utils.list_diff(self._actions, self.get_utters_in_actions())
 
     def _generate(self) -> None:
         """
@@ -84,7 +83,7 @@ class E2ECoverageController(Controller):
         for element in ["intents", "entities", "actions"]:
             element_list = getattr(self, f"_{element}")
             not_covered[element] = {
-                "items": list_diff(element_list, report_data)
+                "items": utils.list_diff(element_list, report_data)
             }
             not_covered[element]["rate"] = 0
             if element_list:

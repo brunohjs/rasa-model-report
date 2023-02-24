@@ -121,15 +121,19 @@ Some usage examples with parameters:
     ```
 - When you aren't at the root of the project, use `--path` parameter.
     ```
-    rasa-model-report --path /path/to/rasa/project
+    rasa-model-report --path path/to/rasa/project
     ```
 - Aren't at the root of the project and without NLU report.
     ```
-    rasa-model-report --path /path/to/rasa/project --disable-nlu
+    rasa-model-report --path path/to/rasa/project --disable-nlu
     ```
 - Aren't at the root of the project and change the report output directory.
     ```
-    rasa-model-report --path /path/to/rasa/project --output-path path/to/place/report
+    rasa-model-report --path path/to/rasa/project --output-path path/to/place/report
+    ```
+- Aren't at the root of the project, the actions path isn't at the root project and change the report output directory.
+    ```
+    rasa-model-report --path path/to/rasa/project --output-path path/to/place/report --actions-path path/to/actions/path
     ```
 
 ## 💻 Development

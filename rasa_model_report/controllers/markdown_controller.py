@@ -10,10 +10,8 @@ from rasa_model_report.controllers.csv_controller import CsvController
 from rasa_model_report.controllers.e2e_coverage_controller import E2ECoverageController
 from rasa_model_report.controllers.json_controller import JsonController
 from rasa_model_report.controllers.nlu_controller import NluController
-from rasa_model_report.helpers.type_aliases import entity
-from rasa_model_report.helpers.utils import change_scale
-from rasa_model_report.helpers.utils import check
-from rasa_model_report.helpers.utils import get_color
+from rasa_model_report.helpers import type_aliases
+from rasa_model_report.helpers import utils
 
 
 class MarkdownController(Controller):
@@ -43,7 +41,7 @@ class MarkdownController(Controller):
         self.result: str = ""
         self.title: str = "# Model health report"
         self.rasa_version: str = rasa_version
-        self.output_report_path: str = f"{self.output_path}/model_report.md".replace("//", "/")
+        self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.md")
         self.readme_path: str = "README.md"
         self.model_link: str = kwargs.get("model_link")
         self.no_images: bool = kwargs.get("no_images", False)
@@ -81,20 +79,21 @@ class MarkdownController(Controller):
         if isinstance(text, str):
             self.result += "\n" + text
 
-    def add_image(self, image: str, title: str) -> None:
+    def add_image(self, image_filename: str, title: str) -> None:
         """
         Concatenates image (markdown format) into the result text.
 
-        :param image: Image path.
+        :param image_filename: Image file name.
         :param title: Image title.
         """
         if self.no_images:
             return None
-        if os.path.isfile(f"{self.results_path}/{image}"):
-            self.result += f"### {title}\n![{title}]({self.results_path}/{image} '{title}')" + "\n"
-            logging.info(f"Image {image} has been successfully added.")
+        if os.path.isfile(f"{self.results_path}/{image_filename}"):
+            image_path = utils.path_to(self.output_path, self.results_path) + image_filename
+            self.result += f"### {title}\n![{title}]({image_path} '{title}')" + "\n"
+            logging.info(f"Image {image_filename} has been successfully added.")
         else:
-            logging.warning(f"Image {image} was not found.")
+            logging.warning(f"Image {self.results_path}/{image_filename} was not found.")
 
     def break_line(self) -> None:
         """
@@ -102,7 +101,7 @@ class MarkdownController(Controller):
         """
         self.result += "\n"
 
-    def build_line_entity(self, entities: List[entity]) -> str:
+    def build_line_entity(self, entities: List[type_aliases.entity]) -> str:
         """
         Create a entity lines table in markdown format.
 
@@ -183,18 +182,18 @@ class MarkdownController(Controller):
         style = "style='font-size:20px'"
         text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
-        text += f"|{change_scale(overview['intent'], 10)}\
-            |{change_scale(overview['entity'], 10)}\
-            |{change_scale(overview['nlu'], 10)}\
-            |{change_scale(overview['core'], 10)}\
-            |{change_scale(overview['e2e_coverage'], 10)}\
-            |<span {style}>**{change_scale(overview['overall'], 10)}**</span>|\n"
-        text += f"{get_color(overview['intent'])}\
-            |{get_color(overview['entity'])}\
-            |{get_color(overview['nlu'])}\
-            |{get_color(overview['core'])}\
-            |{get_color(overview['e2e_coverage'])}\
-            |<span {style}>{get_color(overview['overall'])}</span>|"
+        text += f"|{utils.change_scale(overview['intent'], 10)}\
+            |{utils.change_scale(overview['entity'], 10)}\
+            |{utils.change_scale(overview['nlu'], 10)}\
+            |{utils.change_scale(overview['core'], 10)}\
+            |{utils.change_scale(overview['e2e_coverage'], 10)}\
+            |<span {style}>**{utils.change_scale(overview['overall'], 10)}**</span>|\n"
+        text += f"{utils.get_color(overview['intent'])}\
+            |{utils.get_color(overview['entity'])}\
+            |{utils.get_color(overview['nlu'])}\
+            |{utils.get_color(overview['core'])}\
+            |{utils.get_color(overview['e2e_coverage'])}\
+            |<span {style}>{utils.get_color(overview['overall'])}</span>|"
         return text
 
     def build_intent_title(self) -> str:
@@ -220,9 +219,9 @@ class MarkdownController(Controller):
             |{intent_overview['recall'] * 100:.1f}%\
             |{intent_overview['f1-score'] * 100:.1f}%\
             |{intent_overview['support']}|\n"
-        text += f"|{get_color(intent_overview['precision'])}\
-            |{get_color(intent_overview['recall'])}\
-            |{get_color(intent_overview['f1-score'])}\
+        text += f"|{utils.get_color(intent_overview['precision'])}\
+            |{utils.get_color(intent_overview['recall'])}\
+            |{utils.get_color(intent_overview['f1-score'])}\
             ||\n"
         return text
 
@@ -308,9 +307,9 @@ class MarkdownController(Controller):
             |{entity_overview['recall'] * 100:.1f}%\
             |{entity_overview['f1-score'] * 100:.1f}%\
             |{entity_overview['support']}|\n"
-        text += f"|{get_color(entity_overview['precision'])}\
-            |{get_color(entity_overview['recall'])}\
-            |{get_color(entity_overview['f1-score'])}\
+        text += f"|{utils.get_color(entity_overview['precision'])}\
+            |{utils.get_color(entity_overview['recall'])}\
+            |{utils.get_color(entity_overview['f1-score'])}\
             ||\n"
         return text
 
@@ -403,9 +402,9 @@ class MarkdownController(Controller):
             |{core_overview['recall'] * 100:.1f}%\
             |{core_overview['f1-score'] * 100:.1f}%\
             |{core_overview['support']}|\n"
-        text += f"|{get_color(core_overview['precision'])}\
-            |{get_color(core_overview['recall'])}\
-            |{get_color(core_overview['f1-score'])}\
+        text += f"|{utils.get_color(core_overview['precision'])}\
+            |{utils.get_color(core_overview['recall'])}\
+            |{utils.get_color(core_overview['f1-score'])}\
             ||\n"
         return text
 
@@ -471,9 +470,9 @@ class MarkdownController(Controller):
                 "intent": item["intent"],
                 "predicted_intent": item["predicted_intent"],
             }
-            color = get_color(item["confidence"])
+            color = utils.get_color(item["confidence"])
             new_item["confidence"] = f"{item['confidence'] * 100:.1f}%"
-            new_item["understood"] = check(not item["understood"])
+            new_item["understood"] = utils.check(not item["understood"])
             table_data.append([color] + list(new_item.values()))
         if len(table_data) > 1:
             self.csv.save(table_data, "nlu_report.csv")
@@ -506,9 +505,9 @@ class MarkdownController(Controller):
                 "intent": item["intent"],
                 "predicted_intent": item["predicted_intent"],
             }
-            color = get_color(item["confidence"])
+            color = utils.get_color(item["confidence"])
             new_item["confidence"] = f"{item['confidence'] * 100:.1f}%"
-            new_item["understood"] = check(not item["understood"])
+            new_item["understood"] = utils.check(not item["understood"])
             table_data.append([color] + list(new_item.values()))
         if len(table_data) > 1:
             self.csv.save(table_data, "nlu_report.csv")
@@ -570,7 +569,7 @@ class MarkdownController(Controller):
                 text += "\n"
             text += f"Total number of elements: {total_num_elements}\n\n"
             text += f"Total number of not covered elements: {total_num_not_covered}\n\n"
-            text += f"Coverage rate: {rate * 100:.1f}% ({get_color(rate)})\n\n"
+            text += f"Coverage rate: {rate * 100:.1f}% ({utils.get_color(rate)})\n\n"
         else:
             text = "\nThere are no end-to-end tests coverage.\n"
         return title + text
@@ -594,7 +593,7 @@ class MarkdownController(Controller):
         :return: Line table.
         """
         return [
-            get_color(data["f1-score"]),
+            utils.get_color(data["f1-score"]),
             data["name"],
             f"{data['precision'] * 100:.1f}%",
             f"{data['recall'] * 100:.1f}%",
