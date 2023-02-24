@@ -4,7 +4,7 @@ from typing import Any
 from typing import Dict
 
 from rasa_model_report.controllers.markdown_controller import MarkdownController
-from rasa_model_report.helpers.utils import get_project_name
+from rasa_model_report.helpers import utils
 
 
 class ModelReport:
@@ -29,7 +29,7 @@ class ModelReport:
         :param rasa_version: Rasa version.
         :param project_version: Project version.
         """
-        self.project_name: str = project_name if project_name else get_project_name(rasa_path)
+        self.project_name: str = project_name if project_name else utils.get_project_name(rasa_path)
         self.project_version: str = project_version
         self.rasa_version: str = rasa_version
         self.markdown: MarkdownController = MarkdownController(

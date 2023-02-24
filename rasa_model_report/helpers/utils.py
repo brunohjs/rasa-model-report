@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import re
 from typing import List
 from typing import Optional
 from typing import Union
@@ -145,3 +146,39 @@ def list_diff(l1: List[str], l2: List[str]) -> List[str]:
     :return: Difference between l1 and l2.
     """
     return [element for element in l1 if element not in l2]
+
+
+def path_to(origin_path: str, destiny_path: str) -> str:
+    """
+    Return path to *destiny_path* from *origin_path*.
+
+    :param origin_path: Origin path
+    :param destiny_path: Destiny path
+    :return: Path to *destiny_path* from *origin_path*
+    """
+    undo_path = ""
+    destiny_path = remove_duplicate_slashs(destiny_path)
+    origin_path = remove_duplicate_slashs(origin_path)
+    origin_path = origin_path[:-1] if origin_path[-1] == "/" else origin_path
+    temp_path = origin_path
+    while not destiny_path.startswith(temp_path):
+        temp_path = temp_path.split("/")[:-1]
+        temp_path = "/".join(temp_path)
+        undo_path += "../"
+    else:
+        temp_path = destiny_path.replace(temp_path, undo_path, 1)
+        temp_path = remove_duplicate_slashs(temp_path)
+        if temp_path:
+            temp_path = temp_path + "/" if temp_path[-1] != "/" else temp_path
+            temp_path = temp_path.replace("/", "", 1) if temp_path[0] == "/" else temp_path
+        return temp_path
+
+
+def remove_duplicate_slashs(text: str) -> str:
+    """
+    Remove duplicate slashs from string. Usually used in paths.
+
+    :param text: Text string.
+    :return: Text without duplicate slashs.
+    """
+    return re.sub(r"\/+", "/", text)

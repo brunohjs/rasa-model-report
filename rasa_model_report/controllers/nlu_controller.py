@@ -10,8 +10,8 @@ from typing import Union
 import requests.exceptions
 
 from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.helpers import type_aliases
 from rasa_model_report.helpers import utils
-from rasa_model_report.helpers.type_aliases import nlu_payload
 
 
 class NluController(Controller):
@@ -37,8 +37,8 @@ class NluController(Controller):
         :param url: Rasa API URL (default: "http://localhost:5005")
         """
         super().__init__(rasa_path, output_path, project_name, project_version)
-        self._data: List[nlu_payload] = []
-        self._problem_sentences: List[nlu_payload] = []
+        self._data: List[type_aliases.nlu_payload] = []
+        self._problem_sentences: List[type_aliases.nlu_payload] = []
         self._general_grade: Optional[float] = None
         self._connected: bool = False
         self._disable_nlu: bool = kwargs.get("disable_nlu")
@@ -96,7 +96,7 @@ class NluController(Controller):
         self._data = nlu
         return nlu
 
-    def _generate_data(self) -> List[nlu_payload]:
+    def _generate_data(self) -> List[type_aliases.nlu_payload]:
         """
         Load and process the NLU sentences data.
 
@@ -128,7 +128,7 @@ class NluController(Controller):
         self._data = data
         return data
 
-    def _load_problem_sentences(self) -> List[nlu_payload]:
+    def _load_problem_sentences(self) -> List[type_aliases.nlu_payload]:
         """
         Load problem sentences list.
 
@@ -140,7 +140,7 @@ class NluController(Controller):
         return self._problem_sentences
 
     @property
-    def data(self) -> List[nlu_payload]:
+    def data(self) -> List[type_aliases.nlu_payload]:
         """
         Return a copy of the generated data.
 
@@ -149,7 +149,7 @@ class NluController(Controller):
         return self._data.copy()
 
     @property
-    def problem_sentences(self) -> List[nlu_payload]:
+    def problem_sentences(self) -> List[type_aliases.nlu_payload]:
         """
         Return a copy of the generated problem sentences.
 
@@ -178,7 +178,7 @@ class NluController(Controller):
             self._general_grade = 1 - total_problem_sentences / total_sentences
             return self._general_grade
 
-    def request_nlu(self, text: str) -> nlu_payload:
+    def request_nlu(self, text: str) -> type_aliases.nlu_payload:
         """
         Function that requests the NLU payload to the Rasa API.
 
@@ -225,7 +225,7 @@ class NluController(Controller):
         return text
 
     @staticmethod
-    def select_intent(payload: nlu_payload) -> Dict[str, nlu_payload]:
+    def select_intent(payload: type_aliases.nlu_payload) -> Dict[str, type_aliases.nlu_payload]:
         """
         From the NLU payload returned from RASA API, the correct intent is selected.
 
