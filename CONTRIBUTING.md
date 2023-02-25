@@ -1,8 +1,6 @@
 # Contributing Guide
 Contributing to `rasa-model-report` is fairly easy. This document shows you how to get the project, run all provided tests and generate a production-ready build.
 
-It also covers provided grunt tasks that help you develop with `rasa-model-report`.
-
 
 ## 📦 Installation
 For development, it's suggested to create an environment using the [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation). To create new environment, use the command:
