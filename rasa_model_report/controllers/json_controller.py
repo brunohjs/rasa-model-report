@@ -217,6 +217,9 @@ class JsonController(Controller):
         file.close()
 
     def _calculate_overall(self) -> None:
+        """
+        Calculate report overall.
+        """
         weights = {
             "intent": 2,
             "entity": 1,
