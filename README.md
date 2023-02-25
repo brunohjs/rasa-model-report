@@ -137,33 +137,7 @@ Some usage examples with parameters:
     ```
 
 ## 💻 Development
-For development, it's suggested to create an environment using the [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation). To create new environment, use the command:
-```
-mkvirtualenv rasa-model-report --python 3.8
-```
-After that, your new environment will already be activated. If not, to activate just use the command:
-```
-workon rasa-model-report
-```
-
-### Installation
-To install the development environment, use make command:
-```
-make install-dev
-```
-or use `pip install`:
-```
-pip install . -r requirements.dev.txt
-```
-
-### Test
-Before test any changes you've made, you need to install the package again to update package files. Use the command:
-```
-pip install .
-```
-After that, you can test using `rasa-model-report` command with or without parameters.
-
-To run unit tests, use `make test` or `pytest` command.
+The instructions for development and contributing are in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 
 ## 🐞 Bugs
