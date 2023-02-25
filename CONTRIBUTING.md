@@ -83,7 +83,6 @@ flake8
         - `57 - Update README.md file`
         - `123 - Change the test variable value`
         - `29 - Fix name_example() function`
-  - Don't forget to update the [CHANGELOG.md](CHANGELOG.md) file. Follow the conventions described on file.
   - Please provide a git message that explains what you've done.
   - Commit to the forked repository.
 - Make a pull request
