@@ -160,7 +160,7 @@ class MarkdownController(Controller):
         """
         overview = self.json.overview
         for item in ["intent", "entity", "core", "nlu"]:
-            overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else 0
+            overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else "-"
         text = "## Overview <a name='overview'></a>\n"
         style = "style='font-size:16px'"
         data = [

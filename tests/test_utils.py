@@ -42,6 +42,9 @@ def test_change_scale():
     assert change_scale(0.4629, 100) == "46"
     assert change_scale(90.5, 0.1) == "9"
     assert change_scale(0.001) == "0"
+    assert change_scale(None) is None
+    assert change_scale("-") == "-"
+    assert change_scale("test", 100) == "test"
 
 
 def test_get_color():
@@ -64,6 +67,9 @@ def test_get_color():
     assert get_color(0) == "❌"
     assert get_color(0, 100) == "❌"
     assert get_color(-1) == "❌"
+    assert get_color(None) == "❌"
+    assert get_color("-") == "❌"
+    assert get_color("test", 100) == "❌"
 
 
 def test_check():
