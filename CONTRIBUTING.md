@@ -66,8 +66,7 @@ flake8
     ```
     git remote update && git fetch
     ```
-  - Use one branch per fix/feature
-
+  - Use one branch per fix/feature.
 - Make your changes
   - Make sure to create unit tests for new code.
   - Make sure to check if have failing tests.
