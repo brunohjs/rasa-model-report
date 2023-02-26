@@ -88,3 +88,17 @@ flake8
   - Wait for the review.
 
 If you follow these instructions, your PR will land pretty safely in the main repo!
+
+
+## 🚀 Publish new version
+> Only administrators can deploy new version.
+
+Follow these steps to publish new version on PyPI:
+- Checkout to `main` branch.
+- Use `git pull` to update branch.
+- Check if the new version is in CHANGELOG.md.
+- Use this command:
+    ```
+    make release-{path|minor|major}
+    ```
+    - It creates new release and tag, changes version on `setup.py` file, close version milestone, builds package and publishes on PyPI.
