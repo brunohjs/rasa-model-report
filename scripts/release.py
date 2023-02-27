@@ -24,7 +24,7 @@ def close_milestone(version: str) -> None:
     if version in milestone:
         subprocess.run([
             f"gh milestone edit {milestone[version]} -s closed"
-        ])
+        ], shell=True)
         logging.info("")
     else:
         error_message = f"Milestone {version} not found."
