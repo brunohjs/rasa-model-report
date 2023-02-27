@@ -62,7 +62,7 @@ def create_release(version: str, notes: str) -> None:
     """
     try:
         subprocess.run([
-            f"gh release create {version} -R 'github.com/brunohjs/rasa-model-report' --verify-tag --notes '{notes}'"
+            f"gh release create {version} -R github.com/brunohjs/rasa-model-report --verify-tag --notes \"{notes}\""
         ], shell=True)
         logging.info("Release created on Github.")
     except Exception as error:
