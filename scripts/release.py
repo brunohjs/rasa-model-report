@@ -144,7 +144,7 @@ def create_tag(version: str) -> None:
 
 if __name__ == "__main__":
     version = get_new_version()
-    # changelog = get_changelog(version)
-    # create_tag(version)
+    changelog = get_changelog(version)
+    create_tag(version)
     close_milestone(version)
-    # create_release(version, changelog)
+    create_release(version, changelog)
