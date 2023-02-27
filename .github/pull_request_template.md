@@ -2,7 +2,7 @@
 Describe the big picture of your changes here to communicate to the maintainers why we should accept this pull request. If possible, attach images of evidence. If it fixes a bug or resolves a feature request, be sure to link to that issue.
 
 ## Types of changes
-What types of changes does your code introduce to Appium?
+What types of changes does your code introduce to project?
 _Put an `x` in the boxes that apply_
 
 - [ ] Bugfix
