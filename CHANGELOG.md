@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2023-02-26
+### Added
+- [#26](https://github.com/brunohjs/rasa-model-report/issues/26) Updated release script.
+  - Now, it can create release and close milestone on Github automatically.
+  - Added docstrings in functions.
+- [#57](https://github.com/brunohjs/rasa-model-report/issues/57) Created and updated documentations.
+  - Created templates for bug report, feature request and pull request.
+  - Created contributing documentation.
+  - Updated sample reports.
+### Fixed
+- [#60](https://github.com/brunohjs/rasa-model-report/issues/60) Bugfix on E2E coverage results that shows incorrect coverage rate value when aren't covered elements.
+
 ## [1.3.1] - 2023-02-24
 ### Fixed
 - [#52](https://github.com/brunohjs/rasa-model-report/issues/52) Fixed E2E coverage report not extracting entities correctly.
@@ -58,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
-
+[1.3.2]: https://github.com/brunohjs/rasa-model-report/compare/1.3.0...1.3.2
 [1.3.1]: https://github.com/brunohjs/rasa-model-report/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/brunohjs/rasa-model-report/compare/1.1.0...1.2.0
