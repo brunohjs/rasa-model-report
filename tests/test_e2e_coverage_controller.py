@@ -80,7 +80,7 @@ def test_dont_save_e2e_report_when_havent_items():
     file_path = f"{e2e_coverage_controller.results_path}/e2e_coverage_report.txt"
     if os.path.isfile(file_path):
         os.remove(file_path)
-    e2e_coverage_controller._data = {}
+    e2e_coverage_controller._total_num_not_covered = 0
     e2e_coverage_controller.save()
     assert not os.path.isfile(file_path)
 
@@ -92,7 +92,7 @@ def test_have_not_covered_items():
 
 def test_havent_not_covered_items():
     e2e_coverage_controller = pytest.e2e_coverage_controller
-    e2e_coverage_controller._data = {}
+    e2e_coverage_controller._total_num_not_covered = 0
     assert e2e_coverage_controller.have_not_covered_items() is False
 
 

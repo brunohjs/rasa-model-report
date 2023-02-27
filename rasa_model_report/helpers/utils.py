@@ -50,18 +50,18 @@ def get_color(value: float, scale: int = 1) -> str:
     :param scale: Scale that the value is on.
     :return: A icon.
     """
-    if scale > 1:
-        value /= scale
-    if value >= 0.9:
-        return "🟢"
-    elif value >= 0.7:
-        return "🟡"
-    elif value >= 0.4:
-        return "🟠"
-    elif value >= 0.001:
-        return "🔴"
-    else:
-        return "❌"
+    if isinstance(value, (float, int)):
+        if scale > 1:
+            value /= scale
+        if value >= 0.9:
+            return "🟢"
+        elif value >= 0.7:
+            return "🟡"
+        elif value >= 0.4:
+            return "🟠"
+        elif value >= 0.001:
+            return "🔴"
+    return "❌"
 
 
 def change_scale(value: float, scale: int = 1) -> str:
@@ -72,7 +72,9 @@ def change_scale(value: float, scale: int = 1) -> str:
     :param scale: Scale that will be applied.
     :return: Value on the new scale.
     """
-    return f"{int(value * scale)}"
+    if isinstance(value, (float, int)):
+        return f"{int(value * scale)}"
+    return value
 
 
 def get_project_name(path: Optional[str] = None) -> str:

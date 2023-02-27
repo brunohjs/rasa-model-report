@@ -91,7 +91,7 @@ class E2ECoverageController(Controller):
             self._total_num_elements += len(element_list)
             self._total_num_not_covered += len(not_covered[element]["items"])
         self._data = not_covered
-        if self.have_not_covered_items():
+        if self._total_num_elements:
             self._total_rate = 1 - self._total_num_not_covered / self._total_num_elements
 
     def _exclude_special_actions(self) -> List[str]:
@@ -168,7 +168,7 @@ class E2ECoverageController(Controller):
 
         :return: Flag that represents if have not covered elements.
         """
-        return True in [bool(element["items"]) for element in self._data.values()]
+        return self._total_num_not_covered > 0
 
     @property
     def data(self) -> Dict[str, Union[List[str], float]]:

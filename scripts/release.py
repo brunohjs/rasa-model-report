@@ -1,17 +1,80 @@
 # This script is responsable for launching new app releases.
+import json
 import logging
 import os.path
 import re
 import shutil
 import subprocess
 import sys
+from typing import Optional
 
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
 MAIN_BRANCH = "main"
 
 
-def update_version_setup_file(new_version):
+def close_milestone(version: str) -> None:
+    """
+    Close version milestone on Github.
+
+    :param version: Version.
+    """
+    milestone = subprocess.run(["gh milestone list --json title,number"], shell=True, capture_output=True)
+    milestone = {item["title"]: item["number"] for item in json.loads(milestone.stdout)}
+    if version in milestone:
+        subprocess.run([
+            f"gh milestone edit {milestone[version]} -s closed"
+        ])
+        logging.info("")
+    else:
+        error_message = f"Milestone {version} not found."
+        logging.error(error_message)
+        raise Exception(error_message)
+
+
+def get_changelog(version: str) -> Optional[str]:
+    """
+    Get version notes from changelog file.
+
+    :param version: Version.
+    :return: Version notes.
+    """
+    file = open("CHANGELOG.md")
+    data = file.read()
+    splitted_text = re.split(r"\n## ", data)
+    for text in splitted_text:
+        regex = r"\[" + version + r"\] - \d{4}-\d{2}-\d{2}\n"
+        if re.match(regex, text):
+            logging.info(f"Changelog notes found for version {version}.")
+            return re.sub(regex, "", text).strip()
+    else:
+        error_message = f"No notes found for version {version}. Update CHANGELOG.md file."
+        logging.error(error_message)
+        raise Exception(error_message)
+
+
+def create_release(version: str, notes: str) -> None:
+    """
+    Create release on Github.
+
+    :param version: Tag version.
+    :param notes: Release notes.
+    """
+    try:
+        subprocess.run([
+            f"gh release create {version} -R 'github.com/brunohjs/rasa-model-report' --verify-tag --notes '{notes}'"
+        ], shell=True)
+        logging.info("Release created on Github.")
+    except Exception as error:
+        logging.error(f"Could not create release. Error: {error}")
+
+
+def update_version_setup_file(new_version: str) -> None:
+    """
+    Update version in setup.py file.
+
+    :param new_version: New version.
+    """
     file = open("setup.py")
     data = file.read()
     data = re.sub(r"version=\"\d+\.\d+\.\d+\",", f"version=\"{new_version}\",", data)
@@ -21,7 +84,12 @@ def update_version_setup_file(new_version):
     file.close()
 
 
-def get_version():
+def get_new_version() -> str:
+    """
+    Get current version from Github tags and return new version.
+
+    :return: New version.
+    """
     logging.info("Getting last version")
     subprocess.run(["git", "fetch", "--all"], shell=False)
     versions = subprocess.check_output(["git", "tag"]).decode('ascii').strip().split('\n')
@@ -47,7 +115,12 @@ def get_version():
     return version
 
 
-def release(version):
+def create_tag(version: str) -> None:
+    """
+    Create a commit with version update and release new tag on Github.
+
+    :param version: Version that will be released.
+    """
     branch_name = subprocess.check_output(["git", "branch", "--show-current"]).decode('ascii')
     logging.info(f"Current branch: {branch_name}")
     if branch_name != MAIN_BRANCH:
@@ -70,5 +143,8 @@ def release(version):
 
 
 if __name__ == "__main__":
-    version = get_version()
-    release(version)
+    version = get_new_version()
+    # changelog = get_changelog(version)
+    # create_tag(version)
+    close_milestone(version)
+    # create_release(version, changelog)
