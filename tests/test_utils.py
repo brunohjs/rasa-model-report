@@ -37,17 +37,49 @@ def test_get_project_name():
 
 def test_change_scale():
     assert isinstance(change_scale(0.123312, 10), str)
-    assert change_scale(0.123312, 10) == "1"
-    assert change_scale(98.6, 1) == "98"
-    assert change_scale(0.4629, 100) == "46"
-    assert change_scale(90.5, 0.1) == "9"
+    assert change_scale(0.123312, 10) == "1.2"
+    assert change_scale(98.6, 1) == "98.6"
+    assert change_scale(0.4629, 100) == "46.3"
     assert change_scale(0.001) == "0"
-    assert change_scale(None) is None
+    assert change_scale(0.3) == "0.3"
+    assert change_scale(0.09) == "0.1"
+    assert change_scale(90.5, 0.1) == "9.1"
+    assert change_scale(0.001, 0.1) == "0"
+
+    # Other precisions
+    assert change_scale(10, 1, 2) == "10"
+    assert change_scale(39.591231, 1, 2) == "39.59"
+    assert change_scale(0.05281239, 1, 1) == "0.1"
+    assert change_scale(0.5219483, 10, 2) == "5.22"
+    assert change_scale(0.4, 100, 3) == "40"
+    assert change_scale(0.511232, 100, 3) == "51.123"
+    assert change_scale(0.85, 100, 2) == "85"
+    assert change_scale(0.12239432, 100, 5) == "12.23943"
+    assert change_scale(19.51, 1, 4) == "19.5100"
+    assert change_scale(19.51, 1, 0) == "20"
+    assert change_scale(0.56831, 100, 0) == "57"
+    assert change_scale(0.731, 10, 0) == "7"
+
+    # Invalid scales
+    assert change_scale(10, 0) == 10
+    assert change_scale(0.001, "test") == 0.001
+
+    # Invalid values
     assert change_scale("-") == "-"
     assert change_scale("test", 100) == "test"
+    assert change_scale(None) is None
+    assert change_scale("100", 1) == "100"
+
+    # Invalid precisions
+    assert change_scale(0.85, 100, None) == "85"
+    assert change_scale(123, 1, "2") == "123"
+    assert change_scale(59, 1, 0.5) == "59"
+    assert change_scale(1.8473, 1, 10) == "1.8"
+    assert change_scale(9.123123, 1, 6) == "9.1"
 
 
 def test_get_color():
+    assert get_color(10, 10) == "🟢"
     assert get_color(0.98) == "🟢"
     assert get_color(0.9012) == "🟢"
     assert get_color(0.899) == "🟡"
@@ -66,8 +98,12 @@ def test_get_color():
     assert get_color(0.0009) == "❌"
     assert get_color(0) == "❌"
     assert get_color(0, 100) == "❌"
+
+    # Invalid values
     assert get_color(-1) == "❌"
     assert get_color(None) == "❌"
+    assert get_color("10", 10) == "❌"
+    assert get_color("1") == "❌"
     assert get_color("-") == "❌"
     assert get_color("test", 100) == "❌"
 
