@@ -60,7 +60,8 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     type=int,
     required=False,
     default=constants.GRADE_PRECISION,
-    help="Grade precision. Can vary between 0 and 5 (default: 1)"
+    help="Grade precision. Used to change precision of the model report overview grades. "
+    "Can vary between 0 and 5 (default: 1)"
 )
 @click.option(
     "--project-name",
