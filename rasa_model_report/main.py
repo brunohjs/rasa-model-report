@@ -20,7 +20,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     required=False,
     default=constants.DISABLE_NLU,
     help="Disable processing NLU sentences. NLU section will not be generated "
-    "in the report. Required Rasa API. (default: false)"
+    "in the report. Required Rasa API."
 )
 @click.help_option(
     "--help",
@@ -38,22 +38,22 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     is_flag=True,
     required=False,
     default=constants.NO_IMAGES,
-    help="Generate model report without images. (default: false)"
+    help="Generate model report without images."
 )
 @click.option(
     "--output-path",
     type=str,
     required=False,
     default=constants.OUTPUT_PATH,
-    help="Report output path. (default: ./)"
+    help=f"Report output path. (default: {constants.OUTPUT_PATH})"
 )
 @click.option(
     "--path",
     "-p",
     type=str,
     required=False,
-    default=constants.PATH,
-    help="Rasa project path. (default: ./)"
+    default=constants.RASA_PATH,
+    help=f"Rasa project path. (default: {constants.RASA_PATH})"
 )
 @click.option(
     "--precision",
@@ -61,14 +61,14 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     required=False,
     default=constants.GRADE_PRECISION,
     help="Grade precision. Used to change precision of the model report overview grades. "
-    "Can vary between 0 and 5 (default: 1)"
+    f"Can vary between 0 and 5 (default: {constants.GRADE_PRECISION})"
 )
 @click.option(
     "--project-name",
     type=str,
     required=False,
     default=constants.PROJECT_NAME,
-    help="Rasa project name. It's only displayed in the report. (default: My project)"
+    help=f"Rasa project name. It's only displayed in the report. (default: {constants.PROJECT_NAME})"
 )
 @click.option(
     "--project-version",
@@ -82,7 +82,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     type=str,
     required=False,
     default=constants.RASA_API_URL,
-    help="Rasa API URL. Is needed to create NLU section of report. (default: http://localhost:5005)"
+    help=f"Rasa API URL. Is needed to create NLU section of report. (default: {constants.RASA_API_URL})"
 )
 @click.option(
     "--rasa-version",

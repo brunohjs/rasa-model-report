@@ -4,7 +4,6 @@ import random
 import pytest
 
 from rasa_model_report.controllers.json_controller import JsonController
-from rasa_model_report.helpers.type_aliases import number
 from tests import utils
 
 
@@ -85,12 +84,12 @@ def test_load_overview():
     assert isinstance(overview.get("project"), str)
     assert isinstance(overview.get("version"), str)
     assert isinstance(overview.get("updated_at"), str)
-    assert isinstance(overview.get("intent"), number)
-    assert isinstance(overview.get("entity"), number)
-    assert isinstance(overview.get("core"), number)
-    assert isinstance(overview.get("nlu"), number) or overview.get("nlu") is None
-    assert isinstance(overview.get("e2e_coverage"), number) or overview.get("e2e_coverage") is None
-    assert isinstance(overview.get("overall"), number)
+    assert isinstance(overview.get("intent"), (float, int))
+    assert isinstance(overview.get("entity"), (float, int))
+    assert isinstance(overview.get("core"), (float, int))
+    assert isinstance(overview.get("nlu"), (float, int)) or overview.get("nlu") is None
+    assert isinstance(overview.get("e2e_coverage"), (float, int)) or overview.get("e2e_coverage") is None
+    assert isinstance(overview.get("overall"), (float, int))
     assert isinstance(overview.get("created_at"), str)
 
 
@@ -111,7 +110,7 @@ def test_save_overview():
 def test_calculate_overall():
     json_controller = pytest.json_controller
     json_controller._calculate_overall()
-    assert isinstance(json_controller.overview.get("overall"), number)
+    assert isinstance(json_controller.overview.get("overall"), (float, int))
 
 
 def test_update_overview():
