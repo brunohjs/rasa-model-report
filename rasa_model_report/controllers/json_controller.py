@@ -218,7 +218,7 @@ class JsonController(Controller):
 
     @staticmethod
     def weight_function(x: float) -> float:
-        return 1 - x**2
+        return 1 - x**3
 
     def _calculate_overall(self) -> None:
         """
