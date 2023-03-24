@@ -84,12 +84,12 @@ def test_load_overview():
     assert isinstance(overview.get("project"), str)
     assert isinstance(overview.get("version"), str)
     assert isinstance(overview.get("updated_at"), str)
-    assert isinstance(overview.get("intent"), float)
-    assert isinstance(overview.get("entity"), float)
-    assert isinstance(overview.get("core"), float)
-    assert isinstance(overview.get("nlu"), float) or overview.get("nlu") is None
-    assert isinstance(overview.get("e2e_coverage"), float) or overview.get("e2e_coverage") is None
-    assert isinstance(overview.get("overall"), float)
+    assert isinstance(overview.get("intent"), (float, int))
+    assert isinstance(overview.get("entity"), (float, int))
+    assert isinstance(overview.get("core"), (float, int))
+    assert isinstance(overview.get("nlu"), (float, int)) or overview.get("nlu") is None
+    assert isinstance(overview.get("e2e_coverage"), (float, int)) or overview.get("e2e_coverage") is None
+    assert isinstance(overview.get("overall"), (float, int))
     assert isinstance(overview.get("created_at"), str)
 
 
@@ -110,7 +110,7 @@ def test_save_overview():
 def test_calculate_overall():
     json_controller = pytest.json_controller
     json_controller._calculate_overall()
-    assert isinstance(json_controller.overview.get("overall"), float)
+    assert isinstance(json_controller.overview.get("overall"), (float, int))
 
 
 def test_update_overview():

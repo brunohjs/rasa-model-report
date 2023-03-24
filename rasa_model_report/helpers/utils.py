@@ -11,6 +11,8 @@ from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
 from yaml import safe_load
 
+from rasa_model_report.helpers import constants
+
 
 def format_date() -> str:
     """
@@ -64,16 +66,28 @@ def get_color(value: float, scale: int = 1) -> str:
     return "❌"
 
 
-def change_scale(value: float, scale: int = 1) -> str:
+def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
     """
     Change the value scale and rounds it to display in string format.
 
     :param value: Value that will be changed to scale and rounds it.
     :param scale: Scale that will be applied.
-    :return: Value on the new scale.
+    :param precision: Value precision.
+    :return: Value on the new scale and precision.
     """
-    if isinstance(value, (float, int)):
-        return f"{int(value * scale)}"
+    precision = precision if isinstance(precision, int) and 5 >= precision >= 0 else constants.GRADE_PRECISION
+    if (
+        isinstance(value, (float, int)) and
+        isinstance(scale, (float, int)) and
+        scale != 0
+    ):
+        new_value = value * scale
+        if new_value >= 1 and new_value % int(new_value) == 0:
+            return str(int(new_value))
+        elif re.search(r"\.0$", f"{new_value:.{precision}f}"):
+            return "0"
+        else:
+            return f"{new_value:.{precision}f}"
     return value
 
 

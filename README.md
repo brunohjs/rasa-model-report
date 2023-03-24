@@ -93,14 +93,15 @@ There are parameters that can be used. Available options are below:
                         path)
 --disable-nlu           Disable processing NLU sentences. NLU section will
                         not be generated in the report. Required Rasa API.
-                        (default: false)
 -h, --help              Show this help message.
 --model-link TEXT       Model download link. It's only displayed in the
                         report to model download.
---no-images             Generate model report without images. (default:
-                        false)
+--no-images             Generate model report without images.
 --output-path TEXT      Report output path. (default: ./)
 -p, --path TEXT         Rasa project path. (default: ./)
+--precision INTEGER     Grade precision. Used to change precision of the
+                        model report overview grades. Can vary between 0 and
+                        5 (default: 1)
 --project-name TEXT     Rasa project name. It's only displayed in the
                         report. (default: My project)
 --project-version TEXT  Project version. It's only displayed in the report

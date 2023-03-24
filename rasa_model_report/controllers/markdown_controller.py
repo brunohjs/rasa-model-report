@@ -10,6 +10,7 @@ from rasa_model_report.controllers.csv_controller import CsvController
 from rasa_model_report.controllers.e2e_coverage_controller import E2ECoverageController
 from rasa_model_report.controllers.json_controller import JsonController
 from rasa_model_report.controllers.nlu_controller import NluController
+from rasa_model_report.helpers import constants
 from rasa_model_report.helpers import type_aliases
 from rasa_model_report.helpers import utils
 
@@ -44,7 +45,8 @@ class MarkdownController(Controller):
         self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.md")
         self.readme_path: str = "README.md"
         self.model_link: str = kwargs.get("model_link")
-        self.no_images: bool = kwargs.get("no_images", False)
+        self.no_images: bool = kwargs.get("no_images", constants.NO_IMAGES)
+        self.precision: int = kwargs.get("precision", constants.GRADE_PRECISION)
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
         self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
         self.nlu: NluController = NluController(
@@ -52,8 +54,8 @@ class MarkdownController(Controller):
             output_path,
             project_name,
             project_version,
-            url=kwargs.get("rasa_api_url"),
-            disable_nlu=kwargs.get("disable_nlu")
+            url=kwargs.get("rasa_api_url", constants.RASA_API_URL),
+            disable_nlu=kwargs.get("disable_nlu", constants.DISABLE_NLU)
         )
         self.e2e_coverage: E2ECoverageController = E2ECoverageController(
             rasa_path,
@@ -182,12 +184,12 @@ class MarkdownController(Controller):
         style = "style='font-size:20px'"
         text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
-        text += f"|{utils.change_scale(overview['intent'], 10)}\
-            |{utils.change_scale(overview['entity'], 10)}\
-            |{utils.change_scale(overview['nlu'], 10)}\
-            |{utils.change_scale(overview['core'], 10)}\
-            |{utils.change_scale(overview['e2e_coverage'], 10)}\
-            |<span {style}>**{utils.change_scale(overview['overall'], 10)}**</span>|\n"
+        text += f"|{utils.change_scale(overview['intent'], 10, self.precision)}\
+            |{utils.change_scale(overview['entity'], 10, self.precision)}\
+            |{utils.change_scale(overview['nlu'], 10, self.precision)}\
+            |{utils.change_scale(overview['core'], 10, self.precision)}\
+            |{utils.change_scale(overview['e2e_coverage'], 10, self.precision)}\
+            |<span {style}>**{utils.change_scale(overview['overall'], 10, self.precision)}**</span>|\n"
         text += f"{utils.get_color(overview['intent'])}\
             |{utils.get_color(overview['entity'])}\
             |{utils.get_color(overview['nlu'])}\

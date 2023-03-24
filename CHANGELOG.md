@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - In progress...
+### Added
+- [#63](https://github.com/brunohjs/rasa-model-report/issues/63) Created `--precision` CLI command parameter. This command is used to change precision of the model report overview grades.
+
 ## [1.3.2] - 2023-02-26
 ### Added
 - [#26](https://github.com/brunohjs/rasa-model-report/issues/26) Updated release script.
@@ -70,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - [#16](https://github.com/brunohjs/rasa-model-report/issues/16) Created a handler for retrieval intents in the report.
 
+[1.3.3]: https://github.com/brunohjs/rasa-model-report/compare/1.3.2...HEAD
 [1.3.2]: https://github.com/brunohjs/rasa-model-report/compare/1.3.0...1.3.2
 [1.3.1]: https://github.com/brunohjs/rasa-model-report/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/brunohjs/rasa-model-report/compare/1.2.0...1.3.0

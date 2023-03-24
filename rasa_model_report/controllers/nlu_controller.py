@@ -10,6 +10,7 @@ from typing import Union
 import requests.exceptions
 
 from rasa_model_report.controllers.controller import Controller
+from rasa_model_report.helpers import constants
 from rasa_model_report.helpers import type_aliases
 from rasa_model_report.helpers import utils
 
@@ -41,7 +42,7 @@ class NluController(Controller):
         self._problem_sentences: List[type_aliases.nlu_payload] = []
         self._general_grade: Optional[float] = None
         self._connected: bool = False
-        self._disable_nlu: bool = kwargs.get("disable_nlu")
+        self._disable_nlu: bool = kwargs.get("disable_nlu", constants.DISABLE_NLU)
         self.url: str = url
 
         if not self._disable_nlu and self.health_check_rasa_api():
@@ -108,7 +109,7 @@ class NluController(Controller):
         for intent, examples in self._data.items():
             progress = index / len(self._data) * 100
             index += 1
-            logging.info(f" - Analyzing NLU of the {intent} intent ({progress:<5.1f}%).")
+            logging.info(f" - ({progress:<5.1f}%) analyzing NLU intent: {intent}")
             for text in examples:
                 text = self.remove_entities_from_text(text)
                 nlu_requested = self.request_nlu(text)

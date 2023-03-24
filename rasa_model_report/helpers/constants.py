@@ -1,0 +1,9 @@
+DISABLE_NLU = False
+GRADE_PRECISION = 1
+NO_IMAGES = False
+OUTPUT_PATH = "./"
+PROJECT_NAME = "My project"
+PROJECT_VERSION = None
+RASA_API_URL = "http://localhost:5005"
+RASA_PATH = "./"
+RASA_VERSION = None

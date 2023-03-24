@@ -86,6 +86,7 @@ def test_build_summary():
 
 def test_build_summary_without_nlu_section():
     markdown_controller = pytest.markdown_controller
+    markdown_controller.nlu._connected = False
     text = markdown_controller.build_summary()
     assert isinstance(text, str)
     assert markdown_controller.nlu.is_connected() is False
@@ -257,8 +258,7 @@ def test_build_nlu_table():
 
 def test_build_nlu_table_if_len_less_than_2():
     markdown_controller = pytest.markdown_controller
-    json_controller = JsonController("invelid/path", "./", "test-project", "0.0.0")
-    markdown_controller.json = json_controller
+    markdown_controller.nlu._data = {}
     text = markdown_controller.build_nlu_table()
     assert isinstance(text, str)
     assert "No example sentences were found in this template" in text
@@ -280,8 +280,7 @@ def test_build_nlu_errors_table():
 
 def test_build_nlu_errors_table_if_len_less_than_2():
     markdown_controller = pytest.markdown_controller
-    json_controller = JsonController("invalid/path", "./", "test-project", "0.0.0")
-    markdown_controller.json = json_controller
+    markdown_controller.nlu._problem_sentences = {}
     text = markdown_controller.build_nlu_errors_table()
     assert isinstance(text, str)
     assert "There are no sentences that were not understood in this model" in text

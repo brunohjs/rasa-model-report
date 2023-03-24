@@ -216,6 +216,10 @@ class JsonController(Controller):
         file.write("\n")
         file.close()
 
+    @staticmethod
+    def weight_function(x: float) -> float:
+        return 1 - x**2
+
     def _calculate_overall(self) -> None:
         """
         Calculate report overall.
@@ -224,15 +228,15 @@ class JsonController(Controller):
             "intent": 2,
             "entity": 1,
             "core": 1,
-            "nlu": 3,
-            "e2e_coverage": 3
+            "nlu": 8,
+            "e2e_coverage": 8
         }
         overview_sum = sum(
-            self._overview[item] * w for item, w in weights.items()
+            self._overview[item] * self.weight_function(self._overview[item]) for item in weights
             if isinstance(self._overview[item], (int, float)) and self._overview[item] >= 0
         )
         weight_sum = sum(
-            w for item, w in weights.items()
+            self.weight_function(self._overview[item]) for item in weights
             if isinstance(self._overview[item], (int, float)) and self._overview[item] >= 0
         )
         overview_rate = overview_sum / weight_sum if weight_sum else 0
