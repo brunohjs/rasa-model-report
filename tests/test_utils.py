@@ -74,8 +74,8 @@ def test_change_scale():
     assert change_scale(0.85, 100, None) == "85"
     assert change_scale(123, 1, "2") == "123"
     assert change_scale(59, 1, 0.5) == "59"
-    assert change_scale(1.8473, 1, 10) == "1.8"
-    assert change_scale(9.123123, 1, 6) == "9.1"
+    assert change_scale(1.8473, 1, 10) == "1.85"
+    assert change_scale(9.123123, 1, 6) == "9.12"
 
 
 def test_get_color():
