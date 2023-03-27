@@ -5,17 +5,12 @@ from typing import Dict
 from typing import List
 from typing import Union
 
-from rasa_model_report.controllers.controller import Controller
-from rasa_model_report.controllers.csv_controller import CsvController
-from rasa_model_report.controllers.e2e_coverage_controller import E2ECoverageController
-from rasa_model_report.controllers.json_controller import JsonController
-from rasa_model_report.controllers.nlu_controller import NluController
-from rasa_model_report.helpers import constants
+from rasa_model_report.controllers.output_controller import OutputController
 from rasa_model_report.helpers import type_aliases
 from rasa_model_report.helpers import utils
 
 
-class MarkdownController(Controller):
+class MarkdownController(OutputController):
     """
     Controller responsible for markdown files.
     """
@@ -37,40 +32,16 @@ class MarkdownController(Controller):
         :param rasa_version: Rasa version.
         :param project_version: Project version.
         """
-        super().__init__(rasa_path, output_path, project_name, project_version)
-
-        self.result: str = ""
-        self.title: str = "# Model health report"
-        self.rasa_version: str = rasa_version
-        self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.md")
-        self.readme_path: str = "README.md"
-        self.model_link: str = kwargs.get("model_link")
-        self.no_images: bool = kwargs.get("no_images", constants.NO_IMAGES)
-        self.precision: int = kwargs.get("precision", constants.GRADE_PRECISION)
-        self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
-        self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
-        self.nlu: NluController = NluController(
+        super().__init__(
             rasa_path,
             output_path,
             project_name,
+            rasa_version,
             project_version,
-            url=kwargs.get("rasa_api_url", constants.RASA_API_URL),
-            disable_nlu=kwargs.get("disable_nlu", constants.DISABLE_NLU)
-        )
-        self.e2e_coverage: E2ECoverageController = E2ECoverageController(
-            rasa_path,
-            output_path,
-            kwargs.get("actions_path"),
-            project_name,
-            project_version
+            **kwargs
         )
 
-        self.json.update_overview({
-            "nlu": self.nlu.general_grade,
-            "e2e_coverage": self.e2e_coverage.total_rate
-        })
-        if self.no_images:
-            logging.info("--no-images activated. Images will not be displayed in the report.")
+        self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.md")
 
     def add_text(self, text: str) -> None:
         """
@@ -79,7 +50,7 @@ class MarkdownController(Controller):
         :param text: Text that concatenates.
         """
         if isinstance(text, str):
-            self.result += "\n" + text
+            self.result += f"\n{text}"
 
     def add_image(self, image_filename: str, title: str) -> None:
         """
@@ -92,16 +63,27 @@ class MarkdownController(Controller):
             return None
         if os.path.isfile(f"{self.results_path}/{image_filename}"):
             image_path = utils.path_to(self.output_path, self.results_path) + image_filename
-            self.result += f"### {title}\n![{title}]({image_path} '{title}')" + "\n"
+            self.result += f"### {title}\n![{title}]({image_path} '{title}')\n"
             logging.info(f"Image {image_filename} has been successfully added.")
         else:
             logging.warning(f"Image {self.results_path}/{image_filename} was not found.")
 
-    def break_line(self) -> None:
+    def add_title(self, title, description=None, heading_level=2, tag=None):
         """
-        Inserts a line break to the result text.
+        Concatenates a title and description to the result text.
+
+        :param title: Title text.
+        :param description: Description text (default: None).
+        :param int heading_level: Heading level (default: 2).
+        :param tag: Tag for an anchor link (default: None).
         """
-        self.result += "\n"
+        title = f"{'#'*heading_level} {title}"
+        if tag:
+            self.result += f"\n{title} <a name='{tag}'></a>\n"
+        else:
+            self.result += f"\n{title}\n"
+        if isinstance(description, str):
+            self.result += f"{description}\n"
 
     def build_line_entity(self, entities: List[type_aliases.entity]) -> str:
         """
@@ -198,16 +180,6 @@ class MarkdownController(Controller):
             |<span {style}>{utils.get_color(overview['overall'])}</span>|"
         return text
 
-    def build_intent_title(self) -> str:
-        """
-        Build the report intent title block.
-
-        :return: Title block in markdown format.
-        """
-        title = "## Intents <a name='intents'></a>\n"
-        description = "Section that discusses metrics on model intents.\n"
-        return title + description
-
     def build_intent_overview(self) -> str:
         """
         Build the report intent overview block.
@@ -285,16 +257,6 @@ class MarkdownController(Controller):
         else:
             text = "\nNo confusions or errors of intent were found in this model.\n"
             return title + text
-
-    def build_entity_title(self) -> str:
-        """
-        Build the report entity title block.
-
-        :return: Title block in markdown format.
-        """
-        title = "## Entities <a name='entities'></a>\n"
-        description = "Section that discusses metrics about the model entities.\n"
-        return title + description
 
     def build_entity_overview(self) -> str:
         """
@@ -381,16 +343,6 @@ class MarkdownController(Controller):
             text = "\nNo confusions of entities were found in this model.\n"
             return title + text
 
-    def build_core_title(self) -> str:
-        """
-        Build the report response and actinos title block.
-
-        :return: Title block in markdown format.
-        """
-        title = "## Core <a name='core'></a>\n"
-        description = "Section that discusses metrics about bot responses and actions.\n"
-        return title + description
-
     def build_core_overview(self) -> str:
         """
         Build the report response and actions overview block.
@@ -437,16 +389,6 @@ class MarkdownController(Controller):
         else:
             text = "\nNo responses or actions were found for this model.\n"
             return title + text
-
-    def build_nlu_title(self) -> str:
-        """
-        Build the report NLU title block.
-
-        :return: Title block in markdown format.
-        """
-        title = "## NLU <a name='nlu'></a>\n"
-        description = "Section that discusses metrics about NLU and its example phrases.\n"
-        return title + description
 
     def build_nlu_table(self) -> str:
         """
@@ -525,26 +467,12 @@ class MarkdownController(Controller):
         :return: Text block in markdown format.
         """
         if os.path.isfile(self.config_report_path):
-            title = "## Configs <a name='configs'></a>\n"
-            description = "Settings that were used in the training *pipeline* and *policies*.\n"
-            title += description
             data = open(self.config_report_path, encoding="utf-8").read()
             logging.info(f"{self.config_report_path} file successfully loaded.")
-            return f"{title}```yaml\n{data}\n```"
+            return f"```yaml\n{data}\n```"
         else:
             logging.warning("Configuration block will not be generated, as the file was not found.")
             return ""
-
-    def build_e2e_coverage_title(self) -> str:
-        """
-        Build the report E2E coverage title block.
-
-        :return: Title block in markdown format.
-        """
-        title = "## E2E Coverage <a name='e2e'></a>\n"
-        description = "Section that shows data from intents, entities " \
-            "and responses that aren't covered by end-to-end tests.\n"
-        return title + description
 
     def build_e2e_coverage_list(self) -> str:
         """
@@ -576,17 +504,6 @@ class MarkdownController(Controller):
             text = "\nThere are no end-to-end tests coverage.\n"
         return title + text
 
-    def build_credits(self) -> str:
-        """
-        Build the report credits block.
-
-        :return str: Text block in markdown format.
-        """
-        repository_url = "https://github.com/brunohjs/rasa-model-report"
-        text = "##### Generated by rasa-model-report, collaborative open-source project for Rasa projects. "
-        text += f"Github repository at this [link]({repository_url})."
-        return text
-
     def _build_line_table(self, data: Dict[str, Union[str, float, dict]]) -> List[str]:
         """
         Returns list representing a line table in markdown format.
@@ -602,22 +519,3 @@ class MarkdownController(Controller):
             f"{data['f1-score'] * 100:.1f}%",
             str(data['support'])
         ]
-
-    def save_report(self) -> None:
-        """
-        Save the report data to file.
-        """
-        if os.path.isfile(self.output_report_path):
-            text = f"{self.output_report_path} file successfully changed."
-        else:
-            text = f"{self.output_report_path} file successfully created."
-        file = open(self.output_report_path, "w", encoding="utf-8")
-        file.write(self.result)
-        file.close()
-        logging.info(text)
-
-    def save_overview(self) -> None:
-        """
-        Save the overview report to JSON file.
-        """
-        self.json.save_overview()
