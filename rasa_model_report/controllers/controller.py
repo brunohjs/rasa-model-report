@@ -1,3 +1,5 @@
+from typing import Dict
+
 from rasa_model_report.helpers import utils
 
 
@@ -28,4 +30,11 @@ class Controller:
         self.output_path: str = utils.remove_duplicate_slashs(output_path)
         self.nlu_path: str = utils.remove_duplicate_slashs(f"{self.rasa_path}/data")
         self.results_path: str = utils.remove_duplicate_slashs(f"{self.rasa_path}/results")
+        self.images: Dict[str, str] = {
+            "INTENT_HISTOGRAM": "intent_histogram.png",
+            "INTENT_MATRIX": "intent_confusion_matrix.png",
+            "ENTITY_HISTOGRAM": "DIETClassifier_histogram.png",
+            "ENTITY_MATRIX": "DIETClassifier_confusion_matrix.png",
+            "STORY_MATRIX": "story_confusion_matrix.png"
+        }
         self.config_report_path: str = utils.remove_duplicate_slashs(f"{self.rasa_path}/config.yml")

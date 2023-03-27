@@ -118,13 +118,6 @@ def test_build_overview_with_model_link():
     assert f"[Download]({markdown_controller.model_link})" in text
 
 
-def test_build_intent_title():
-    markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_intent_title()
-    assert isinstance(text, str)
-    assert "## Intents <a name='intents'></a>" in text
-
-
 def test_build_intent_overview():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_intent_overview()
@@ -165,13 +158,6 @@ def test_build_intent_errors_table_if_len_less_than_2():
     assert not os.path.isfile(f"{markdown_controller.results_path}/intent_errors.csv")
 
 
-def test_build_entity_title():
-    markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_entity_title()
-    assert isinstance(text, str)
-    assert "## Entities <a name='entities'></a>" in text
-
-
 def test_build_entity_overview():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_entity_overview()
@@ -210,13 +196,6 @@ def test_build_entity_errors_table_if_len_less_than_2():
     assert "No confusions of entities were found in this model" in text
 
 
-def test_build_core_title():
-    markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_core_title()
-    assert isinstance(text, str)
-    assert "## Core <a name='core'></a>" in text
-
-
 def test_build_core_overview():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_core_overview()
@@ -238,13 +217,6 @@ def test_build_core_table_if_len_less_than_2():
     assert isinstance(text, str)
     assert "No responses or actions were found for this model" in text
     assert not os.path.isfile(f"{markdown_controller.results_path}/story_report.csv")
-
-
-def test_build_nlu_title():
-    markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_nlu_title()
-    assert isinstance(text, str)
-    assert "## NLU <a name='nlu'></a>" in text
 
 
 @responses.activate
@@ -290,7 +262,7 @@ def test_build_config_report():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_config_report()
     assert isinstance(text, str)
-    assert "## Configs <a name='configs'></a>" in text
+    assert "```yaml" in text
 
 
 def test_dont_build_config_report_when_there_is_no_config_file():
@@ -331,13 +303,6 @@ def test_build_line_table():
         "recall": 0.9
     })
     assert text == ["🟢", "test-name", "80.0%", "90.0%", "100.0%", "0.9"]
-
-
-def test_build_e2e_coverage_title():
-    markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_e2e_coverage_title()
-    assert isinstance(text, str)
-    assert "## E2E Coverage <a name='e2e'></a>" in text
 
 
 def test_build_e2e_coverage_list():

@@ -41,6 +41,13 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Generate model report without images."
 )
 @click.option(
+    "--output-format",
+    type=str,
+    required=False,
+    default=constants.OUTPUT_FORMAT,
+    help=f"Model report format. (default: {constants.OUTPUT_FORMAT})"
+)
+@click.option(
     "--output-path",
     type=str,
     required=False,
@@ -103,7 +110,9 @@ def main(
     disable_nlu,
     model_link,
     no_images,
-    output_path, path,
+    output_format,
+    output_path,
+    path,
     precision,
     project_name,
     project_version,
@@ -124,6 +133,7 @@ def main(
         model_link=model_link,
         actions_path=actions_path,
         no_images=no_images,
+        output_format=output_format,
         precision=precision
     )
     return report

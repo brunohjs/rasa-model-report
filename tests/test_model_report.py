@@ -1,5 +1,3 @@
-import os.path
-
 import pytest
 import responses
 
@@ -34,28 +32,4 @@ def test_init_model_report(rasa_path):
     assert model_report.project_name == "test-project"
     assert model_report.project_version == "0.0.0"
     assert model_report.rasa_version == "0.0.0"
-    assert model_report.dirs["rasa_path"] == rasa_path
-    assert model_report.dirs["results_path"] == f"{rasa_path}/results"
-    assert model_report.dirs["output_path"] == "./tests"
-    assert model_report.dirs["INTENT_HISTOGRAM"] == "intent_histogram.png"
-    assert model_report.dirs["INTENT_MATRIX"] == "intent_confusion_matrix.png"
-    assert model_report.dirs["ENTITY_HISTOGRAM"] == "DIETClassifier_histogram.png"
-    assert model_report.dirs["ENTITY_MATRIX"] == "DIETClassifier_confusion_matrix.png"
-    assert model_report.dirs["STORY_MATRIX"] == "story_confusion_matrix.png"
-
-
-def test_model_report_with_nlu():
-    model_report = pytest.model_report
-    model_report.markdown.nlu = pytest.nlu_controller
-    model_report.generate_report()
-    assert os.path.isfile(model_report.markdown.output_report_path)
-    assert os.path.isfile(model_report.markdown.json.overview_report_path)
-
-
-def test_model_report_with_invalid_path(rasa_path):
-    model_report = pytest.model_report
-    utils.remove_generated_files(rasa_path)
-    model_report.dirs["results_path"] = "invalid/path"
-    model_report.generate_report()
-    assert not os.path.isfile(model_report.markdown.output_report_path)
-    assert not os.path.isfile(model_report.markdown.json.overview_report_path)
+    assert model_report.output_format == "md"

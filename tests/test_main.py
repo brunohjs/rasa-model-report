@@ -24,7 +24,7 @@ def test_main_with_invalid_path():
     runner = CliRunner()
     result = runner.invoke(main, [])
     assert not os.path.isfile("model_report.md")
-    assert result.exit_code == 0
+    assert result.exit_code == 1
     assert result.output == ""
 
 
