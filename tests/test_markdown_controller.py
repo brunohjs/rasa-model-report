@@ -59,15 +59,6 @@ def test_add_image_when_no_images_param_is_activated():
     assert "/intent_confusion_matrix.png" not in markdown_controller.result
 
 
-def test_break_line():
-    text_1 = "blablabla"
-    markdown_controller = pytest.markdown_controller
-    markdown_controller.add_text(text_1)
-    assert markdown_controller.result == f"\n{text_1}"
-    markdown_controller.break_line()
-    assert markdown_controller.result == f"\n{text_1}\n"
-
-
 def test_build_table():
     markdown_controller = pytest.markdown_controller
     table = markdown_controller.build_table([["header_1", "header_2"], ["l1_c1", "l1_c2"], ["l2_c1", "l2_c2"]])

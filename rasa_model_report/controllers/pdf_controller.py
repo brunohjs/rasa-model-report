@@ -18,6 +18,15 @@ class PdfController(OutputController):
         project_version: str,
         **kwargs
     ) -> None:
+        """
+        __init__ method.
+
+        :param rasa_path: Rasa project path.
+        :param output_path: Output directory of CSV files.
+        :param project_name: Project name.
+        :param rasa_version: Rasa version.
+        :param project_version: Project version.
+        """
         super().__init__(
             rasa_path,
             output_path,
@@ -27,7 +36,6 @@ class PdfController(OutputController):
             **kwargs
         )
 
-        self._break_line = "<br>"
         self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.html")
 
     def add_text(self, text: str) -> None:

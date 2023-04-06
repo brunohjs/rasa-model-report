@@ -23,12 +23,20 @@ class OutputController(Controller):
         project_version: str,
         **kwargs
     ) -> None:
+        """
+        __init__ method.
+
+        :param rasa_path: Rasa project path.
+        :param output_path: Output directory of CSV files.
+        :param project_name: Project name.
+        :param rasa_version: Rasa version.
+        :param project_version: Project version.
+        """
         super().__init__(rasa_path, output_path, project_name, project_version, **kwargs)
 
         self.result: str = ""
         self.format: str = kwargs.get("output_format", constants.OUTPUT_FORMAT)
         self.title: str = "Model health report"
-        self._break_line = "\n"
         self.output_report_path: str = utils.remove_duplicate_slashs(f"{self.output_path}/model_report.html")
         self.readme_path: str = "README.md"
         self.rasa_version: str = rasa_version
@@ -89,12 +97,6 @@ class OutputController(Controller):
         """
         raise NotImplementedError("")
 
-    def break_line(self) -> None:
-        """
-        Inserts a line break to the result text.
-        """
-        self.result += self._break_line
-
     def add_credits(self) -> str:
         """
         Build the report credits block.
@@ -132,7 +134,6 @@ class OutputController(Controller):
             self.add_title(self.title, heading_level=1)
             self.add_text(self.build_summary())
             self.add_text(self.build_overview())
-            self.break_line()
 
             # Config
             if os.path.isfile(self.config_report_path):
@@ -142,7 +143,6 @@ class OutputController(Controller):
                     tag="configs"
                 )
                 self.add_text(self.build_config_report())
-                self.break_line()
 
             # Intents
             self.add_title(
