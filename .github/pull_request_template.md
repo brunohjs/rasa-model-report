@@ -1,5 +1,5 @@
 ## Proposed changes
-Describe the big picture of your changes here to communicate to the maintainers why we should accept this pull request. If possible, attach images of evidence. If it fixes a bug or resolves a feature request, be sure to link to that issue.
+Describe the big picture of your changes here to communicate to the maintainers why we should accept this pull request. If possible, attach images of evidence. Be sure to link to an issue.
 
 ## Types of changes
 What types of changes does your code introduce to project?
@@ -15,10 +15,11 @@ _Put an `x` in the boxes that apply_
 ## Checklist
 _Put an `x` in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code._
 
-- [ ] I have read the [CONTRIBUTING](https://github.com/brunohjs/rasa-model-report/blob/main/CONTRIBUTING.md) doc
-- [ ] Lint and unit tests pass locally with my changes
-- [ ] I have added tests that prove my fix is effective or that my feature works (if appropriate)
-- [ ] I have added necessary documentation (if appropriate)
+- [ ] This pull request is linked to an issue and linked in the *Proposed changes's* description.
+- [ ] I have read the [CONTRIBUTING](https://github.com/brunohjs/rasa-model-report/blob/main/CONTRIBUTING.md) documentation.
+- [ ] Lint and unit tests pass locally with my changes.
+- [ ] I have added tests that prove my fix is effective or that my feature works (if appropriate).
+- [ ] I have added necessary documentation (if appropriate).
 
 ## Further comments
-If this is a relatively large or complex change, kick off the discussion by explaining why you chose the solution you did and what alternatives you considered, etc...
+If this is a relatively large or complex change, kick off the discussion by explaining why you chose the solution you did and what alternatives you considered, etc... If you have nothing to put here, you can delete this section.

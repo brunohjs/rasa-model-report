@@ -1,5 +1,6 @@
 from typing import Dict
 
+from rasa_model_report import __version__
 from rasa_model_report.helpers import utils
 
 
@@ -38,3 +39,4 @@ class Controller:
             "STORY_MATRIX": "story_confusion_matrix.png"
         }
         self.config_report_path: str = utils.remove_duplicate_slashs(f"{self.rasa_path}/config.yml")
+        self.version: str = __version__

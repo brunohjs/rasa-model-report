@@ -75,11 +75,11 @@ def update_version_setup_file(new_version: str) -> None:
 
     :param new_version: New version.
     """
-    file = open("setup.py")
+    file = open("rasa_model_report/__init__.py")
     data = file.read()
-    data = re.sub(r"version=\"\d+\.\d+\.\d+\",", f"version=\"{new_version}\",", data)
+    data = re.sub(r"__version__ = \"\d+\.\d+\.\d+\"", f"__version__ = \"{new_version}\"", data)
     file.close()
-    file = open("setup.py", "w")
+    file = open("rasa_model_report/__init__.py", "w")
     file.write(data)
     file.close()
 

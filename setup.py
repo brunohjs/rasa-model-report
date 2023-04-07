@@ -2,13 +2,15 @@ from pathlib import Path
 
 from setuptools import setup
 
+import rasa_model_report
+
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="rasa-model-report",
-    version="1.3.3",
+    version=rasa_model_report.__version__,
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",
     license="Apache 2.0",
