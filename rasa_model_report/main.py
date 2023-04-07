@@ -12,13 +12,15 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 @click.option(
     "--actions-path",
     required=False,
-    help="Actions path. (default: actions/ inside Rasa project path)"
+    show_default=True,
+    help="Actions path. [default: actions/ inside Rasa project path]"
 )
 @click.option(
     "--disable-nlu",
     is_flag=True,
     required=False,
     default=constants.DISABLE_NLU,
+    show_default=True,
     help="Disable processing NLU sentences. NLU section will not be generated "
     "in the report. Required Rasa API."
 )
@@ -31,6 +33,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     "--model-link",
     type=str,
     required=False,
+    show_default=True,
     help="Model download link. It's only displayed in the report to model download."
 )
 @click.option(
@@ -38,21 +41,24 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     is_flag=True,
     required=False,
     default=constants.NO_IMAGES,
+    show_default=True,
     help="Generate model report without images."
 )
 @click.option(
     "--output-format",
-    type=str,
+    type=click.Choice(["md", "pdf"], case_sensitive=False),
     required=False,
     default=constants.OUTPUT_FORMAT,
-    help=f"Model report format. (default: {constants.OUTPUT_FORMAT})"
+    show_default=True,
+    help="Model report format."
 )
 @click.option(
     "--output-path",
     type=str,
     required=False,
     default=constants.OUTPUT_PATH,
-    help=f"Report output path. (default: {constants.OUTPUT_PATH})"
+    show_default=True,
+    help="Report output path."
 )
 @click.option(
     "--path",
@@ -60,28 +66,32 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     type=str,
     required=False,
     default=constants.RASA_PATH,
-    help=f"Rasa project path. (default: {constants.RASA_PATH})"
+    show_default=True,
+    help="Rasa project path."
 )
 @click.option(
     "--precision",
-    type=int,
+    type=click.IntRange(0, 5),
     required=False,
     default=constants.GRADE_PRECISION,
+    show_default=True,
     help="Grade precision. Used to change precision of the model report overview grades. "
-    f"Can vary between 0 and 5 (default: {constants.GRADE_PRECISION})"
+    "Can vary between 0 and 5."
 )
 @click.option(
     "--project-name",
     type=str,
     required=False,
     default=constants.PROJECT_NAME,
-    help=f"Rasa project name. It's only displayed in the report. (default: {constants.PROJECT_NAME})"
+    show_default=True,
+    help="Rasa project name. It's only displayed in the report."
 )
 @click.option(
     "--project-version",
     type=str,
     required=False,
     default=constants.PROJECT_VERSION,
+    show_default=True,
     help="Project version. It's only displayed in the report for project documentation."
 )
 @click.option(
@@ -89,13 +99,15 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     type=str,
     required=False,
     default=constants.RASA_API_URL,
-    help=f"Rasa API URL. Is needed to create NLU section of report. (default: {constants.RASA_API_URL})"
+    show_default=True,
+    help="Rasa API URL. Is needed to create NLU section of report."
 )
 @click.option(
     "--rasa-version",
     type=str,
     required=False,
     default=constants.RASA_VERSION,
+    show_default=True,
     help="Rasa version. It's only displayed in the report for project documentation."
 )
 @click.version_option(
@@ -103,6 +115,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     "--version",
     "-v",
     message="v%(version)s",
+    show_default=True,
     help="Show installed rasa-model-report version.",
 )
 def main(
