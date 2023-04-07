@@ -86,7 +86,7 @@ class NluController(Controller):
         nlu = {}
         for filename in files:
             file = utils.load_yaml_file(filename)
-            if file.get("nlu"):
+            if file and file.get("nlu"):
                 data = {i["intent"]: i["examples"] for i in file["nlu"] if i.get("intent")}
                 if data:
                     logging.info(f"Found sentences in {filename} file.")
