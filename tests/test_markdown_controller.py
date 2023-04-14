@@ -97,7 +97,7 @@ def test_build_overview():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_overview()
     assert isinstance(text, str)
-    assert "## Overview" in text
+    assert "|Bot name|Bot version|Rasa version|Creation date|Updated date|" in text
 
 
 def test_build_overview_with_model_link():
@@ -284,9 +284,9 @@ def test_build_line_entity_when_there_is_no_entities():
     assert text == "-"
 
 
-def test_build_line_table():
+def test_table_line():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller._build_line_table({
+    text = markdown_controller._table_line({
         "name": "test-name",
         "f1-score": 1,
         "precision": 0.8,
@@ -300,7 +300,9 @@ def test_build_e2e_coverage_list():
     markdown_controller = pytest.markdown_controller
     text = markdown_controller.build_e2e_coverage_list()
     assert isinstance(text, str)
-    assert "### Not covered elements" in text
+    assert "#### Intents" in text
+    assert "#### Entities" in text
+    assert "#### Actions" in text
     assert "Total number of elements:" in text
 
 
@@ -309,6 +311,5 @@ def test_build_e2e_coverage_list_when_havent_elements():
     markdown_controller.e2e_coverage._data = {}
     text = markdown_controller.build_e2e_coverage_list()
     assert isinstance(text, str)
-    assert "### Not covered elements" in text
     assert "Total number of elements:" not in text
     assert "There are no end-to-end tests coverage." in text
