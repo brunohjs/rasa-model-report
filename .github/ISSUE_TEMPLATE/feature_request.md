@@ -1,8 +1,8 @@
 ---
-name: Feature request
+name: 💡 Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: 'idea'
 assignees: ''
 
 ---
@@ -14,11 +14,11 @@ Please [search 🔍 the ideas](https://github.com/brunohjs/rasa-model-report/dis
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-**Describe the solution you'd like**
+**Describe the solution you'd like (optional)**
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
+**Describe alternatives you've considered (optional)**
 A clear and concise description of any alternative solutions or features you've considered.
 
-**Futher Information**
+**Futher Information (optional)**
 Links? References? Anything that will give us more context about the issue you are encountering!

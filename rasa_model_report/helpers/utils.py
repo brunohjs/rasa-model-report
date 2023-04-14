@@ -1,4 +1,5 @@
 import datetime
+import inspect
 import logging
 import os
 import re
@@ -44,7 +45,7 @@ def check(flag: bool) -> str:
     return "✅" if flag else "❌"
 
 
-def get_color(value: float, scale: int = 1) -> str:
+def get_color(value: float, scale: int = 1, output_format: str = "md") -> str:
     """
     Returns a colored icon according to the value.
 
@@ -52,18 +53,34 @@ def get_color(value: float, scale: int = 1) -> str:
     :param scale: Scale that the value is on.
     :return: A icon.
     """
+    output = {
+        "pdf": {
+            "green": "&#128994;",
+            "yellow": "&#128993;",
+            "orange": "&#128992;",
+            "red": "&#128308;",
+            "none": "&#10060;"
+        },
+        "md": {
+            "green": "🟢",
+            "yellow": "🟡",
+            "orange": "🟠",
+            "red": "🔴",
+            "none": "❌"
+        }
+    }
     if isinstance(value, (float, int)):
         if scale > 1:
             value /= scale
         if value >= 0.9:
-            return "🟢"
+            return output.get(output_format).get("green")
         elif value >= 0.7:
-            return "🟡"
+            return output.get(output_format).get("yellow")
         elif value >= 0.4:
-            return "🟠"
+            return output.get(output_format).get("orange")
         elif value >= 0.001:
-            return "🔴"
-    return "❌"
+            return output.get(output_format).get("red")
+    return output.get(output_format).get("none")
 
 
 def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
@@ -198,3 +215,20 @@ def remove_duplicate_slashs(text: str) -> str:
     :return: Text without duplicate slashs.
     """
     return re.sub(r"\/+", "/", text)
+
+
+def not_implemented() -> None:
+    """
+    Function that raise 'Not implemented method'.
+    """
+    curframe = inspect.currentframe()
+    calframe = inspect.getouterframes(curframe, 2)
+    method = calframe[1][3]
+    stack = inspect.stack()
+    stack = stack[1][0].f_locals
+    message = f"Function {method} not implemented."
+    if stack and stack.get("self"):
+        class_ = stack["self"].__class__.__name__
+        message = f"Method {method} not implemented on class {class_}."
+    logging.warning(message)
+    raise NotImplementedError(message)
