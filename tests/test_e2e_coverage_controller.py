@@ -69,6 +69,14 @@ def test_generate_e2e_report_string():
     assert 1 >= e2e_coverage_controller._total_rate >= 0
 
 
+def test_generate_e2e_report_without_entities_section():
+    e2e_coverage_controller = pytest.e2e_coverage_controller
+    e2e_coverage_controller._generate()
+    assert "entities" not in e2e_coverage_controller.data
+    assert "intents" in e2e_coverage_controller.data
+    assert "actions" in e2e_coverage_controller.data
+
+
 def test_save_e2e_report_when_have_not_covered_items():
     e2e_coverage_controller = pytest.e2e_coverage_controller
     e2e_coverage_controller.save()
