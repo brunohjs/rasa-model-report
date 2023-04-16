@@ -66,7 +66,7 @@ def test_generate_e2e_report_string():
     e2e_coverage_controller._generate()
     assert e2e_coverage_controller._total_num_elements >= 0
     assert e2e_coverage_controller._total_num_not_covered >= 0
-    assert e2e_coverage_controller._total_rate >= 0
+    assert 1 >= e2e_coverage_controller._total_rate >= 0
 
 
 def test_save_e2e_report_when_have_not_covered_items():
@@ -109,6 +109,7 @@ def test_e2e_coverage_get_total_rate():
     total_rate = e2e_coverage_controller.total_rate
     total_rate += 1
     assert e2e_coverage_controller.total_rate != total_rate
+    assert 1 >= e2e_coverage_controller._total_rate >= 0
     assert isinstance(e2e_coverage_controller.total_rate, float)
 
 

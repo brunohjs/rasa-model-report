@@ -18,10 +18,9 @@ def format_date() -> str:
     """
     Format the current date to the format DD/MM/YY hh:mm:ss.
 
-    :return: Date string.
+    :return str: Date string.
     """
-    now = datetime.datetime.now()
-    return now.strftime("%d/%m/%y %H:%M:%S")
+    return datetime.datetime.now().strftime("%d/%m/%y %H:%M:%S")
 
 
 def convert_to_date(date: str) -> datetime.datetime:
@@ -29,7 +28,7 @@ def convert_to_date(date: str) -> datetime.datetime:
     Format string in the format DD/MM/YY hh:mm:ss to the datetime type.
 
     :param date: Date string.
-    :return: Datetime object.
+    :return datetime.datetime: Datetime object.
     """
     return datetime.datetime.strptime(date, "%d/%m/%y %H:%M:%S")
 
@@ -39,7 +38,7 @@ def check(flag: bool) -> str:
     Converts a boolean to an icon.
 
     :param flag: A boolean flag.
-    :return: A icon.
+    :return str: A icon.
     """
     return "✅" if flag else "❌"
 
@@ -50,7 +49,7 @@ def get_color(value: float, scale: int = 1) -> str:
 
     :param value: Float value.
     :param scale: Scale that the value is on.
-    :return: A icon.
+    :return str: A icon.
     """
     if isinstance(value, (float, int)):
         if scale > 1:
@@ -73,7 +72,7 @@ def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
     :param value: Value that will be changed to scale and rounds it.
     :param scale: Scale that will be applied.
     :param precision: Value precision.
-    :return: Value on the new scale and precision.
+    :return str: Value on the new scale and precision.
     """
     precision = precision if isinstance(precision, int) and 5 >= precision >= 0 else constants.GRADE_PRECISION
     if (
@@ -96,11 +95,9 @@ def get_project_name(path: Optional[str] = None) -> str:
     Returns the project folder's name.
 
     :param path: Project path. If not informed, the current path will be used.
-    :return: Project folder's name.
+    :return str: Project folder's name.
     """
-    if path:
-        return os.path.basename(path)
-    directory_path = os.getcwd()
+    directory_path = path or os.getcwd()
     return os.path.basename(directory_path)
 
 
@@ -111,7 +108,7 @@ def request(url: str, method: str = "GET", json: dict = {}) -> Optional[requests
     :param url: URL.
     :param method: Request method (default: "GET").
     :param json: JSON body request (default: {}).
-    :return: Response object.
+    :return requests.Response: Response object.
     """
     response = None
     try:
@@ -135,7 +132,7 @@ def load_yaml_file(filename: str, error_flag: bool = True) -> Union[dict, list]:
 
     :param filename: YAML filename.
     :param error_flag: If True, an exception will be raised when the file isn't found (default: True).
-    :return: Data in list or dict format.
+    :return Union[dict, list]: Data in list or dict format.
     """
     if os.path.isfile(filename):
         file = open(filename, encoding="utf-8")
@@ -159,9 +156,10 @@ def list_diff(l1: List[str], l2: List[str]) -> List[str]:
 
     :param l1: First list.
     :param l2: Second list.
-    :return: Difference between l1 and l2.
+    :return list: Difference between l1 and l2.
     """
-    return [element for element in l1 if element not in l2]
+    set_l2 = set(l2)
+    return [element for element in l1 if element not in set_l2]
 
 
 def path_to(origin_path: str, destiny_path: str) -> str:
@@ -170,7 +168,7 @@ def path_to(origin_path: str, destiny_path: str) -> str:
 
     :param origin_path: Origin path
     :param destiny_path: Destiny path
-    :return: Path to *destiny_path* from *origin_path*
+    :return str: Path to *destiny_path* from *origin_path*
     """
     undo_path = ""
     destiny_path = remove_duplicate_slashs(destiny_path)
@@ -195,6 +193,6 @@ def remove_duplicate_slashs(text: str) -> str:
     Remove duplicate slashs from string. Usually used in paths.
 
     :param text: Text string.
-    :return: Text without duplicate slashs.
+    :return str: Text without duplicate slashs.
     """
     return re.sub(r"\/+", "/", text)
