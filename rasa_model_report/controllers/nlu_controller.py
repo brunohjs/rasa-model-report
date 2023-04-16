@@ -174,10 +174,11 @@ class NluController(Controller):
         :return: General grade value.
         """
         total_sentences = len(self._data)
-        if total_sentences:
-            total_problem_sentences = len(self._problem_sentences)
-            self._general_grade = 1 - total_problem_sentences / total_sentences
-            return self._general_grade
+        if not total_sentences:
+            return None
+        total_problem_sentences = len(self._problem_sentences)
+        self._general_grade = 1 - total_problem_sentences / total_sentences
+        return self._general_grade
 
     def request_nlu(self, text: str) -> type_aliases.nlu_payload:
         """
@@ -204,8 +205,7 @@ class NluController(Controller):
         :param text: Sentences string file.
         :return: List of sentences.
         """
-        text = text.split("\n")
-        return [item[2:] for item in text if item != ""]
+        return [line.strip()[2:] for line in text.split("\n") if line.strip()]
 
     @staticmethod
     def remove_entities_from_text(text: str) -> str:
