@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: 🐞 Bug report
 about: Create a report to help us improve
 title: ''
 labels: bug
@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 Please provide the following information about your environment.
  - Operational System (with version):
  - Python version:
- - `rasa-model-report` version: 
+ - `rasa-model-report` version:
 
-**Futher Information**
+**Futher Information (optional)**
 Links? References? Anything that will give us more context about the issue you are encountering!

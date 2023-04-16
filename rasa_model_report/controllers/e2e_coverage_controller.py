@@ -79,8 +79,8 @@ class E2ECoverageController(Controller):
         Generate E2E tests coverage report string.
         """
         not_covered = {}
-        report_data = [self.json.extract_entity_from_string(item["name"]) for item in self.json.core]
-        for element in ["intents", "entities", "actions"]:
+        report_data = [item["name"] for item in self.json.core]
+        for element in ["intents", "actions"]:
             element_list = getattr(self, f"_{element}")
             not_covered[element] = {
                 "items": utils.list_diff(element_list, report_data)

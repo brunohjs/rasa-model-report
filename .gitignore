@@ -131,7 +131,7 @@ dmypy.json
 # Rasa
 .rasa/
 models/
-model_report.md
+model_report.*
 **/rasa.v*/results/*.csv
 **/rasa.v*/results/overview.json
 **/rasa.v*/results/e2e_coverage_report.txt
