@@ -90,17 +90,19 @@ class MarkdownController(OutputController):
 
         :return: Report model summary.
         """
-        text = " - [Overview](#overview)\n"
+        sections = [
+            " - [Overview](#overview)\n",
+            " - [Intents](#intents)\n",
+            " - [Entities](#entities)\n",
+            " - [Core](#core)\n",
+            " - [E2E Coverage](#e2e)\n"
+        ]
         if os.path.isfile(self.config_report_path):
-            text += " - [Config](#configs)\n"
-        text += " - [Intents](#intents)\n"
-        text += " - [Entities](#entities)\n"
+            sections.insert(1, " - [Config](#configs)\n")
         if self.nlu.is_connected():
-            text += " - [NLU](#nlu)\n"
-        text += " - [Core](#core)\n"
-        text += " - [E2E Coverage](#e2e)\n"
-        text += "\n"
-        return text
+            sections.insert(3, " - [NLU](#nlu)\n")
+
+        return f"## Index\n{''.join(sections)}\n"
 
     def build_table(self, data: List[Union[str, float]]) -> str:
         """
