@@ -1,5 +1,6 @@
 import logging
 import os.path
+from importlib.resources import files
 from typing import List
 from typing import Union
 
@@ -179,9 +180,7 @@ class PdfController(OutputController):
         """
         Input CSS style code on HTML output result.
         """
-        file = open("assets/css/pdf.css")
-        data = file.read()
-        file.close()
+        data = files("rasa_model_report.assets.css").joinpath("pdf.css").read_text()
         self.result = f"<style>\n{data}\n</style>\n{self.result}"
 
     def convert_to_pdf(self):
@@ -230,7 +229,7 @@ class PdfController(OutputController):
             data = open(self.config_report_path, encoding="utf-8").read()
             data = data.replace("\n", "<br>")
             logging.info(f"{self.config_report_path} file successfully loaded.")
-            return f"<code>\n{data}\n</code>"
+            return f"<br><code>{data}</code>"
         else:
             logging.warning("Configuration block will not be generated, as the file was not found.")
             return ""

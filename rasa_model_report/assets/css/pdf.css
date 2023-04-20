@@ -22,5 +22,15 @@
 
 table {
     margin: 1em;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 5px;
+    min-width: 500px;
+    max-width: 1000px;
+}
+
+table td, table th {
     border: 1px solid black;
+    padding: 5px;
+    min-width: 50px;
 }

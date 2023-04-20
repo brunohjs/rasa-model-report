@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from setuptools import find_packages
 from setuptools import setup
 
 import rasa_model_report
@@ -20,11 +21,13 @@ setup(
     long_description_content_type="text/markdown",
     python_requires=">=3.8",
     url="https://github.com/brunohjs/rasa-model-report",
-    packages=[
-        "rasa_model_report",
-        "rasa_model_report.controllers",
-        "rasa_model_report.helpers"
-    ],
+    packages=find_packages(),
+    package_data={
+        "": ["assets/css/*.css"]
+    },
+    package_dir={
+        "": "."
+    },
     install_requires=[
         "Click",
         "requests>=2.28.1",
