@@ -1,0 +1,5 @@
+airium>=0.2.5
+Click
+pyyaml>=6.0
+requests>=2.28.1
+weasyprint>=58.1

@@ -47,9 +47,13 @@ class NluController(Controller):
 
         if not self._disable_nlu and self.health_check_rasa_api():
             self._load_nlu()
-            self._generate_data()
-            self._load_problem_sentences()
-            self._calculate_general_grade()
+            if len(self._data) == 1:
+                self._connected = False
+                logging.warning("There is only one intention. NLU section will not be generated.")
+            else:
+                self._generate_data()
+                self._load_problem_sentences()
+                self._calculate_general_grade()
 
     def is_connected(self) -> bool:
         """
@@ -237,7 +241,9 @@ class NluController(Controller):
         intent_name = intent.get("name")
         response_selector = payload.get("response_selector", {})
         if intent_name == "nlu_fallback":
-            intent = payload["intent_ranking"][1].copy()
+            intent = payload["intent_ranking"][0].copy()
+            if len(payload["intent_ranking"]) > 1:
+                intent = payload["intent_ranking"][1].copy()
             intent["nlu_fallback"] = True
         elif intent_name in response_selector.get("all_retrieval_intents", []):
             response = response_selector.get(intent_name, {})

@@ -28,11 +28,7 @@ setup(
     package_dir={
         "": "."
     },
-    install_requires=[
-        "Click",
-        "requests>=2.28.1",
-        "pyyaml>=6.0"
-    ],
+    install_requires=open("requirements.txt").read().split(),
     entry_points="""
         [console_scripts]
         rasa-model-report=rasa_model_report.main:main

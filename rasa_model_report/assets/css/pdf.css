@@ -1,23 +1,52 @@
 @font-face {
-    font-family: Oxygen;
+    font-family: "Oxygen";
     src: url(../fonts/Oxygen-Regular.ttf);
     font-weight: normal;
 }
 
 @font-face {
-    font-family: Oxygen;
+    font-family: "Oxygen";
     src: url(../fonts/Oxygen-Light.ttf);
     font-weight: lighter;
 }
 
 @font-face {
-    font-family: Oxygen;
+    font-family: "Oxygen";
     src: url(../fonts/Oxygen-Bold.ttf);
     font-weight: bold;
 }
 
 * {
-    font-family: Oxigen, sans-serif;
+    font-family: "Oxigen", sans-serif;
+}
+
+p {
+    margin: 0 !important;
+}
+
+h1,h2,h3,h4,h5 {
+    margin-top: 1.2rem !important;
+    margin-bottom: .3rem !important;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
+h5 {
+    font-size: .75rem;
+}
+
+h6 {
+    font-size: .5rem;
+}
+
+hr {
+    margin-top: 0;
 }
 
 table {
@@ -25,12 +54,38 @@ table {
     border-collapse: collapse;
     text-align: center;
     padding: 5px;
-    min-width: 500px;
+    min-width: 700px;
     max-width: 1000px;
 }
 
 table td, table th {
     border: 1px solid black;
     padding: 5px;
-    min-width: 50px;
+    min-width: 30px;
+}
+
+table.info tr th:first-child {
+    min-width: 200px;
+}
+
+table td.overall {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table.data-table tr td:nth-child(2) {
+    text-align: start;
+}
+
+table.data-table tr td:last-child {
+    width: 50px;
+}
+
+table.error-data-table tr td:first-child {
+    text-align: start;
+}
+
+.credits {
+    margin: 1rem;
+    font-size: .75rem;
 }

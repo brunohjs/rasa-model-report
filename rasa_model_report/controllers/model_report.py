@@ -2,8 +2,7 @@ import logging
 from typing import Any
 from typing import Dict
 
-from rasa_model_report.controllers.markdown_controller import MarkdownController
-from rasa_model_report.controllers.pdf_controller import PdfController
+from rasa_model_report.controllers.output_controller import OutputController
 from rasa_model_report.helpers import constants
 from rasa_model_report.helpers import utils
 
@@ -39,26 +38,12 @@ class ModelReport:
             f"Starting report creation from {self.project_name} bot template, "
             f"version {self.project_version if self.project_version else 'not identified'}"
         )
-        if self.output_format == "md":
-            self.generator: MarkdownController = MarkdownController(
-                rasa_path,
-                output_path,
-                self.project_name,
-                self.rasa_version,
-                self.project_version,
-                **kwargs
-            )
-        elif self.output_format == "pdf":
-            self.generator: PdfController = PdfController(
-                rasa_path,
-                output_path,
-                self.project_name,
-                self.rasa_version,
-                self.project_version,
-                **kwargs
-            )
-        else:
-            error = "Invalid model report format. Insert valid value ('md' or 'pdf')."
-            logging.error(error)
-            raise Exception(error)
+        self.generator: OutputController = OutputController(
+            rasa_path,
+            output_path,
+            self.project_name,
+            self.rasa_version,
+            self.project_version,
+            **kwargs
+        )
         self.generator.generate_report()

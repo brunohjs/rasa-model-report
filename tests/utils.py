@@ -53,20 +53,6 @@ def load_mock_payloads():
     return True
 
 
-def check_model_report_sections(model_report_path):
-    file = open(model_report_path, encoding="utf-8")
-    file_data = file.read()
-    file.close()
-    return "# Model health report" in file_data and \
-        "## Index" in file_data and \
-        "## Overview" in file_data and \
-        "## Config" in file_data and \
-        "## Intents" in file_data and \
-        "## Entities" in file_data and \
-        "## Core" in file_data and \
-        "## E2E Coverage" in file_data
-
-
 def check_model_report_images(model_report_path):
     file = open(model_report_path, encoding="utf-8")
     file_data = file.read()

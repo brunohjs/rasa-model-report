@@ -12,9 +12,8 @@ from tests import utils
 def test_main_with_valid_path(rasa_path):
     runner = CliRunner()
     result = runner.invoke(main, ["--path", rasa_path])
-    assert os.path.isfile("model_report.md")
-    assert utils.check_model_report_sections("model_report.md")
-    assert utils.check_model_report_images("model_report.md")
+    assert os.path.isfile("model_report.html")
+    assert utils.check_model_report_images("model_report.html")
     assert result.exit_code == 0
     assert result.output == ""
 
@@ -24,7 +23,7 @@ def test_main_with_invalid_path():
     utils.load_mock_payloads()
     runner = CliRunner()
     result = runner.invoke(main, [])
-    assert not os.path.isfile("model_report.md")
+    assert not os.path.isfile("model_report.html")
     assert result.exit_code == 0
     assert result.output == ""
 

@@ -6,6 +6,8 @@ from rasa_model_report.controllers.model_report import ModelReport
 from rasa_model_report.helpers import constants
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logging.INFO)
+for name in logging.root.manager.loggerDict:
+    logging.getLogger(name).propagate = False
 
 
 @click.command()
