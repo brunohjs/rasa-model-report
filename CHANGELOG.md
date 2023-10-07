@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.5] - In progress...
 
+### Added
+- [#73](https://github.com/brunohjs/rasa-model-report/issues/73) Created section with element count on model report. Additionally, now all tables elements are numbered.
+
 ### Fixed
 - [#75](https://github.com/brunohjs/rasa-model-report/issues/75) Fixed bug with utters in actions that weren't being covered by the end-to-end tests.
 
