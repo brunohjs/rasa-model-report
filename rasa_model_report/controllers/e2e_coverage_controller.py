@@ -118,21 +118,16 @@ class E2ECoverageController(Controller):
         :return: Found utter list.
         """
         result = []
-        patterns = [
-            r"template|response\s?=\s?[\'|\"].*[\'|\"]",
-            r"FollowupAction\(\s?[\'|\"].*[\'|\"]\s?\)",
-            r"ActionExecuted\(\s?[\'|\"].*[\'|\"]\s?\)"
-        ]
+        pattern = r"(\"(utter|action)_[a-zA-Z0-9_-]+\")|((\'(utter|action)_[a-zA-Z0-9_-]+\'))"
         actions_data = glob.glob(f"{self.actions_path}/**/*.py") + glob.glob(f"{self.actions_path}/*.py")
         actions_files = [open(file).read() for file in actions_data]
         for file in actions_files:
-            for pattern in patterns:
-                strings = re.findall(pattern, file)
-                if strings:
-                    for string in strings:
-                        utter = re.search(r"(utter|action)_[a-zA-Z0-9_-]+", string)
-                        if utter and utter.group() not in result:
-                            result.append(utter.group())
+            strings = re.findall(pattern, file, re.UNICODE)
+            if strings:
+                for string in strings:
+                    utter = string[0].replace("'", "").replace("\"", "")
+                    if utter not in result:
+                        result.append(utter)
         return result
 
     def save(self) -> None:

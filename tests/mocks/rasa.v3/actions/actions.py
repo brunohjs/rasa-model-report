@@ -24,8 +24,10 @@ class ActionHelloWorld(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        utter = "utter_test_2"
         dispatcher.utter_message(text="Hello World!")
-        dispatcher.utter_message(response = "utter_test")
+        dispatcher.utter_message(response="utter_test")
+        dispatcher.utter_message(response=utter)
         return [
             FollowupAction("action_test"),
             FollowupAction("action_test"),
