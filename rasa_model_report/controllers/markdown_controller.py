@@ -147,25 +147,59 @@ class MarkdownController(Controller):
         :param data: List representing the table data.
         :return: Table in markdown format.
         """
-        header = "|" + "|".join(data[0]) + "|\n"
-        header += "|-" * len(data[0]) + "|\n"
+        header = f"|#|{'|'.join(data[0])}|\n"
+        header += f"{'|-' * (len(data[0]) + 1)}|\n"
         content = ""
-        for row in data[1:]:
-            text_row = "|" + "|".join(row) + "|\n"
+        for index, row in enumerate(data[1:]):
+            text_row = f"|{index + 1}|{'|'.join(row)}|\n"
             content += text_row
         return header + content
 
-    def build_overview(self) -> str:
+    def build_overview_title(self) -> str:
+        """
+        Build the report overview title block.
+
+        :return: Title block in markdown format.
+        """
+        title = "## Overview <a name='overview'></a>\n"
+        return title
+
+    def build_grades(self) -> str:
         """
         Build the text block responsible for the summary of the report.
 
         :return: Overview report in markdown format.
         """
+        text = "### Grades\n"
+        style = "style='font-size:20px'"
         overview = self.json.overview
         for item in ["intent", "entity", "core", "nlu"]:
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else "-"
-        text = "## Overview <a name='overview'></a>\n"
+        text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
+        text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
+        text += f"|{utils.change_scale(overview['intent'], 10, self.precision)}\
+            |{utils.change_scale(overview['entity'], 10, self.precision)}\
+            |{utils.change_scale(overview['nlu'], 10, self.precision)}\
+            |{utils.change_scale(overview['core'], 10, self.precision)}\
+            |{utils.change_scale(overview['e2e_coverage'], 10, self.precision)}\
+            |<span {style}>**{utils.change_scale(overview['overall'], 10, self.precision)}**</span>|\n"
+        text += f"{utils.get_color(overview['intent'])}\
+            |{utils.get_color(overview['entity'])}\
+            |{utils.get_color(overview['nlu'])}\
+            |{utils.get_color(overview['core'])}\
+            |{utils.get_color(overview['e2e_coverage'])}\
+            |<span {style}>{utils.get_color(overview['overall'])}</span>|"
+        return text
+
+    def build_bot_info(self) -> str:
+        """
+        Build the bot info block.
+
+        :return: Bot info block in markdown format.
+        """
+        text = "### Bot info\n"
         style = "style='font-size:16px'"
+        overview = self.json.overview
         data = [
             ["Bot Name", self.project_name]
         ]
@@ -182,21 +216,49 @@ class MarkdownController(Controller):
         text += "|" + "|".join([item[0] for item in data]) + "|\n"
         text += "|" + "|".join([":-:" for i in range(len(data))]) + "|\n"
         text += "|" + "|".join([f"<span {style}>{item[1]}</span>" for item in data]) + "|\n\n"
-        style = "style='font-size:20px'"
-        text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
-        text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
-        text += f"|{utils.change_scale(overview['intent'], 10, self.precision)}\
-            |{utils.change_scale(overview['entity'], 10, self.precision)}\
-            |{utils.change_scale(overview['nlu'], 10, self.precision)}\
-            |{utils.change_scale(overview['core'], 10, self.precision)}\
-            |{utils.change_scale(overview['e2e_coverage'], 10, self.precision)}\
-            |<span {style}>**{utils.change_scale(overview['overall'], 10, self.precision)}**</span>|\n"
-        text += f"{utils.get_color(overview['intent'])}\
-            |{utils.get_color(overview['entity'])}\
-            |{utils.get_color(overview['nlu'])}\
-            |{utils.get_color(overview['core'])}\
-            |{utils.get_color(overview['e2e_coverage'])}\
-            |<span {style}>{utils.get_color(overview['overall'])}</span>|"
+        return text
+
+    def build_element_count(self) -> str:
+        """
+        Build the report element count block.
+
+        :return: Element count block in markdown format.
+        """
+        intents = len(self.json.intents)
+        entities = len(self.json.entities)
+        utters_actions = self.e2e_coverage.total_num_elements
+        stories_rules = utils.count_stories_and_rules(self.rasa_path)
+        stories = stories_rules.get("stories")
+        rules = stories_rules.get("rules")
+        data = [
+            {
+                "type": "Intents",
+                "total": intents
+            },
+            {
+                "type": "Entities",
+                "total": entities
+            },
+            {
+                "type": "Actions and Utters",
+                "total": utters_actions
+            },
+            {
+                "type": "Stories",
+                "total": stories
+            },
+            {
+                "type": "Rules",
+                "total": rules
+            }
+        ]
+        text = "### Element count\n"
+        text += "Describe the number of elements in the chatbot.\n\n"
+        text += "|Element type|Total|\n"
+        text += "|:-:|:-:|\n"
+        for element in data:
+            text += f"|{element['type']}|{element['total']}|\n"
+        text += "\n"
         return text
 
     def build_intent_title(self) -> str:

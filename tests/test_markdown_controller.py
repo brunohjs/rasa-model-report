@@ -72,7 +72,7 @@ def test_build_table():
     markdown_controller = pytest.markdown_controller
     table = markdown_controller.build_table([["header_1", "header_2"], ["l1_c1", "l1_c2"], ["l2_c1", "l2_c2"]])
     assert isinstance(table, str)
-    assert table == "|header_1|header_2|\n|-|-|\n|l1_c1|l1_c2|\n|l2_c1|l2_c2|\n"
+    assert table == "|#|header_1|header_2|\n|-|-|-|\n|1|l1_c1|l1_c2|\n|2|l2_c1|l2_c2|\n"
 
 
 def test_build_summary():
@@ -102,20 +102,40 @@ def test_build_summary_without_config_section():
     assert "#config" not in text
 
 
-def test_build_overview():
+def test_build_overview_title():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_overview()
+    text = markdown_controller.build_overview_title()
     assert isinstance(text, str)
     assert "## Overview" in text
 
 
-def test_build_overview_with_model_link():
+def test_build_grades():
+    markdown_controller = pytest.markdown_controller
+    text = markdown_controller.build_grades()
+    assert isinstance(text, str)
+    assert "### Grades" in text
+
+
+def test_build_bot_info_with_model_link():
     markdown_controller = pytest.markdown_controller
     markdown_controller.model_link = "http://teste.com"
-    text = markdown_controller.build_overview()
+    text = markdown_controller.build_bot_info()
+    assert "### Bot info" in text
     assert markdown_controller.model_link
     assert "|Model|" in text
     assert f"[Download]({markdown_controller.model_link})" in text
+
+
+def test_build_element_count():
+    markdown_controller = pytest.markdown_controller
+    text = markdown_controller.build_element_count()
+    assert "### Element count" in text
+    assert "|Intents|" in text
+    assert "|Entities|" in text
+    assert "|Stories|" in text
+    assert "|Actions and Utters|" in text
+    assert "|Element type|" in text
+    assert "|Total|" in text
 
 
 def test_build_intent_title():
