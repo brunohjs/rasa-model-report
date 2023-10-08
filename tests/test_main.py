@@ -12,9 +12,9 @@ def test_main_with_exclude(rasa_path):
     runner = CliRunner()
     result = runner.invoke(
         main,
-        ["--path", rasa_path, "--exclude", "utter_uncovered,utter_another_uncovered"],
+        ["--path", rasa_path, "--exclude", "utter_uncovered,utter_another_uncovered", "-e", "utter_goodbay"],
     )
-    assert os.path.isfile("model_report.md")
+    assert os.path.isfile("model_report.md") is True
     assert utils.check_model_report_sections("model_report.md") is True
     assert utils.check_model_report_images("model_report.md") is True
     assert (

@@ -93,6 +93,9 @@ There are parameters that can be used. Available options are below:
                         path)
 --disable-nlu           Disable processing NLU sentences. NLU section will
                         not be generated in the report. Required Rasa API.
+-e, --exclude LIST      List of utter and actions that will be exclude in
+                        the E2E test coverage. Use commas to separate items.
+                        Example: utter_greet,utter_goodbye,action_listen
 -h, --help              Show this help message.
 --model-link TEXT       Model download link. It's only displayed in the
                         report to model download.

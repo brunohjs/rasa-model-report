@@ -24,7 +24,10 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 )
 @click.option(
     "--exclude",
+    "-e",
     required=False,
+    multiple=True,
+    type=list,
     help="List of utter and actions that will be exclude in the E2E test coverage. Use commas to separate items. "
     "Example: utter_greet,utter_goodbye,action_listen"
 )
@@ -132,6 +135,6 @@ def main(
         actions_path=actions_path,
         no_images=no_images,
         precision=precision,
-        exclude=exclude.split(",") if exclude else constants.EXCLUDE
+        exclude=[item for row in exclude for item in row.split(",")]
     )
     return report
