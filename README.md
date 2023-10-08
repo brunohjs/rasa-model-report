@@ -93,6 +93,9 @@ There are parameters that can be used. Available options are below:
                         path)
 --disable-nlu           Disable processing NLU sentences. NLU section will
                         not be generated in the report. Required Rasa API.
+-e, --exclude LIST      List of utter and actions that will be exclude in
+                        the E2E test coverage. Use commas to separate items.
+                        Example: utter_greet,utter_goodbye,action_listen
 -h, --help              Show this help message.
 --model-link TEXT       Model download link. It's only displayed in the
                         report to model download.
@@ -101,7 +104,7 @@ There are parameters that can be used. Available options are below:
 -p, --path TEXT         Rasa project path. (default: ./)
 --precision INTEGER     Grade precision. Used to change precision of the
                         model report overview grades. Can vary between 0 and
-                        5 (default: 1)
+                        5 (default: 2)
 --project-name TEXT     Rasa project name. It's only displayed in the
                         report. (default: My project)
 --project-version TEXT  Project version. It's only displayed in the report
@@ -135,6 +138,10 @@ Some usage examples with parameters:
 - Aren't at the root of the project, the actions path isn't at the root project and change the report output directory.
     ```
     rasa-model-report --path path/to/rasa/project --output-path path/to/place/report --actions-path path/to/actions/path
+    ```
+- If you want exclude some utters and actions from the E2E test coverage.
+    ```
+    rasa-model-report --exclude utter_greet,action_help
     ```
 
 ## 💻 Development

@@ -14,8 +14,8 @@ from tests import utils
 
 def pytest_generate_tests(metafunc):
     rasa_dirs = glob.glob("tests/mocks/rasa.v*")
-    metafunc.fixturenames.append('rasa_path')
-    metafunc.parametrize('rasa_path', rasa_dirs)
+    metafunc.fixturenames.append("rasa_path")
+    metafunc.parametrize("rasa_path", rasa_dirs)
 
 
 @pytest.fixture(autouse=True)
@@ -33,13 +33,24 @@ def load_controllers(rasa_path):
     project_name = "test-project"
     project_version = "0.0.0"
     rasa_version = "0.0.0"
+    exclude = []
     utils.load_mock_payloads()
     controller = Controller(rasa_path, output_path, project_name, project_version)
-    json_controller = JsonController(rasa_path, output_path, project_name, project_version)
-    csv_controller = CsvController(rasa_path, output_path, project_name, project_version)
-    nlu_controller = NluController(rasa_path, output_path, project_name, project_version)
-    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, actions_path, project_name, project_version)
-    markdown_controller = MarkdownController(rasa_path, output_path, project_name, rasa_version, project_version)
+    json_controller = JsonController(
+        rasa_path, output_path, project_name, project_version
+    )
+    csv_controller = CsvController(
+        rasa_path, output_path, project_name, project_version
+    )
+    nlu_controller = NluController(
+        rasa_path, output_path, project_name, project_version
+    )
+    e2e_coverage_controller = E2ECoverageController(
+        rasa_path, output_path, actions_path, exclude, project_name, project_version
+    )
+    markdown_controller = MarkdownController(
+        rasa_path, output_path, project_name, rasa_version, project_version
+    )
     pytest.controller = controller
     pytest.json_controller = json_controller
     pytest.csv_controller = csv_controller

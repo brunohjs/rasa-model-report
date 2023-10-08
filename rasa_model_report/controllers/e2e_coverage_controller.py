@@ -17,6 +17,7 @@ class E2ECoverageController(Controller):
         rasa_path: str,
         output_path: str,
         actions_path: str,
+        exclude: List[str],
         project_name: str,
         project_version: str,
         **kwargs: Dict[str, Any]
@@ -38,6 +39,7 @@ class E2ECoverageController(Controller):
         self._entities: List[str] = []
         self._actions: List[str] = []
         self._total_rate: float = 0
+        self._exclude = exclude
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
 
         self._load_domain_elements()
@@ -72,6 +74,7 @@ class E2ECoverageController(Controller):
                         setattr(self, f"_{element}", getattr(self, f"_{element}") + data)
         self._actions = list(dict.fromkeys(self._actions))
         self._actions = self._exclude_special_actions()
+        self._actions = utils.list_diff(self._actions, self._exclude)
         self._actions = utils.list_diff(self._actions, self.get_utters_in_actions())
 
     def _generate(self) -> None:
@@ -118,21 +121,16 @@ class E2ECoverageController(Controller):
         :return: Found utter list.
         """
         result = []
-        patterns = [
-            r"template|response\s?=\s?[\'|\"].*[\'|\"]",
-            r"FollowupAction\(\s?[\'|\"].*[\'|\"]\s?\)",
-            r"ActionExecuted\(\s?[\'|\"].*[\'|\"]\s?\)"
-        ]
+        pattern = r"(\"(utter|action)_[a-zA-Z0-9_-]+\")|((\'(utter|action)_[a-zA-Z0-9_-]+\'))"
         actions_data = glob.glob(f"{self.actions_path}/**/*.py") + glob.glob(f"{self.actions_path}/*.py")
         actions_files = [open(file).read() for file in actions_data]
         for file in actions_files:
-            for pattern in patterns:
-                strings = re.findall(pattern, file)
-                if strings:
-                    for string in strings:
-                        utter = re.search(r"(utter|action)_[a-zA-Z0-9_-]+", string)
-                        if utter and utter.group() not in result:
-                            result.append(utter.group())
+            strings = re.findall(pattern, file, re.UNICODE)
+            if strings:
+                for string in strings:
+                    utter = string[0].replace("'", "").replace("\"", "")
+                    if utter not in result:
+                        result.append(utter)
         return result
 
     def save(self) -> None:

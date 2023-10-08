@@ -7,3 +7,4 @@ PROJECT_VERSION = None
 RASA_API_URL = "http://localhost:5005"
 RASA_PATH = "./"
 RASA_VERSION = None
+EXCLUDE = []

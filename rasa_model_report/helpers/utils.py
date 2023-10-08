@@ -1,7 +1,9 @@
 import datetime
+import glob
 import logging
 import os
 import re
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
@@ -196,3 +198,24 @@ def remove_duplicate_slashs(text: str) -> str:
     :return str: Text without duplicate slashs.
     """
     return re.sub(r"\/+", "/", text)
+
+
+def count_stories_and_rules(rasa_path: str) -> Dict[str, int]:
+    """
+    Count the number of stories and rules.
+
+    :param rasa_path: Rasa project path.
+    :return: Dictionary with the number of stories and rules.
+    """
+    data = {
+        "rules": 0,
+        "stories": 0
+    }
+    files = glob.glob(f"{rasa_path}/data/**/*yml", recursive=True)
+    for file in files:
+        file_data = load_yaml_file(file)
+        data.update({
+            "rules": data["rules"] + len(file_data.get("rules", [])),
+            "stories": data["stories"] + len(file_data.get("stories", []))
+        })
+    return data

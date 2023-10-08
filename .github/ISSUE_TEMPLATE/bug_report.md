@@ -11,11 +11,11 @@ assignees: ''
 Please [search 🔍 the issues](https://github.com/brunohjs/rasa-model-report/issues) to check if this bug has already been reported.
 - [ ] I have searched the existing issues.
 
+**Actual behavior**
+Please describe what issue you encountered.
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
-
-**Actual behaviour**
-Tell us what happens instead. Provide a log message if relevant.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
@@ -27,4 +27,4 @@ Please provide the following information about your environment.
  - `rasa-model-report` version:
 
 **Futher Information (optional)**
-Links? References? Anything that will give us more context about the issue you are encountering!
+Links? References? Logs? Video? Anything that will give us more context about the issue you are encountering!

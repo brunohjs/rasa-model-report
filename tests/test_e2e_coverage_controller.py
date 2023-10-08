@@ -12,7 +12,10 @@ def execute_before_each_test(rasa_path):
     actions_path = None
     project_name = "test-project"
     project_version = "0.0.0"
-    e2e_coverage_controller = E2ECoverageController(rasa_path, output_path, actions_path, project_name, project_version)
+    exclude = []
+    e2e_coverage_controller = E2ECoverageController(
+        rasa_path, output_path, actions_path, exclude, project_name, project_version
+    )
     pytest.e2e_coverage_controller = e2e_coverage_controller
     yield
     utils.remove_generated_files(rasa_path)
@@ -80,7 +83,9 @@ def test_generate_e2e_report_without_entities_section():
 def test_save_e2e_report_when_have_not_covered_items():
     e2e_coverage_controller = pytest.e2e_coverage_controller
     e2e_coverage_controller.save()
-    assert os.path.isfile(f"{e2e_coverage_controller.results_path}/e2e_coverage_report.txt")
+    assert os.path.isfile(
+        f"{e2e_coverage_controller.results_path}/e2e_coverage_report.txt"
+    )
 
 
 def test_dont_save_e2e_report_when_havent_items():
@@ -139,13 +144,15 @@ def test_e2e_coverage_get_total_num_not_covered():
 
 def test_e2e_coverage_exclude_special_actions():
     e2e_coverage_controller = pytest.e2e_coverage_controller
-    e2e_coverage_controller._actions.extend([
-        "utter_ask_test_slot",
-        "validate_slot_form",
-        "action_ask_slot",
-        "action_correct",
-        "utter_ok"
-    ])
+    e2e_coverage_controller._actions.extend(
+        [
+            "utter_ask_test_slot",
+            "validate_slot_form",
+            "action_ask_slot",
+            "action_correct",
+            "utter_ok",
+        ]
+    )
     actions = e2e_coverage_controller._exclude_special_actions()
     assert "utter_ask_test_slot" not in actions
     assert "validate_slot_form" not in actions
@@ -157,9 +164,11 @@ def test_e2e_coverage_exclude_special_actions():
 def test_e2e_coverage_get_utters_in_actions(rasa_path):
     e2e_coverage_controller = pytest.e2e_coverage_controller
     utters = e2e_coverage_controller.get_utters_in_actions()
-    assert len(utters) == 4
-    assert "utter_test" in utters
-    assert "action_test" in utters
-    assert "action_test2" in utters
-    assert "action_test3" in utters
-    assert "validate_slot" not in utters
+    assert utters == [
+        "action_hello_world",
+        "utter_test_2",
+        "utter_test",
+        "action_test",
+        "action_test2",
+        "action_test3",
+    ]

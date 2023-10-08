@@ -66,7 +66,10 @@ class ModelReport:
             # Overview
             self.markdown.add_text(self.markdown.title)
             self.markdown.add_text(self.markdown.build_summary())
-            self.markdown.add_text(self.markdown.build_overview())
+            self.markdown.add_text(self.markdown.build_overview_title())
+            self.markdown.add_text(self.markdown.build_bot_info())
+            self.markdown.add_text(self.markdown.build_grades())
+            self.markdown.add_text(self.markdown.build_element_count())
             self.markdown.break_line()
 
             # Config

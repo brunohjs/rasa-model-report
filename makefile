@@ -43,3 +43,7 @@ release-major:
 # Update README.md coverage badge.
 update-coverage:
 	python scripts/change_coverage_badge.py
+
+# Generate Rasa model report.
+report:
+	pip install . && rasa-model-report --path tests/mocks/rasa.v3/ --actions-path tests/mocks/rasa.v3/actions/ --rasa-version 3.5.2 --disable-nlu --no-images
