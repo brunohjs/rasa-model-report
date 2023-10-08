@@ -139,6 +139,10 @@ Some usage examples with parameters:
     ```
     rasa-model-report --path path/to/rasa/project --output-path path/to/place/report --actions-path path/to/actions/path
     ```
+- If you want exclude some utters and actions from the E2E test coverage.
+    ```
+    rasa-model-report --exclude utter_greet,action_help
+    ```
 
 ## 💻 Development
 The instructions for development and contributing are in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
