@@ -12,8 +12,9 @@ def execute_before_each_test(rasa_path):
     actions_path = None
     project_name = "test-project"
     project_version = "0.0.0"
+    exclude = []
     e2e_coverage_controller = E2ECoverageController(
-        rasa_path, output_path, actions_path, project_name, project_version
+        rasa_path, output_path, actions_path, exclude, project_name, project_version
     )
     pytest.e2e_coverage_controller = e2e_coverage_controller
     yield

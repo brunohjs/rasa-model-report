@@ -22,6 +22,12 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     help="Disable processing NLU sentences. NLU section will not be generated "
     "in the report. Required Rasa API."
 )
+@click.option(
+    "--exclude",
+    required=False,
+    help="List of utter and actions that will be exclude in the E2E test coverage. Use commas to separate items. "
+    "Example: utter_greet,utter_goodbye,action_listen"
+)
 @click.help_option(
     "--help",
     "-h",
@@ -101,6 +107,7 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
 def main(
     actions_path,
     disable_nlu,
+    exclude,
     model_link,
     no_images,
     output_path, path,
@@ -124,6 +131,7 @@ def main(
         model_link=model_link,
         actions_path=actions_path,
         no_images=no_images,
-        precision=precision
+        precision=precision,
+        exclude=exclude.split(",") if exclude else constants.EXCLUDE
     )
     return report
