@@ -77,3 +77,13 @@ def check_model_report_images(model_report_path):
         "/DIETClassifier_confusion_matrix.png" in file_data and \
         "/story_confusion_matrix.png" in file_data and \
         "/intent_histogram.png" in file_data
+
+
+def check_model_report_text(model_report_path, texts):
+    file = open(model_report_path, encoding="utf-8")
+    file_data = file.read()
+    file.close()
+    if isinstance(texts, str):
+        return texts in file_data
+    else:
+        return all([text in file_data for text in texts])

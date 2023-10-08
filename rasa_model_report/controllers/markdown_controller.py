@@ -61,6 +61,7 @@ class MarkdownController(Controller):
             rasa_path,
             output_path,
             kwargs.get("actions_path"),
+            kwargs.get("exclude", []),
             project_name,
             project_version
         )
