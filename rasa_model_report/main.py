@@ -27,7 +27,6 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] %(message)s", level=logg
     "-e",
     required=False,
     multiple=True,
-    type=list,
     help="List of utter and actions that will be exclude in the E2E test coverage. Use commas to separate items. "
     "Example: utter_greet,utter_goodbye,action_listen"
 )
