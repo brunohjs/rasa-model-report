@@ -72,7 +72,7 @@ def test_build_table():
     markdown_controller = pytest.markdown_controller
     table = markdown_controller.build_table([["header_1", "header_2"], ["l1_c1", "l1_c2"], ["l2_c1", "l2_c2"]])
     assert isinstance(table, str)
-    assert table == "|#|header_1|header_2|\n|-|-|-|\n|1|l1_c1|l1_c2|\n|2|l2_c1|l2_c2|\n"
+    assert table == "|#|header_1|header_2|\n|:-:|-|-|\n|1|l1_c1|l1_c2|\n|2|l2_c1|l2_c2|\n"
 
 
 def test_build_summary():
@@ -370,7 +370,7 @@ def test_build_e2e_coverage_list():
 
 def test_build_e2e_coverage_list_when_havent_elements():
     markdown_controller = pytest.markdown_controller
-    markdown_controller.e2e_coverage._data = {}
+    markdown_controller.e2e_coverage._not_covered_items = {}
     text = markdown_controller.build_e2e_coverage_list()
     assert isinstance(text, str)
     assert "### Not covered elements" in text

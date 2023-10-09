@@ -46,4 +46,4 @@ update-coverage:
 
 # Generate Rasa model report.
 report:
-	pip install . && rasa-model-report --path tests/mocks/rasa.v3/ --actions-path tests/mocks/rasa.v3/actions/ --rasa-version 3.5.2 --disable-nlu --no-images
+	pip install . && rasa-model-report --path tests/mocks/rasa.v3/ --actions-path tests/mocks/rasa.v3/actions/ --rasa-version 3.5.2 --disable-nlu --no-images --exclude utter_uncovered
