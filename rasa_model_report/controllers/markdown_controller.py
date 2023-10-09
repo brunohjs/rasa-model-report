@@ -149,7 +149,7 @@ class MarkdownController(Controller):
         :return: Table in markdown format.
         """
         header = f"|#|{'|'.join(data[0])}|\n"
-        header += f"{'|-' * (len(data[0]) + 1)}|\n"
+        header += f"|:-:{'|-' * len(data[0])}|\n"
         content = ""
         for index, row in enumerate(data[1:]):
             text_row = f"|{index + 1}|{'|'.join(row)}|\n"
@@ -227,7 +227,7 @@ class MarkdownController(Controller):
         """
         intents = len(self.json.intents)
         entities = len(self.json.entities)
-        utters_actions = self.e2e_coverage.total_num_elements
+        utters_actions = len(self.e2e_coverage.items["actions"])
         stories_rules = utils.count_stories_and_rules(self.rasa_path)
         stories = stories_rules.get("stories")
         rules = stories_rules.get("rules")
@@ -606,7 +606,7 @@ class MarkdownController(Controller):
         :return: Title block in markdown format.
         """
         title = "## E2E Coverage <a name='e2e'></a>\n"
-        description = "Section that shows data from intents, entities " \
+        description = "Section that shows data from intents " \
             "and responses that aren't covered by end-to-end tests.\n"
         return title + description
 
@@ -620,21 +620,23 @@ class MarkdownController(Controller):
         description = "List with not covered elements by end-to-end tests.\n"
         title += description + "\n"
         text = ""
-        data = self.e2e_coverage.data
+        data = self.e2e_coverage.not_covered_items
         rate = self.e2e_coverage.total_rate
         total_num_elements = self.e2e_coverage.total_num_elements
         total_num_not_covered = self.e2e_coverage.total_num_not_covered
+        total_num_excluded = self.e2e_coverage.total_num_excluded
         if data:
-            for element in data:
+            for element in ["intents", "actions"]:
                 text += f"#### {element.capitalize()}\n"
-                if data[element]["items"]:
-                    for item in data[element]["items"]:
+                if data[element]:
+                    for item in data[element]:
                         text += f" - {item}\n"
                 else:
                     text += " - (no elements not covered)\n"
                 text += "\n"
             text += f"Total number of elements: {total_num_elements}\n\n"
             text += f"Total number of not covered elements: {total_num_not_covered}\n\n"
+            text += f"Total number of excluded elements: {total_num_excluded}\n\n"
             text += f"Coverage rate: {rate * 100:.1f}% ({utils.get_color(rate)})\n\n"
         else:
             text = "\nThere are no end-to-end tests coverage.\n"

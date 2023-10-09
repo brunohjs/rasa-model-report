@@ -35,33 +35,15 @@ def test_init_e2e_coverage_controller(rasa_path):
 def test_load_domain_elements():
     e2e_coverage_controller = pytest.e2e_coverage_controller
     e2e_coverage_controller._load_domain_elements()
+    assert isinstance(e2e_coverage_controller._items, dict)
+    assert isinstance(e2e_coverage_controller._not_covered_items, dict)
 
-    # Check if _actions is a list
-    assert isinstance(e2e_coverage_controller._actions, list)
 
-    # Check if each _actions element is a string
-    assert all(isinstance(item, str) for item in e2e_coverage_controller._actions)
-
-    # Check if _actions have elements
-    assert len(e2e_coverage_controller._actions) > 0
-
-    # Check if _intents is a list
-    assert isinstance(e2e_coverage_controller._intents, list)
-
-    # Check if each _intents element is a string
-    assert all(isinstance(item, str) for item in e2e_coverage_controller._intents)
-
-    # Check if _intents have elements
-    assert len(e2e_coverage_controller._actions) > 0
-
-    # Check if _entities is a list
-    assert isinstance(e2e_coverage_controller._entities, list)
-
-    # Check if each _entities element is a string
-    assert all(isinstance(item, str) for item in e2e_coverage_controller._entities)
-
-    # Check if _entities have elements
-    assert len(e2e_coverage_controller._actions) > 0
+def test_update_not_covered_actions():
+    e2e_coverage_controller = pytest.e2e_coverage_controller
+    e2e_coverage_controller._update_not_covered_actions()
+    assert isinstance(e2e_coverage_controller._items, dict)
+    assert isinstance(e2e_coverage_controller._not_covered_items, dict)
 
 
 def test_generate_e2e_report_string():
@@ -75,9 +57,12 @@ def test_generate_e2e_report_string():
 def test_generate_e2e_report_without_entities_section():
     e2e_coverage_controller = pytest.e2e_coverage_controller
     e2e_coverage_controller._generate()
-    assert "entities" not in e2e_coverage_controller.data
-    assert "intents" in e2e_coverage_controller.data
-    assert "actions" in e2e_coverage_controller.data
+    assert isinstance(e2e_coverage_controller._total_num_elements, int)
+    assert isinstance(e2e_coverage_controller._total_num_not_covered, int)
+    assert isinstance(e2e_coverage_controller._total_rate, float)
+    assert "actions" in e2e_coverage_controller._rate_items
+    assert "intents" in e2e_coverage_controller._rate_items
+    assert "entities" not in e2e_coverage_controller._rate_items
 
 
 def test_save_e2e_report_when_have_not_covered_items():
@@ -111,10 +96,10 @@ def test_havent_not_covered_items():
 
 def test_e2e_coverage_get_data():
     e2e_coverage_controller = pytest.e2e_coverage_controller
-    data = e2e_coverage_controller.data
+    data = e2e_coverage_controller.not_covered_items
     data.update({"test": ["test1", "test2", "test3"]})
-    assert e2e_coverage_controller.data != data
-    assert isinstance(e2e_coverage_controller.data, dict)
+    assert e2e_coverage_controller.not_covered_items != data
+    assert isinstance(e2e_coverage_controller.not_covered_items, dict)
 
 
 def test_e2e_coverage_get_total_rate():
@@ -144,7 +129,7 @@ def test_e2e_coverage_get_total_num_not_covered():
 
 def test_e2e_coverage_exclude_special_actions():
     e2e_coverage_controller = pytest.e2e_coverage_controller
-    e2e_coverage_controller._actions.extend(
+    e2e_coverage_controller._items["actions"].extend(
         [
             "utter_ask_test_slot",
             "validate_slot_form",
@@ -172,3 +157,8 @@ def test_e2e_coverage_get_utters_in_actions(rasa_path):
         "action_test2",
         "action_test3",
     ]
+
+
+def test_e2e_coverage_items(rasa_path):
+    e2e_coverage_controller = pytest.e2e_coverage_controller
+    assert isinstance(e2e_coverage_controller.items, dict)
