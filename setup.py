@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="rasa-model-report",
-    version="1.4.2b1",
+    version="1.4.2b4",
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",
     license="Apache 2.0",
