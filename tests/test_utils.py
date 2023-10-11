@@ -179,31 +179,46 @@ def test_list_diff():
     assert utils.list_diff(list_1, list_1) == []
 
 
-def test_path_to():
-    assert utils.path_to("tests/mocks/rasa.v2/results/", "tests/mocks/rasa.v2/results") == ""
-    assert utils.path_to("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results") == ""
-    assert utils.path_to("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results/") == ""
-    assert utils.path_to("tests//mocks/rasa.v2/results", "tests/mocks/rasa.v2/results") == ""
-    assert utils.path_to("tests/mocks", "tests/mocks/rasa.v2/results") == "rasa.v2/results/"
-    assert utils.path_to("tests/mocks/rasa.v3", "tests/mocks/rasa.v2/results") == "../rasa.v2/results/"
-    assert utils.path_to("actions/", "tests/mocks/rasa.v2/results") == "../tests/mocks/rasa.v2/results/"
-    assert utils.path_to("actions", "tests/mocks/rasa.v2/results") == "../tests/mocks/rasa.v2/results/"
-    assert (
-        utils.path_to("actions/src/results", "tests/mocks/rasa.v2/results") ==
-        "../../../tests/mocks/rasa.v2/results/"
-    )
-    assert (
-        utils.path_to("actions/src/results/", "tests/mocks/rasa.v2/results") ==
-        "../../../tests/mocks/rasa.v2/results/"
-    )
+@pytest.mark.parametrize(
+    "origin_path, destiny_path, expected",
+    [
+        ("tests/mocks/rasa.v2/results/", "tests/mocks/rasa.v2/results/", ""),
+        ("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results", ""),
+        ("tests/mocks/rasa.v2/results", "tests/mocks/rasa.v2/results/", ""),
+        ("tests//mocks/rasa.v2/results", "tests/mocks/rasa.v2/results", ""),
+        ("tests/mocks", "tests/mocks/rasa.v2/results", "rasa.v2/results/"),
+        ("tests/mocks/rasa.v3", "tests/mocks/rasa.v2/results", "../rasa.v2/results/"),
+        ("actions/", "tests/mocks/rasa.v2/results", "../tests/mocks/rasa.v2/results/"),
+        ("actions", "tests/mocks/rasa.v2/results", "../tests/mocks/rasa.v2/results/"),
+        (
+            "actions/src/results",
+            "tests/mocks/rasa.v2/results",
+            "../../../tests/mocks/rasa.v2/results/",
+        ),
+        (
+            "actions/src/results/",
+            "tests/mocks/rasa.v2/results",
+            "../../../tests/mocks/rasa.v2/results/",
+        ),
+    ],
+)
+def test_path_to(origin_path, destiny_path, expected):
+    assert utils.path_to(origin_path, destiny_path) == expected
 
 
-def test_remove_duplicate_slash():
-    assert utils.remove_duplicate_slashs("tests//mocks/rasa.v2/results") == "tests/mocks/rasa.v2/results"
-    assert utils.remove_duplicate_slashs("tests///mocks/rasa.v2//results//") == "tests/mocks/rasa.v2/results/"
-    assert utils.remove_duplicate_slashs("tests////mocks/rasa.v2/results/") == "tests/mocks/rasa.v2/results/"
-    assert utils.remove_duplicate_slashs("tests////mocks/////rasa.v2/results/") == "tests/mocks/rasa.v2/results/"
-    assert utils.remove_duplicate_slashs("///") == "/"
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        ("tests//mocks/rasa.v2/results", "tests/mocks/rasa.v2/results"),
+        ("tests///mocks/rasa.v2//results//", "tests/mocks/rasa.v2/results/"),
+        ("tests////mocks/rasa.v2/results/", "tests/mocks/rasa.v2/results/"),
+        ("tests////mocks/////rasa.v2/results/", "tests/mocks/rasa.v2/results/"),
+        ("///", "/"),
+        ("./", "./")
+    ],
+)
+def test_remove_duplicate_slash(path, expected):
+    assert utils.remove_duplicate_slashs(path) == expected
 
 
 def test_count_stories_and_rules(rasa_path):
@@ -211,3 +226,9 @@ def test_count_stories_and_rules(rasa_path):
     assert data.keys() == {"stories", "rules"}
     assert isinstance(data["stories"], int)
     assert isinstance(data["rules"], int)
+
+
+def test_get_current_version():
+    version = utils.get_current_version()
+    assert isinstance(version, str)
+    assert len(version.split(".")) == 3

@@ -217,8 +217,20 @@ class JsonController(Controller):
         file.close()
 
     @staticmethod
-    def weight_function(x: float) -> float:
-        return 1 - x**3
+    def weight_function(value: float) -> float:
+        """
+        Weight function.
+
+        :param value: Input value.
+        :return: Weighted value.
+        """
+        result = 1 - value**2
+        if result <= 0:
+            return 0.01
+        elif result >= 1:
+            return 1
+        else:
+            return result
 
     def _calculate_overall(self) -> None:
         """
