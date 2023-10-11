@@ -86,7 +86,7 @@ def update_version_setup_file(new_version: str) -> None:
     """
     file = open("setup.py")
     data = file.read()
-    data = re.sub(r"version=\"\d+\.\d+\.\d+\",", f"version=\"{new_version}\",", data)
+    data = re.sub(r"version=\"\d+\.\d+\.\d+(b\d+)?\",", f"version=\"{new_version}\",", data)
     file.close()
     file = open("setup.py", "w")
     file.write(data)
