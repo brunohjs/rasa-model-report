@@ -46,7 +46,7 @@ class MarkdownController(Controller):
         self.readme_path: str = "README.md"
         self.model_link: str = kwargs.get("model_link")
         self.no_images: bool = kwargs.get("no_images", constants.NO_IMAGES)
-        self.precision: int = kwargs.get("precision", constants.GRADE_PRECISION)
+        self.precision: int = kwargs.get("precision", constants.SCORE_PRECISION)
         self.json: JsonController = JsonController(rasa_path, output_path, project_name, project_version)
         self.csv: CsvController = CsvController(rasa_path, output_path, project_name, project_version)
         self.nlu: NluController = NluController(
@@ -67,7 +67,7 @@ class MarkdownController(Controller):
         )
 
         self.json.update_overview({
-            "nlu": self.nlu.general_grade,
+            "nlu": self.nlu.overall_score,
             "e2e_coverage": self.e2e_coverage.total_rate
         })
         if self.no_images:
@@ -165,18 +165,18 @@ class MarkdownController(Controller):
         title = "## Overview <a name='overview'></a>\n"
         return title
 
-    def build_grades(self) -> str:
+    def build_score(self) -> str:
         """
         Build the text block responsible for the summary of the report.
 
         :return: Overview report in markdown format.
         """
-        text = "### Grades\n"
+        text = "### Score\n"
         style = "style='font-size:20px'"
         overview = self.json.overview
         for item in ["intent", "entity", "core", "nlu"]:
             overview[item] = overview[item] if isinstance(overview.get(item), (float, int)) else "-"
-        text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>General</span>|\n"
+        text += f"|Intent|Entity|NLU|Core|E2E Coverage|<span {style}>Overall</span>|\n"
         text += "|:-:|:-:|:-:|:-:|:-:|:-:|\n"
         text += f"|{utils.change_scale(overview['intent'], 10, self.precision)}\
             |{utils.change_scale(overview['entity'], 10, self.precision)}\

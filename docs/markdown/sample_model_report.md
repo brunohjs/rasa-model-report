@@ -15,7 +15,7 @@
 |:-:|:-:|:-:|:-:|
 |<span style='font-size:16px'>My Project</span>|<span style='font-size:16px'>3.4.0</span>|<span style='font-size:16px'>26/02/23 00:30:03</span>|<span style='font-size:16px'>26/02/23 01:10:57</span>|
 
-|Intent|Entity|NLU|Core|E2E Coverage|<span style='font-size:20px'>General</span>|
+|Intent|Entity|NLU|Core|E2E Coverage|<span style='font-size:20px'>Overall</span>|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |10            |-            |10            |10            |10            |<span style='font-size:20px'>**10**</span>|
 🟢            |❌            |🟢            |🟢            |🟢            |<span style='font-size:20px'>🟢</span>|

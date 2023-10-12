@@ -76,7 +76,7 @@ def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
     :param precision: Value precision.
     :return str: Value on the new scale and precision.
     """
-    precision = precision if isinstance(precision, int) and 5 >= precision >= 0 else constants.GRADE_PRECISION
+    precision = precision if isinstance(precision, int) and 5 >= precision >= 0 else constants.SCORE_PRECISION
     if (
         isinstance(value, (float, int)) and
         isinstance(scale, (float, int)) and
@@ -85,7 +85,7 @@ def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
         new_value = value * scale
         if new_value >= 1 and new_value % int(new_value) == 0:
             return str(int(new_value))
-        elif re.search(r"\.0$", f"{new_value:.{precision}f}"):
+        elif new_value < 1 and re.search(r"\.0$", f"{new_value:.{precision}f}"):
             return "0"
         else:
             return f"{new_value:.{precision}f}"

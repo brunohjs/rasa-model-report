@@ -40,7 +40,7 @@ class NluController(Controller):
         super().__init__(rasa_path, output_path, project_name, project_version)
         self._data: List[type_aliases.nlu_payload] = []
         self._problem_sentences: List[type_aliases.nlu_payload] = []
-        self._general_grade: Optional[float] = None
+        self._overall_score: Optional[float] = None
         self._connected: bool = False
         self._disable_nlu: bool = kwargs.get("disable_nlu", constants.DISABLE_NLU)
         self.url: str = url
@@ -49,7 +49,7 @@ class NluController(Controller):
             self._load_nlu()
             self._generate_data()
             self._load_problem_sentences()
-            self._calculate_general_grade()
+            self._calculate_overall_score()
 
     def is_connected(self) -> bool:
         """
@@ -159,26 +159,26 @@ class NluController(Controller):
         return self._problem_sentences.copy()
 
     @property
-    def general_grade(self) -> Optional[float]:
+    def overall_score(self) -> Optional[float]:
         """
-        Return a copy of the general grade value.
+        Return a copy of the overall score value.
 
-        :return: Copy of general grade value.
+        :return: Copy of overall score value.
         """
-        return self._general_grade
+        return self._overall_score
 
-    def _calculate_general_grade(self) -> Optional[float]:
+    def _calculate_overall_score(self) -> Optional[float]:
         """
-        Calculate the general grade value.
+        Calculate the overall score value.
 
-        :return: General grade value.
+        :return: Overall score value.
         """
         total_sentences = len(self._data)
         if not total_sentences:
             return None
         total_problem_sentences = len(self._problem_sentences)
-        self._general_grade = 1 - total_problem_sentences / total_sentences
-        return self._general_grade
+        self._overall_score = 1 - total_problem_sentences / total_sentences
+        return self._overall_score
 
     def request_nlu(self, text: str) -> type_aliases.nlu_payload:
         """

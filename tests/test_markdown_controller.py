@@ -109,11 +109,11 @@ def test_build_overview_title():
     assert "## Overview" in text
 
 
-def test_build_grades():
+def test_build_score():
     markdown_controller = pytest.markdown_controller
-    text = markdown_controller.build_grades()
+    text = markdown_controller.build_score()
     assert isinstance(text, str)
-    assert "### Grades" in text
+    assert "### Score" in text
 
 
 def test_build_bot_info_with_model_link():

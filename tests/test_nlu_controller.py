@@ -56,11 +56,11 @@ def test_get_problem_sentences():
     assert isinstance(nlu_controller.problem_sentences, list)
 
 
-def test_get_general_grade():
+def test_get_overall_score():
     nlu_controller = pytest.nlu_controller
-    nlu_controller._calculate_general_grade()
-    assert nlu_controller.general_grade >= 0
-    assert isinstance(nlu_controller.general_grade, float)
+    nlu_controller._calculate_overall_score()
+    assert nlu_controller.overall_score >= 0
+    assert isinstance(nlu_controller.overall_score, float)
 
 
 @responses.activate
