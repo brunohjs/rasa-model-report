@@ -113,7 +113,13 @@ def get_latest_version() -> str:
     :return: Latest version.
     """
     subprocess.run(["git", "fetch", "--all"], shell=False)
-    versions = subprocess.check_output(["git", "tag"]).decode('ascii').strip().split('\n')
+    versions = subprocess.check_output([
+        "git",
+        "for-each-ref",
+        "--sort=creatordate",
+        "--format", "'%(refname)'",
+        "refs/tags"
+    ]).decode('ascii').strip().replace("'", "").replace("refs/tags/", "").split("\n")
     version = versions[-1] if versions and versions[0] else '0.0.0'
     return version
 
