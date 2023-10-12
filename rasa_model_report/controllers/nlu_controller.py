@@ -45,7 +45,7 @@ class NluController(Controller):
         self._disable_nlu: bool = kwargs.get("disable_nlu", constants.DISABLE_NLU)
         self.url: str = url
 
-        if not self._disable_nlu and self.health_check_rasa_api():
+        if self.health_check_rasa_api():
             self._load_nlu()
             self._generate_data()
             self._load_problem_sentences()
@@ -66,13 +66,16 @@ class NluController(Controller):
         :return: True if is available or False.
         """
         self._connected = False
-        response = utils.request(self.url)
-        if isinstance(response, requests.Response):
-            self._connected = response.status_code == 200
-            if self._connected:
-                logging.info("Rasa API is enabled.")
-            else:
-                logging.warning("Rasa API has some problem. NLU section will not be generated.")
+        if self._disable_nlu:
+            logging.warn("Rasa API is disabled. NLU section will not be generated.")
+        else:
+            response = utils.request(self.url)
+            if isinstance(response, requests.Response):
+                self._connected = response.status_code == 200
+                if self._connected:
+                    logging.info("Rasa API is enabled.")
+                else:
+                    logging.warning("Rasa API has some problem. NLU section will not be generated.")
         return self._connected
 
     def _load_nlu(self) -> Dict[str, Union[str, List[str]]]:
