@@ -249,9 +249,3 @@ def test_count_stories_and_rules(rasa_path):
     assert data.keys() == {"stories", "rules"}
     assert isinstance(data["stories"], int)
     assert isinstance(data["rules"], int)
-
-
-def test_get_current_version():
-    version = utils.get_current_version()
-    assert isinstance(version, str)
-    assert len(version.split(".")) == 3

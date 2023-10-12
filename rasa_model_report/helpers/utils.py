@@ -219,16 +219,3 @@ def count_stories_and_rules(rasa_path: str) -> Dict[str, int]:
             "stories": data["stories"] + len(file_data.get("stories", []))
         })
     return data
-
-
-def get_current_version() -> str:
-    """
-    Get current version from setup.py file.
-
-    :return: Current version.
-    """
-    file = open("setup.py")
-    data = file.read()
-    version = re.search(r"version=\"(\d+\.\d+\.\d+)\"", data)
-    file.close()
-    return version.group(1) if version else "0.0.0"

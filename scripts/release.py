@@ -84,13 +84,18 @@ def update_version_setup_file(new_version: str) -> None:
 
     :param new_version: New version.
     """
-    file = open("setup.py")
+    file_path = "rasa_model_report/helpers/constants.py"
+    file = open(file_path)
     data = file.read()
-    data = re.sub(r"version=\"\d+\.\d+\.\d+(b\d+)?\",", f"version=\"{new_version}\",", data)
+    data = re.sub(r"VERSION = \"\d+\.\d+\.\d+(b\d+)?\"", f"VERSION = \"{new_version}\"", data)
     file.close()
-    file = open("setup.py", "w")
+    file = open(file_path, "w")
     file.write(data)
     file.close()
+    logging.info("Committing updates")
+    subprocess.run([f"git add {file_path}"], shell=True)
+    subprocess.run([f"git commit -n -m \"New beta version v{version}\""], shell=True)
+    subprocess.run(["git push"], shell=True)
 
 
 def error_message(message: str) -> None:
@@ -190,10 +195,6 @@ def create_tag(version: str, beta_version: bool = False) -> None:
     if beta_version:
         logging.info("Updating setup.py file")
         update_version_setup_file(version)
-        logging.info("Committing updates")
-        subprocess.run(["git add setup.py"], shell=True)
-        subprocess.run([f"git commit -n -m \"New beta version v{version}\""], shell=True)
-        subprocess.run(["git push"], shell=True)
         logging.info("Committing tag")
         subprocess.run([f"git tag {version}"], shell=True)
         subprocess.run(["git", "push", "origin", f"{version}"])
@@ -207,10 +208,6 @@ def create_tag(version: str, beta_version: bool = False) -> None:
         subprocess.run(["git pull"], shell=True)
         logging.info("Updating setup.py file")
         update_version_setup_file(version)
-        logging.info("Committing updates")
-        subprocess.run(["git add setup.py"], shell=True)
-        subprocess.run([f"git commit -n -m \"New released version v{version}\""], shell=True)
-        subprocess.run(["git push"], shell=True)
         logging.info("Committing tag")
         subprocess.run([f"git tag {version}"], shell=True)
         subprocess.run(["git", "push", "origin", f"{version}"])
