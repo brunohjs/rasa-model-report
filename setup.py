@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="rasa-model-report",
-    version="1.4.2b6",
+    version="1.4.2b7",
     author="Bruno Justo",
     author_email="brunohjs@gmail.com",
     license="Apache 2.0",
@@ -25,7 +25,7 @@ setup(
     ],
     install_requires=[
         "Click",
-        "requests>=2.28.1",
+        "requests==2.28.1",
         "pyyaml>=6.0"
     ],
     entry_points="""
