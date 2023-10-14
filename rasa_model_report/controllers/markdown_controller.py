@@ -225,8 +225,8 @@ class MarkdownController(Controller):
 
         :return: Element count block in markdown format.
         """
-        intents = len(self.json.intents)
-        entities = len(self.json.entities)
+        intents = len(self.e2e_coverage.items["intents"])
+        entities = len(self.e2e_coverage.items["entities"])
         utters_actions = len(self.e2e_coverage.items["actions"])
         stories_rules = utils.count_stories_and_rules(self.rasa_path)
         stories = stories_rules.get("stories")
