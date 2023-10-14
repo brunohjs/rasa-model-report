@@ -149,9 +149,11 @@ class E2ECoverageController(Controller):
             strings = re.findall(pattern, file, re.UNICODE)
             if strings:
                 for string in strings:
-                    utter = string[0].replace("'", "").replace('"', "")
-                    if utter not in result:
-                        result.append(utter)
+                    for element in string:
+                        if element and ("utter_" in element or "action_" in element):
+                            utter = element.replace("'", "").replace('"', "")
+                            if utter not in result:
+                                result.append(utter)
         return result
 
     def _update_not_covered_actions(self) -> None:

@@ -15,7 +15,7 @@
 |:-:|:-:|:-:|:-:|
 |<span style='font-size:16px'>Sara - the Rasa Demo Bot</span>|<span style='font-size:16px'>2.8.25</span>|<span style='font-size:16px'>25/02/23 23:54:27</span>|<span style='font-size:16px'>25/02/23 23:56:33</span>|
 
-|Intent|Entity|NLU|Core|E2E Coverage|<span style='font-size:20px'>General</span>|
+|Intent|Entity|NLU|Core|E2E Coverage|<span style='font-size:20px'>Overall</span>|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |9            |9            |9            |9            |3            |<span style='font-size:20px'>**8**</span>|
 🟢            |🟢            |🟢            |🟢            |🔴            |<span style='font-size:20px'>🟡</span>|

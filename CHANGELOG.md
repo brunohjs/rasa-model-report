@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.3] - 2023-04-06
 ### Added
-- [#63](https://github.com/brunohjs/rasa-model-report/issues/63) Created `--precision` CLI command parameter. This command is used to change precision of the model report overview grades.
+- [#63](https://github.com/brunohjs/rasa-model-report/issues/63) Created `--precision` CLI command parameter. This command is used to change precision of the model report overview score.
 ### Fixed
 - [#66](https://github.com/brunohjs/rasa-model-report/issues/63) Fixed error when empty NLU file was analyzed NLU analyzer.
 

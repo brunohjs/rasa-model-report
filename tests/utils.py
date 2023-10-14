@@ -50,7 +50,6 @@ def load_mock_payloads():
     tests = MOCK_PAYLOADS.get(current_test_name, []) + MOCK_PAYLOADS["default"]
     for test in tests:
         responses.add(**test)
-    return True
 
 
 def check_model_report_sections(model_report_path):
