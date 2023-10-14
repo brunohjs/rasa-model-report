@@ -259,3 +259,18 @@ def test_select_chitchat_intent():
         }]
     }
     assert nlu_controller.select_intent(payload) == result
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    "disabled_nlu, expected",
+    [
+        pytest.param(False, True, id="nlu enabled"),
+        pytest.param(True, False, id="nlu disabled")
+    ]
+)
+def test_health_check_rasa_api(disabled_nlu, expected):
+    utils.load_mock_payloads()
+    nlu_controller = pytest.nlu_controller
+    nlu_controller._disable_nlu = disabled_nlu
+    assert nlu_controller.health_check_rasa_api() is expected

@@ -110,7 +110,7 @@ def request(url: str, method: str = "GET", json: dict = {}) -> Optional[requests
     :param url: URL.
     :param method: Request method (default: "GET").
     :param json: JSON body request (default: {}).
-    :return requests.Response: Response object.
+    :return: Response object.
     """
     response = None
     try:
