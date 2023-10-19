@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.2] - In progress...
 
 ### Fixed
-- [#87](https://github.com/brunohjs/rasa-model-report/issues/87) - Fixed wrong element counting on `Element count` section.
+- [#87](https://github.com/brunohjs/rasa-model-report/issues/87) Fixed wrong element counting on `Element count` section.
+- [#89](https://github.com/brunohjs/rasa-model-report/issues/89) Fixed rounding issue on `change_scale` with `10` value.
 
 ## [1.4.1] - 2023-10-09
 
