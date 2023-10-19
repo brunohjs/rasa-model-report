@@ -82,7 +82,7 @@ def change_scale(value: float, scale: int = 1, precision: int = 1) -> str:
         isinstance(scale, (float, int)) and
         scale != 0
     ):
-        new_value = value * scale
+        new_value = round(value * scale, precision)
         if new_value >= 1 and new_value % int(new_value) == 0:
             return str(int(new_value))
         elif new_value < 1 and re.search(r"\.0$", f"{new_value:.{precision}f}"):
