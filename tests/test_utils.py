@@ -46,6 +46,7 @@ def test_get_project_name(args, expected):
 
         # Other precisions
         ({"value": 10, "scale": 1, "precision": 2}, "10"),
+        ({"value": 0.9999973454492488, "scale": 10, "precision": 2}, "10"),
         ({"value": 39.591231, "scale": 1, "precision": 2}, "39.59"),
         ({"value": 0.05281239, "scale": 1, "precision": 1}, "0.1"),
         ({"value": 0.5219483, "scale": 10, "precision": 2}, "5.22"),
