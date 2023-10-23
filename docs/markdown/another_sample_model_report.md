@@ -4,8 +4,8 @@
  - [Overview](#overview)
  - [Config](#configs)
  - [Intents](#intents)
- - [NLU](#nlu)
  - [Entities](#entities)
+ - [NLU](#nlu)
  - [Core](#core)
  - [E2E Coverage](#e2e)
 
