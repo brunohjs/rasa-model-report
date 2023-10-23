@@ -137,7 +137,7 @@ class MarkdownController(Controller):
         if os.path.isfile(self.config_report_path):
             sections.insert(1, " - [Config](#configs)\n")
         if self.nlu.is_connected():
-            sections.insert(3, " - [NLU](#nlu)\n")
+            sections.insert(4, " - [NLU](#nlu)\n")
 
         return f"## Index\n{''.join(sections)}\n"
 
