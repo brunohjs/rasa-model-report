@@ -107,10 +107,67 @@ def test_save_overview():
     assert os.path.isfile(json_controller.overview_report_path)
 
 
-def test_calculate_overall():
+@pytest.mark.parametrize(
+    "score, expected",
+    [
+        (
+            {
+                "intent": 1.0,
+                "entity": None,
+                "core": 1.0,
+                "nlu": 1.0,
+                "e2e_coverage": 1.0
+            },
+            1
+        ),
+        (
+            {
+                "intent": 0,
+                "entity": None,
+                "core": 0,
+                "nlu": 0.0,
+                "e2e_coverage": 0.0
+            },
+            0
+        ),
+        (
+            {
+                "intent": 0.5,
+                "entity": 1.0,
+                "core": 0.8,
+                "nlu": 0.46,
+                "e2e_coverage": 0.91
+            },
+            0.5730389847618131
+        )
+    ]
+)
+def test_calculate_overall(score, expected):
     json_controller = pytest.json_controller
+    json_controller._overview = score
     json_controller._calculate_overall()
-    assert isinstance(json_controller.overview.get("overall"), (float, int))
+    assert json_controller.overview.get("overall") == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (1, 0.01),
+        (0.98, 0.03960000000000008),
+        (0.9, 0.18999999999999995),
+        (0.7, 0.51),
+        (0.6, 0.64),
+        (0.5, 0.75),
+        (0.4, 0.84),
+        (0.2, 0.96),
+        (0.1, 0.99),
+        (0.01, 0.9999),
+        (0, 1),
+    ]
+)
+def test_weight_function(value, expected):
+    json_controller = pytest.json_controller
+    assert json_controller.weight_function(value) == expected
 
 
 def test_update_overview():
@@ -230,23 +287,19 @@ def test_error_when_execute_to_list_passing_invalid_params():
         json_controller._to_list(["a", "b", "c"])
 
 
-def test_extract_entity_from_string():
+@pytest.mark.parametrize(
+    "string, expected",
+    [
+        ("[depósito]{\"entity\": \"meio_pagamento\", \"value\": \"deposito\"}", "meio_pagamento"),
+        ("[débito automático]{\"entity\": \"meio_pagamento\", \"value\": \"debito automatico\"}", "meio_pagamento"),
+        ("[transferências]{\"entity\": \"tipo_operacao\", \"value\": \"transferencia\"}", "tipo_operacao"),
+        ("[saldo](meio_pagamento)", "meio_pagamento"),
+        ("[bo20](erros_outros)", "erros_outros"),
+        ("utter_without_entity_test", "utter_without_entity_test")
+    ]
+)
+def test_extract_entity_from_string(string, expected):
     json_controller = pytest.json_controller
-    assert json_controller.extract_entity_from_string(
-        "[depósito]{\"entity\": \"meio_pagamento\", \"value\": \"deposito\"}"
-    ) == "meio_pagamento"
-    assert json_controller.extract_entity_from_string(
-        "[débito automático]{\"entity\": \"meio_pagamento\", \"value\": \"debito automatico\"}"
-    ) == "meio_pagamento"
-    assert json_controller.extract_entity_from_string(
-        "[transferências]{\"entity\": \"tipo_operacao\", \"value\": \"transferencia\"}"
-    ) == "tipo_operacao"
-    assert json_controller.extract_entity_from_string(
-        "[saldo](meio_pagamento)"
-    ) == "meio_pagamento"
-    assert json_controller.extract_entity_from_string(
-        "[bo20](erros_outros)"
-    ) == "erros_outros"
-    assert json_controller.extract_entity_from_string("utter_without_entity_test") == "utter_without_entity_test"
+    assert json_controller.extract_entity_from_string(string) == expected
     with pytest.raises(TypeError):
         json_controller.extract_entity_from_string()

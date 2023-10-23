@@ -39,14 +39,15 @@ class E2ECoverageController(Controller):
             actions_path=actions_path,
         )
 
+        elements = ["intents", "entities", "actions"]
         self._total_num_elements: int = 0
         self._total_num_not_covered: int = 0
         self._total_num_excluded: int = 0
         self._items: Dict[str, Union[float, List[str]]] = {
-            item: [] for item in ["intents", "actions"]
+            item: [] for item in elements
         }
         self._not_covered_items: Dict[str, Union[float, List[str]]] = {
-            item: [] for item in ["intents", "actions"]
+            item: [] for item in elements
         }
         self._rate_items: Dict[str, Union[float, List[str]]] = {}
         self._total_rate: float = 0
@@ -74,7 +75,7 @@ class E2ECoverageController(Controller):
         for file in files:
             file_data = utils.load_yaml_file(file)
             if file_data:
-                for element in ["intents", "responses", "actions"]:
+                for element in ["intents", "entities", "responses", "actions"]:
                     data = []
                     for item in file_data.get(element, []):
                         if isinstance(item, str):
@@ -149,9 +150,11 @@ class E2ECoverageController(Controller):
             strings = re.findall(pattern, file, re.UNICODE)
             if strings:
                 for string in strings:
-                    utter = string[0].replace("'", "").replace('"', "")
-                    if utter not in result:
-                        result.append(utter)
+                    for element in string:
+                        if element and ("utter_" in element or "action_" in element):
+                            utter = element.replace("'", "").replace('"', "")
+                            if utter not in result:
+                                result.append(utter)
         return result
 
     def _update_not_covered_actions(self) -> None:

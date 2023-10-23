@@ -211,14 +211,33 @@ class JsonController(Controller):
         Save overview report data.
         """
         logging.info(f"{self.overview_report_path} file successfully saved.")
+        logging.info("Score:")
+        logging.info(f"  - Intent: {utils.change_scale(self._overview.get('intent'), 10)}")
+        logging.info(f"  - Entity: {utils.change_scale(self._overview.get('entity'), 10)}")
+        logging.info(f"  - Core: {utils.change_scale(self._overview.get('core'), 10)}")
+        logging.info(f"  - NLU: {utils.change_scale(self._overview.get('nlu'), 10)}")
+        logging.info(f"  - E2E Coverage: {utils.change_scale(self._overview.get('e2e_coverage'), 10)}")
+        logging.info(f"  - Overall: {utils.change_scale(self._overview.get('overall'), 10)}")
         file = open(self.overview_report_path, "w", encoding="utf-8")
         json.dump(self._overview, file, indent=4)
         file.write("\n")
         file.close()
 
     @staticmethod
-    def weight_function(x: float) -> float:
-        return 1 - x**3
+    def weight_function(value: float) -> float:
+        """
+        Weight function.
+
+        :param value: Input value.
+        :return: Weighted value.
+        """
+        result = 1 - value**2
+        if result <= 0:
+            return 0.01
+        elif result >= 1:
+            return 1
+        else:
+            return result
 
     def _calculate_overall(self) -> None:
         """

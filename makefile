@@ -28,6 +28,18 @@ test:
 	pytest
 	python scripts/change_coverage_badge.py
 
+# Create new test patch version and public on PyPI.
+release-patch-beta:
+	python scripts/release.py patch beta && $(MAKE) public-prod
+
+# Create new test minor version and public on PyPI.
+release-minor-beta:
+	python scripts/release.py minor beta && $(MAKE) public-prod
+
+# Create new test major version and public on PyPI.
+release-major-beta:
+	python scripts/release.py major beta && $(MAKE) public-prod
+
 # Create new production patch version and public on PyPI.
 release-patch:
 	python scripts/release.py patch && $(MAKE) public-prod

@@ -6,7 +6,7 @@
     alt="logo"
     src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/image/logo.png"
 />
-<h4>Simple open source Rasa command-line add-on that generates training model health reports for your projects.</h4>
+<h4>Simple open-source Rasa command-line add-on that generates training model health reports for your projects.</h4>
 </div>
 <hr />
 
@@ -24,16 +24,20 @@
 <!-- ![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brunohjs/rasa-model-report) -->
 <!--  -->
 
-
 ## 🔍 About
-[Rasa](https://rasa.com/) is the most popular open source framework for building chat and voice-based AI assistants. The **rasa-model-report** is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The **rasa-model-report** does just that, it extracts this information to be displayed more clearly in a report. You can see [this](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/another_sample_model_report.md) example.
+[Rasa](https://rasa.com/) is the most popular open-source framework for building chat and voice-based AI assistants. The **rasa-model-report** is a unofficial Rasa add-on to facilitate the work of developers and curators of Rasa chatbots. Rasa provides a lot of valuable data that can be "faceted" and extract different information about the training model. This information makes it possible to discover problems in the training model. The **rasa-model-report** does just that, it extracts this information to be displayed more clearly in a report. You can see [this](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/another_sample_model_report.md) example.
 
 <img
     height="22"
     alt="logo"
     src="https://raw.githubusercontent.com/brunohjs/rasa-model-report/main/docs/image/open_source_logo.png"
 />
-***rasa-model-report** is an open source project.*
+***rasa-model-report** is an open-source project.*
+
+## ☕ Donate
+You can collaborate with this project donating any amount. Thanks! ☕
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/brunohjs)
 
 ## 📜 Changelog
 Changelog can be found [here](https://github.com/brunohjs/rasa-model-report/blob/main/CHANGELOG.md#changelog). You can also follow the [releases](https://github.com/brunohjs/rasa-model-report/releases) on Github and find planned enhancements for project in the [Project Board](https://github.com/users/brunohjs/projects/2).
@@ -68,7 +72,7 @@ This is the step-by-step guide for using **rasa-model-report** in your project.
    - If you haven't installed it, see [how to install](https://github.com/brunohjs/rasa-model-report#-installation).
 6. The result will be in the `model_report.md` file generated in the project root folder.
 
-Below, I created this video to show how to use the **rasa-model-report**. I used the Rasa sample project (from `rasa-init` command). In this [link](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/sample_model_report.md) is the generated report.
+Below, I created this video to show how to use the **rasa-model-report v1.0.0**. I used the Rasa sample project (from `rasa-init` command). In this [link](https://github.com/brunohjs/rasa-model-report/blob/main/docs/markdown/sample_model_report.md) is the generated report.
 
 https://user-images.githubusercontent.com/26513013/206880601-3145c3d6-e05f-4221-ba16-6a6da06a1edb.mp4
 
@@ -102,8 +106,8 @@ There are parameters that can be used. Available options are below:
 --no-images             Generate model report without images.
 --output-path TEXT      Report output path. (default: ./)
 -p, --path TEXT         Rasa project path. (default: ./)
---precision INTEGER     Grade precision. Used to change precision of the
-                        model report overview grades. Can vary between 0 and
+--precision INTEGER     Score precision. Used to change precision of the
+                        model report overview scores. Can vary between 0 and
                         5 (default: 2)
 --project-name TEXT     Rasa project name. It's only displayed in the
                         report. (default: My project)

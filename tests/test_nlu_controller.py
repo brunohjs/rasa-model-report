@@ -56,11 +56,11 @@ def test_get_problem_sentences():
     assert isinstance(nlu_controller.problem_sentences, list)
 
 
-def test_get_general_grade():
+def test_get_overall_score():
     nlu_controller = pytest.nlu_controller
-    nlu_controller._calculate_general_grade()
-    assert nlu_controller.general_grade >= 0
-    assert isinstance(nlu_controller.general_grade, float)
+    nlu_controller._calculate_overall_score()
+    assert nlu_controller.overall_score >= 0
+    assert isinstance(nlu_controller.overall_score, float)
 
 
 @responses.activate
@@ -259,3 +259,18 @@ def test_select_chitchat_intent():
         }]
     }
     assert nlu_controller.select_intent(payload) == result
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    "disabled_nlu, expected",
+    [
+        pytest.param(False, True, id="nlu enabled"),
+        pytest.param(True, False, id="nlu disabled")
+    ]
+)
+def test_health_check_rasa_api(disabled_nlu, expected):
+    utils.load_mock_payloads()
+    nlu_controller = pytest.nlu_controller
+    nlu_controller._disable_nlu = disabled_nlu
+    assert nlu_controller.health_check_rasa_api() is expected
