@@ -21,7 +21,7 @@ def check_params() -> None:
     if len(sys.argv) > 1:
         if sys.argv[1] not in ["major", "minor", "patch"]:
             raise error_message("Invalid version type. Use 'major', 'minor' or 'patch'.")
-    if len(sys.argv) > 2:
+    elif len(sys.argv) > 2:
         if sys.argv[2] not in ["beta"]:
             raise error_message("Invalid version type. Use 'beta'.")
 
@@ -130,7 +130,7 @@ def get_new_version_type() -> str:
 
     :return: New version type.
     """
-    if len(sys.argv) > 2 and sys.argv[1] in ["major", "minor", "patch"]:
+    if len(sys.argv) > 1 and sys.argv[1] in ["major", "minor", "patch"]:
         if sys.argv[1] == "major":
             return "major"
         elif sys.argv[1] == "minor":
