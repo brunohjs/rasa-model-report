@@ -8,4 +8,4 @@ RASA_API_URL = "http://localhost:5005"
 RASA_PATH = "./"
 RASA_VERSION = None
 EXCLUDE = []
-VERSION = "1.4.2"
+VERSION = "1.5.0"
