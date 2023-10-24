@@ -94,7 +94,7 @@ def update_version_setup_file(new_version: str) -> None:
     file.close()
     logging.info("Committing updates")
     subprocess.run([f"git add {file_path}"], shell=True)
-    subprocess.run([f"git commit -n -m \"New beta version v{version}\""], shell=True)
+    subprocess.run([f"git commit -n -m \"New version v{version}\""], shell=True)
     subprocess.run(["git push"], shell=True)
 
 
