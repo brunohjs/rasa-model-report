@@ -230,8 +230,9 @@ if __name__ == "__main__":
     check_params()
     version = get_new_version()
     beta_version = "b" in version
-    create_tag(version, beta_version)
     if not beta_version:
         changelog = get_changelog(version)
+    create_tag(version, beta_version)
+    if not beta_version:
         close_milestone(version)
         create_release(version, changelog)
