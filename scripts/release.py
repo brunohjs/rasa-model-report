@@ -94,7 +94,7 @@ def update_version_setup_file(new_version: str) -> None:
     file.close()
     logging.info("Committing updates")
     subprocess.run([f"git add {file_path}"], shell=True)
-    subprocess.run([f"git commit -n -m \"New beta version v{version}\""], shell=True)
+    subprocess.run([f"git commit -n -m \"New version v{version}\""], shell=True)
     subprocess.run(["git push"], shell=True)
 
 
@@ -230,8 +230,9 @@ if __name__ == "__main__":
     check_params()
     version = get_new_version()
     beta_version = "b" in version
-    create_tag(version, beta_version)
     if not beta_version:
         changelog = get_changelog(version)
+    create_tag(version, beta_version)
+    if not beta_version:
         close_milestone(version)
         create_release(version, changelog)
